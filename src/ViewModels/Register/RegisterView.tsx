@@ -2,30 +2,27 @@ import React from "react";
 import {
   View,
   Text,
-  SafeAreaView,
+  TouchableOpacity,
+  ScrollView,
   Image,
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
 import { router } from "expo-router";
-import { Control, FieldErrors } from "react-hook-form";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
+import { useRegisterModel } from "./useRegisterModel";
 import { colors } from "@/styles/colors";
-import { LoginFormData } from "@/shared/validations/login.schema";
 import { AppInputController } from "@/components/AppInput/InputController";
 import { AppButton } from "@/components/AppButton";
 
-interface LoginViewProps {
-  control: Control<LoginFormData>;
-  errors: FieldErrors<LoginFormData>;
-  isLoading: boolean;
-  onSubmit: () => void;
-}
-
-export const LoginView: React.FC<LoginViewProps> = ({
+export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
   control,
   errors,
   isLoading,
+  avatarUri,
   onSubmit,
+  onSelectAvatar,
 }) => {
   return (
     <SafeAreaView style={{ backgroundColor: colors.white }} className="flex-1">
@@ -33,83 +30,168 @@ export const LoginView: React.FC<LoginViewProps> = ({
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
       >
-        <View className="flex-1 px-6">
-          <View className="flex-1 w-full items-center justify-center">
-            <Image
-              source={require("@/assets/images/Logo.png")}
-              resizeMode="contain"
-              className="w-[80px] h-[60px] mb-12"
-            />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ flexGrow: 1 }}
+          className="flex-1"
+        >
+          <View className="flex-1 px-6 py-8">
+            <TouchableOpacity
+              onPress={() => router.back()}
+              disabled={isLoading}
+              className="mb-6"
+            >
+              <Ionicons
+                name="arrow-back"
+                size={24}
+                color={colors.grays["gray-500"]}
+              />
+            </TouchableOpacity>
+
+            <View className="items-center mb-8">
+              <Image
+                source={require("@/assets/images/Logo.png")}
+                resizeMode="contain"
+                className="w-[80px] h-[60px]"
+              />
+            </View>
 
             <View className="mb-8">
               <Text
                 style={{ color: colors.grays["gray-500"] }}
                 className="text-3xl font-bold text-center mb-3"
               >
-                Acesse sua conta
+                Criar sua conta
               </Text>
               <Text
                 style={{ color: colors.grays["gray-200"] }}
                 className="text-base text-center"
               >
-                Informe seu e-mail e senha para entrar
+                Preencha os dados abaixo para começar
               </Text>
             </View>
 
-            <View className="w-full mb-8">
+            <View className="items-center mb-8">
+              <TouchableOpacity
+                onPress={onSelectAvatar}
+                disabled={isLoading}
+                className="items-center"
+              >
+                <View
+                  style={{
+                    backgroundColor: colors.grays["gray-100"],
+                    borderColor: colors["purple-base"],
+                  }}
+                  className="w-24 h-24 rounded-full border-2 border-dashed items-center justify-center mb-3"
+                >
+                  {avatarUri ? (
+                    <Image
+                      source={{ uri: avatarUri }}
+                      className="w-[92px] h-[92px] rounded-full"
+                    />
+                  ) : (
+                    <Ionicons
+                      name="camera-outline"
+                      size={32}
+                      color={colors.grays["gray-300"]}
+                    />
+                  )}
+                </View>
+                <Text
+                  style={{ color: colors["purple-base"] }}
+                  className="text-sm font-medium"
+                >
+                  {avatarUri ? "Alterar foto" : "Adicionar foto"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <View className="w-full mb-6">
+              <AppInputController
+                control={control}
+                name="name"
+                label="NOME COMPLETO"
+                placeholder="Seu nome"
+                leftIcon="person-outline"
+                autoCapitalize="words"
+                errors={errors}
+              />
+
               <AppInputController
                 control={control}
                 name="email"
-                leftIcon="person-outline"
                 label="E-MAIL"
-                placeholder="mail@exemple.com.br"
-                placeholderClassName="text"
+                placeholder="seu@email.com"
+                leftIcon="mail-outline"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                errors={errors}
+              />
+
+              <AppInputController
+                control={control}
+                name="phone"
+                label="TELEFONE"
+                placeholder="(00) 00000-0000"
+                leftIcon="phone"
+                keyboardType="numeric"
+                maxLength={11}
+                errors={errors}
               />
 
               <AppInputController
                 control={control}
                 name="password"
-                leftIcon="lock-outline"
                 label="SENHA"
-                placeholder="Sua senha"
+                placeholder="Mínimo 6 caracteres"
+                leftIcon="lock-outline"
+                secureTextEntry
+                errors={errors}
               />
 
-              <View className="mt-6">
-                <AppButton
-                  className="mt-6"
-                  variant="filled"
-                  onPress={onSubmit}
-                  isLoading={isLoading}
+              <AppInputController
+                control={control}
+                name="confirmPassword"
+                label="CONFIRMAR SENHA"
+                placeholder="Digite a senha novamente"
+                leftIcon="lock-outline"
+                secureTextEntry
+                errors={errors}
+              />
+            </View>
+
+            <View className="w-full">
+              <AppButton
+                variant="filled"
+                onPress={onSubmit}
+                isLoading={isLoading}
+                className="mb-4"
+              >
+                {isLoading ? "Criando conta..." : "Criar conta"}
+              </AppButton>
+
+              <View className="flex-row items-center justify-center">
+                <Text
+                  style={{ color: colors.grays["gray-300"] }}
+                  className="text-base"
+                >
+                  Já tem conta?{" "}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => router.back()}
+                  disabled={isLoading}
                 >
                   <Text
-                    style={{ color: colors.white }}
-                    className="text-center font-semibold text-lg"
+                    style={{ color: colors["purple-base"] }}
+                    className="text-base font-semibold"
                   >
-                    {isLoading ? "Acessando..." : "Acessar"}
+                    Fazer login
                   </Text>
-                </AppButton>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
-
-          <View className="w-full flex-2 pb-16">
-            <Text className="text-base mb-6 text-purple text-gray-300">
-              Ainda não tem uma conta?
-            </Text>
-
-            <AppButton
-              rightIcon="arrow-forward"
-              variant="outlined"
-              isLoading={isLoading}
-              className="h-[50px]"
-              onPress={() => router.push("register")}
-            >
-              <Text className="text-center font-semibold text-lg text-purple-base">
-                Criar conta
-              </Text>
-            </AppButton>
-          </View>
-        </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
