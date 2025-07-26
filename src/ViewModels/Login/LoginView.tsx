@@ -1,9 +1,20 @@
 import React from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  SafeAreaView,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { router } from "expo-router";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { styles } from "@/styles/colors";
+import { colors } from "@/styles/colors";
 import { LoginFormData } from "@/shared/validations/login.schema";
+import { AppInputController } from "@/components/AppInput/InputController";
+import { AppButton } from "@/components/AppButton";
 
 interface LoginViewProps {
   control: Control<LoginFormData>;
@@ -19,114 +30,89 @@ export const LoginView: React.FC<LoginViewProps> = ({
   onSubmit,
 }) => {
   return (
-    <View
-      style={{ backgroundColor: styles.background }}
-      className="flex-1 px-6 justify-center"
-    >
-      <View
-        style={{ backgroundColor: styles.white }}
-        className="rounded-2xl p-6 shadow-lg"
+    <SafeAreaView style={{ backgroundColor: colors.white }} className="flex-1">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        className="flex-1"
       >
-        <Text
-          style={{ color: styles.grays["gray-500"] }}
-          className="text-2xl font-bold text-center mb-6"
-        >
-          Entrar
-        </Text>
+        <View className="flex-1 px-6">
+          <View className="flex-1 w-full items-center justify-center">
+            <Image
+              source={require("@/assets/images/Logo.png")}
+              resizeMode="contain"
+              className="w-[80px] h-[60px] mb-12"
+            />
 
-        <Controller
-          control={control}
-          name="email"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View className="mb-4">
-              <TextInput
-                style={{
-                  borderColor: errors.email ? styles.danger : styles.shape,
-                  backgroundColor: styles.shape,
-                  color: styles.grays["gray-500"],
-                }}
-                className="border rounded-lg px-4 py-3"
-                placeholder="Email"
-                placeholderTextColor={styles.grays["gray-200"]}
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                editable={!isLoading}
-              />
-              {errors.email && (
-                <Text
-                  style={{ color: styles.danger }}
-                  className="text-sm mt-1 ml-2"
-                >
-                  {errors.email.message}
-                </Text>
-              )}
+            <View className="mb-8">
+              <Text
+                style={{ color: colors.grays["gray-500"] }}
+                className="text-3xl font-bold text-center mb-3"
+              >
+                Acesse sua conta
+              </Text>
+              <Text
+                style={{ color: colors.grays["gray-200"] }}
+                className="text-base text-center"
+              >
+                Informe seu e-mail e senha para entrar
+              </Text>
             </View>
-          )}
-        />
 
-        <Controller
-          control={control}
-          name="password"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View className="mb-6">
-              <TextInput
-                style={{
-                  borderColor: errors.password ? styles.danger : styles.shape,
-                  backgroundColor: styles.shape,
-                  color: styles.grays["gray-500"],
-                }}
-                className="border rounded-lg px-4 py-3"
-                placeholder="Senha"
-                placeholderTextColor={styles.grays["gray-200"]}
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                secureTextEntry
-                editable={!isLoading}
+            <View className="w-full mb-8">
+              <AppInputController
+                control={control}
+                name="email"
+                leftIcon="person-outline"
+                label="E-MAIL"
+                placeholder="mail@exemple.com.br"
+                placeholderClassName="text"
               />
-              {errors.password && (
-                <Text
-                  style={{ color: styles.danger }}
-                  className="text-sm mt-1 ml-2"
+
+              <AppInputController
+                control={control}
+                name="password"
+                leftIcon="lock-outline"
+                label="SENHA"
+                placeholder="Sua senha"
+              />
+
+              <View className="mt-6">
+                <AppButton
+                  className="mt-6"
+                  variant="filled"
+                  onPress={onSubmit}
+                  isLoading={isLoading}
                 >
-                  {errors.password.message}
-                </Text>
-              )}
+                  <Text
+                    style={{ color: colors.white }}
+                    className="text-center font-semibold text-lg"
+                  >
+                    {isLoading ? "Acessando..." : "Acessar"}
+                  </Text>
+                </AppButton>
+              </View>
             </View>
-          )}
-        />
+          </View>
 
-        <TouchableOpacity
-          style={{
-            backgroundColor: isLoading
-              ? styles.grays["gray-200"]
-              : styles["blue-base"],
-          }}
-          className="rounded-lg py-4 mb-4"
-          onPress={onSubmit}
-          disabled={isLoading}
-        >
-          <Text
-            style={{ color: styles.white }}
-            className="text-center font-semibold"
-          >
-            {isLoading ? "Entrando..." : "Entrar"}
-          </Text>
-        </TouchableOpacity>
+          <View className="w-full flex-2 pb-16">
+            <Text className="text-base mb-6 text-purple text-gray-300">
+              Ainda não tem uma conta?
+            </Text>
 
-        <TouchableOpacity
-          className="py-2"
-          onPress={() => router.push("/register")}
-          disabled={isLoading}
-        >
-          <Text style={{ color: styles["blue-base"] }} className="text-center">
-            Não tem conta? Cadastre-se
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+            <AppButton
+              rightIcon="arrow-forward"
+              variant="outlined"
+              isLoading={isLoading}
+              className="h-[50px]"
+              onPress={() => router.push("register")}
+            >
+              <Text className="text-center font-semibold text-lg text-purple-base">
+                Criar conta
+              </Text>
+            </AppButton>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };

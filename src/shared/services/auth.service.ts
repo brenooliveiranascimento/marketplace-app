@@ -1,6 +1,6 @@
 import axios from "axios";
 import { User } from "../../store/userStore";
-import { apiClient } from "../api/market-place";
+import { marketPlaceApiClient } from "../api/market-place";
 
 export interface LoginRequest {
   email: string;
@@ -23,13 +23,13 @@ export interface AuthResponse {
 class AuthService {
   async login(credentials: LoginRequest): Promise<AuthResponse> {
     try {
-      const response = await apiClient.post<AuthResponse>(
+      const response = await marketPlaceApiClient.post<AuthResponse>(
         "/auth/login",
         credentials
       );
 
       if (response.data.token) {
-        apiClient.defaults.headers.common[
+        marketPlaceApiClient.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${response.data.token}`;
       }
@@ -48,19 +48,20 @@ class AuthService {
 
   async register(userData: RegisterRequest): Promise<AuthResponse> {
     try {
-      const response = await apiClient.post<AuthResponse>(
+      const response = await marketPlaceApiClient.post<AuthResponse>(
         "/auth/register",
         userData
       );
 
       if (response.data.token) {
-        apiClient.defaults.headers.common[
+        marketPlaceApiClient.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${response.data.token}`;
       }
 
       return response.data;
     } catch (error) {
+      console.log(JSON.stringify("Erro no registro", null, 2));
       if (axios.isAxiosError(error)) {
         throw new Error(
           error.response?.data?.message ||
@@ -80,7 +81,7 @@ class AuthService {
         name: "avatar.jpg",
       } as any);
 
-      const response = await apiClient.post<{ avatarUrl: string }>(
+      const response = await marketPlaceApiClient.post<{ avatarUrl: string }>(
         "/user/avatar",
         formData,
         {
@@ -92,6 +93,7 @@ class AuthService {
 
       return response.data;
     } catch (error) {
+      console.log(JSON.stringify(error, null, 2));
       if (axios.isAxiosError(error)) {
         throw new Error(
           error.response?.data?.message || "Erro ao fazer upload da imagem."
@@ -103,19 +105,21 @@ class AuthService {
 
   async logout(): Promise<void> {
     try {
-      await apiClient.post("/auth/logout");
+      await marketPlaceApiClient.post("/auth/logout");
     } catch (error) {
     } finally {
-      delete apiClient.defaults.headers.common["Authorization"];
+      delete marketPlaceApiClient.defaults.headers.common["Authorization"];
     }
   }
 
   async refreshToken(): Promise<AuthResponse> {
     try {
-      const response = await apiClient.post<AuthResponse>("/auth/refresh");
+      const response = await marketPlaceApiClient.post<AuthResponse>(
+        "/auth/refresh"
+      );
 
       if (response.data.token) {
-        apiClient.defaults.headers.common[
+        marketPlaceApiClient.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${response.data.token}`;
       }

@@ -15,15 +15,25 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.appsunicadtec.marketplace-app"
+      "bundleIdentifier": "com.appsunicadtec.marketplace-app",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Este app precisa acessar sua galeria de fotos para que você possa selecionar e enviar sua foto de perfil.",
+        "NSCameraUsageDescription": "Este app precisa acessar sua câmera para que você possa tirar fotos para o seu perfil.",
+        "NSPhotoLibraryAddUsageDescription": "Este app precisa salvar fotos na sua galeria após edição."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#2563eb"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.appsunicadtec.marketplaceapp"
+      "package": "com.appsunicadtec.marketplaceapp",
+      "permissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.CAMERA"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -1,6 +1,8 @@
 import { Stack } from "expo-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StatusBar } from "expo-status-bar";
+import { SafeAreaView } from "react-native-safe-area-context";
+import "../styles/global.css";
 
 const queryClient = new QueryClient();
 
