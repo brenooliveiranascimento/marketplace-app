@@ -21,15 +21,14 @@ export const ProductView: FC<ProductViewProps> = ({
   error,
   onAddToCart,
   onGoBack,
-
   comments,
   isLoadingMore,
   isRefreshing,
   onLoadMore,
   onRefresh,
-  onAddReview,
   formatRating,
   formatName,
+  handleOpenReviewModal,
 }) => {
   if (isLoadingProduct) return <LoadingProduct />;
 
@@ -50,9 +49,9 @@ export const ProductView: FC<ProductViewProps> = ({
           keyExtractor={(item) => item.id.toString()}
           ListHeaderComponent={
             <ProductHeader
-              onAddReview={onAddReview}
               product={product}
               onGoBack={onGoBack}
+              onOpenReviewModal={handleOpenReviewModal}
             />
           }
           ListFooterComponent={<ListFooter isLoadingMore={isLoadingMore} />}

@@ -1,4 +1,4 @@
-export const useAppPriceText = (children: number) => {
+export const useAppPriceText = (value: number) => {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -6,11 +6,11 @@ export const useAppPriceText = (children: number) => {
     }).format(price);
   };
 
-  const formattedPrice = formatPrice(Number(children));
+  const formattedPrice = String(formatPrice(Number(value)));
 
-  const parts = formattedPrice.split(" ");
+  const parts = formattedPrice.split("\u00A0");
   const currencySymbol = parts[0];
-  const value = parts.slice(1).join(" ");
+  const valueText = parts.slice(1).join("\u00A0");
 
-  return { formatPrice, currencySymbol, value };
+  return { formatPrice, currencySymbol, valueText, value };
 };

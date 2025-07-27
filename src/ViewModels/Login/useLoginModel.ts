@@ -31,7 +31,7 @@ export const useLoginModel = (): LoginModel => {
   const loginMutation = useMutation({
     mutationFn: authService.login,
     onSuccess: (response) => {
-      setUser(response.user, response.token);
+      setUser(response.user, response.token, response.refreshToken);
     },
     onError: (error: any) => {
       Alert.alert(

@@ -1,16 +1,27 @@
-import { UserStore } from "@/store/userStore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { Platform } from "react-native";
 import { AppError } from "../helpers/AppError";
+import Constants from "expo-constants";
 
-export const baseURL = Platform.select({
-  ios: "http://localhost:3001",
-  android: "http://10.0.2.2:3001",
-});
+const getBaseURL = () => {
+  const isProduction = Constants.expoConfig?.extra?.isProduction || false;
+
+  if (isProduction) {
+    return process.env.EXPO_PUBLIC_API_URL_PROD;
+  } else {
+    return Platform.select({
+      ios: "http://localhost:3001",
+      android: "http://10.0.2.2:3001",
+    });
+  }
+};
+
+export const baseURL = getBaseURL();
 
 class ApiClient {
   private instance: AxiosInstance;
+  private isRefreshing = false;
 
   constructor() {
     this.instance = axios.create({
@@ -49,7 +60,65 @@ class ApiClient {
       (response: AxiosResponse) => {
         return response;
       },
-      (error) => {
+      async (error) => {
+        const originalRequest = error.config;
+
+        if (
+          error.response?.status === 401 &&
+          error.response?.data?.message === "Token expirado" &&
+          !originalRequest._retry &&
+          !this.isRefreshing
+        ) {
+          originalRequest._retry = true;
+          this.isRefreshing = true;
+
+          try {
+            const userData = await AsyncStorage.getItem("market-place-auth");
+
+            if (!userData) {
+              throw new Error("Usuário não autenticado");
+            }
+
+            const {
+              state: { refreshToken },
+            } = JSON.parse(userData);
+
+            if (!refreshToken) {
+              throw new Error("Refresh token não encontrado");
+            }
+
+            // Fazer refresh do token
+            const response = await this.instance.post("/auth/refresh", {
+              refreshToken,
+            });
+
+            const { token: newToken, refreshToken: newRefreshToken } =
+              response.data;
+
+            // Atualizar tokens no AsyncStorage
+            const currentUserData = JSON.parse(userData);
+            currentUserData.state.token = newToken;
+            currentUserData.state.refreshToken = newRefreshToken;
+
+            await AsyncStorage.setItem(
+              "market-place-auth",
+              JSON.stringify(currentUserData)
+            );
+
+            // Atualizar header e retentar requisição original
+            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+            return this.instance(originalRequest);
+          } catch (refreshError) {
+            // Se o refresh falhar, fazer logout
+            this.handleUnauthorized();
+            return Promise.reject(
+              new AppError("Sessão expirada. Faça login novamente.")
+            );
+          } finally {
+            this.isRefreshing = false;
+          }
+        }
+
         if (error.response?.status === 401) {
           this.handleUnauthorized();
         }
@@ -59,14 +128,13 @@ class ApiClient {
         } else {
           return Promise.reject(new AppError("Falha na requisição!"));
         }
-
-        return Promise.reject(error);
       }
     );
   }
 
-  private handleUnauthorized() {
+  private async handleUnauthorized() {
     delete this.instance.defaults.headers.common["Authorization"];
+    await AsyncStorage.removeItem("market-place-auth");
     console.warn("Token expirado. Usuário deve fazer login novamente.");
   }
 
@@ -122,30 +190,3 @@ class ApiClient {
 }
 
 export const marketPlaceApiClient = new ApiClient();
-
-// import axios from "axios";
-// import { addTokenToRequest } from "../helpers/axios.helper";
-// import { Platform } from "react-native";
-// import { AppError } from "../helpers/AppError";
-
-// const baseURL = Platform.select({
-//   ios: "http://localhost:3001",
-//   android: "http://10.0.2.2:3001",
-// });
-
-// export const marketPlaceApiClient = axios.create({
-//   baseURL,
-// });
-
-// addTokenToRequest(marketPlaceApiClient);
-
-// marketPlaceApiClient.interceptors.response.use(
-//   (config) => config,
-//   (error) => {
-//     if (error.response && error.response.data) {
-//       return Promise.reject(new AppError(error.response.data.message));
-//     } else {
-//       return Promise.reject(new AppError("Falha na requisição!"));
-//     }
-//   }
-// );

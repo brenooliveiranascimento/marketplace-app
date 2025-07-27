@@ -5,6 +5,8 @@ import { useCartStore } from "@/store/cartStore";
 import { useProductQuery } from "@/shared/queries";
 import { useModalStore } from "@/store/modalStore";
 import { AddToCartSuccessModal } from "@/shared/components";
+import { useBottomSheetStore } from "@/store/bottomsheetStore";
+import { ReviewModal } from "./components/ReviewModal";
 
 export const useProductModel = (productId: number) => {
   const { addItem } = useCartStore();
@@ -14,6 +16,18 @@ export const useProductModel = (productId: number) => {
     productId,
     enabled: !!productId,
   });
+
+  const { open } = useBottomSheetStore();
+
+  const handleOpenReviewModal = (productId: number) => {
+    if (!product) return;
+
+    open(
+      React.createElement(ReviewModal, {
+        productId,
+      })
+    );
+  };
 
   const formatPrice = (value: string): string => {
     const numericValue = parseFloat(value);
@@ -66,5 +80,6 @@ export const useProductModel = (productId: number) => {
     onAddToCart: handleAddToCart,
     onGoBack: handleGoBack,
     refetch,
+    handleOpenReviewModal,
   };
 };

@@ -9,14 +9,19 @@ type Props = ReturnType<typeof useAppPriceText> & {
 
 export const AppPriceTextView: FC<Props> = ({
   currencySymbol,
-  value,
+  valueText,
   classNameCurrency,
   classNameValue,
 }) => {
   return (
     <View className="flex-row items-baseline">
-      <Text className={classNameCurrency}>{currencySymbol}</Text>
-      <Text className={classNameValue}> {value}</Text>
+      <Text className={classNameCurrency ?? "text-sm text-gray-900"}>
+        {currencySymbol}
+      </Text>
+      <Text className={classNameValue ?? "text-2xl font-bold text-gray-900"}>
+        {" "}
+        {valueText}
+      </Text>
     </View>
   );
 };

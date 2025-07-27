@@ -65,7 +65,7 @@ export const useRegisterModel = (): RegisterModel => {
   const registerMutation = useMutation({
     mutationFn: authService.register,
     onSuccess: async (response) => {
-      setUser(response.user, response.token);
+      setUser(response.user, response.token, response.refreshToken);
       Toast.success("Conta criada com sucesso!", "top");
 
       if (avatarUri) {
@@ -74,7 +74,7 @@ export const useRegisterModel = (): RegisterModel => {
           ...response.user,
           avatarUrl: url,
         };
-        setUser(updatedUser, response.token);
+        setUser(updatedUser, response.token, response.refreshToken);
       }
     },
     onError: (error: any) => {

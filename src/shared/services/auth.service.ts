@@ -22,6 +22,16 @@ export interface RegisterRequest {
 export interface AuthResponse {
   user: User;
   token: string;
+  refreshToken: string;
+}
+
+export interface RefreshTokenRequest {
+  refreshToken: string;
+}
+
+export interface RefreshTokenResponse {
+  token: string;
+  refreshToken: string;
 }
 
 class AuthService {
@@ -44,6 +54,21 @@ class AuthService {
     const response = await marketPlaceApiClient.post<AuthResponse>(
       "/auth/register",
       userData
+    );
+
+    if (response.data.token) {
+      marketPlaceApiClient.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.token}`;
+    }
+
+    return response.data;
+  }
+
+  async refreshToken(refreshToken: string): Promise<RefreshTokenResponse> {
+    const response = await marketPlaceApiClient.post<RefreshTokenResponse>(
+      "/auth/refresh",
+      { refreshToken }
     );
 
     if (response.data.token) {
@@ -84,20 +109,6 @@ class AuthService {
     } finally {
       delete marketPlaceApiClient.defaults.headers.common["Authorization"];
     }
-  }
-
-  async refreshToken(): Promise<AuthResponse> {
-    const response = await marketPlaceApiClient.post<AuthResponse>(
-      "/auth/refresh"
-    );
-
-    if (response.data.token) {
-      marketPlaceApiClient.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${response.data.token}`;
-    }
-
-    return response.data;
   }
 }
 
