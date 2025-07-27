@@ -21,6 +21,11 @@ module.exports = {
       height: {
         button: 57,
       },
+      fontFamily: {
+        sans: ["Lato_400Regular"],
+        lato: ["Lato_400Regular"],
+        "lato-bold": ["Lato_700Bold"],
+      },
       colors,
     },
   },

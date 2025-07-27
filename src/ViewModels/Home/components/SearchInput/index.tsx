@@ -1,7 +1,8 @@
 import React from "react";
-import { View, TextInput, TouchableOpacity } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
-import { styles } from "@/styles/colors";
+import { View, TextInput, TouchableOpacity, Text } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@/styles/colors";
+import { AppInput } from "@/components/AppInput";
 
 interface SearchInputProps {
   value: string;
@@ -24,54 +25,34 @@ export const SearchInput: React.FC<SearchInputProps> = ({
     onSearch();
   };
 
-  const handleClear = () => {
-    onChangeText("");
-    onClear?.();
-  };
-
   return (
-    <View
-      style={{ backgroundColor: styles.white }}
-      className="flex-row items-center mx-4 my-3 px-4 py-3 rounded-xl shadow-sm"
-    >
-      <MaterialIcons name="search" size={20} color={styles.grays["gray-200"]} />
+    <View className="mb-3">
+      <Text className="text-xl font-bold px-4 mt-8 mb-4">Explore Produtos</Text>
+      <View className="flex-row items-center">
+        <View className="flex-1">
+          <AppInput
+            placeholder={placeholder}
+            leftIcon="search"
+            value={value}
+            onChangeText={onChangeText}
+            onSubmitEditing={handleSubmitEditing}
+            returnKeyType="search"
+          />
+        </View>
 
-      <TextInput
-        style={{ color: styles.grays["gray-500"] }}
-        className="flex-1 ml-3 text-base"
-        placeholder={placeholder}
-        placeholderTextColor={styles.grays["gray-200"]}
-        value={value}
-        onChangeText={onChangeText}
-        onSubmitEditing={handleSubmitEditing}
-        returnKeyType="search"
-        editable={!disabled}
-        autoCapitalize="none"
-        autoCorrect={false}
-      />
-
-      {value.length > 0 && (
         <TouchableOpacity
-          onPress={handleClear}
-          className="p-1"
-          disabled={disabled}
+          className="ml-12 items-center justify-center rounded-lg border-10 border h-[40px] w-[40px] mr-4 border-purple-base"
+          onPress={onSearch}
+          disabled={disabled || value.trim().length === 0}
+          activeOpacity={0.8}
         >
-          <MaterialIcons
-            name="close"
-            size={18}
-            color={styles.grays["gray-200"]}
+          <Ionicons
+            name="filter-outline"
+            size={22}
+            color={colors["purple-base"]}
           />
         </TouchableOpacity>
-      )}
-
-      <TouchableOpacity
-        style={{ backgroundColor: styles["blue-base"] }}
-        className="ml-2 px-3 py-2 rounded-lg"
-        onPress={onSearch}
-        disabled={disabled || value.trim().length === 0}
-      >
-        <MaterialIcons name="search" size={16} color={styles.white} />
-      </TouchableOpacity>
+      </View>
     </View>
   );
 };

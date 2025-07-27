@@ -7,15 +7,15 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/styles/colors";
 import { AppInputVariants, appInputVariants } from "./input.variants";
 
 export interface AppInputProps extends TextInputProps, AppInputVariants {
   label?: string;
   error?: string;
-  leftIcon?: keyof typeof MaterialIcons.glyphMap;
-  rightIcon?: keyof typeof MaterialIcons.glyphMap;
+  leftIcon?: keyof typeof Ionicons.glyphMap;
+  rightIcon?: keyof typeof Ionicons.glyphMap;
   onLeftIconPress?: () => void;
   onRightIconPress?: () => void;
   containerClassName?: string;
@@ -82,9 +82,9 @@ export const AppInput: React.FC<AppInputProps> = ({
             activeOpacity={0.7}
             className="mr-3"
           >
-            <MaterialIcons
+            <Ionicons
               name={leftIcon}
-              size={20}
+              size={22}
               color={getIconColor()}
               className={styles.icon()}
             />
@@ -108,9 +108,9 @@ export const AppInput: React.FC<AppInputProps> = ({
             activeOpacity={0.7}
             className="ml-3"
           >
-            <MaterialIcons
+            <Ionicons
               name={rightIcon}
-              size={20}
+              size={22}
               color={getIconColor()}
               className={styles.icon()}
             />
@@ -119,7 +119,7 @@ export const AppInput: React.FC<AppInputProps> = ({
       </Pressable>
       {error && (
         <Text className={styles.error()}>
-          <MaterialIcons name="error-outline" className={styles.error()} />
+          <Ionicons name="alert-circle-outline" className={styles.error()} />
           {error}
         </Text>
       )}

@@ -85,7 +85,7 @@ export const useRegisterModel = (): RegisterModel => {
       }
     },
     onError: (error: any) => {
-      console.error("Erro no registro:", error);
+      console.error("Erro no registro:", JSON.stringify(error));
       Alert.alert(
         "Erro no Cadastro",
         error.message || "Ocorreu um erro ao criar a conta"
@@ -211,7 +211,7 @@ export const useRegisterModel = (): RegisterModel => {
       console.log("Registrando usuário...");
       await registerMutation.mutateAsync(registerData);
     } catch (error) {
-      console.error("Erro no processo de registro:", error);
+      console.error("Erro no processo de registro:", JSON.stringify(error));
     }
   });
 

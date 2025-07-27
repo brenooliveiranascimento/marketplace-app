@@ -1,16 +1,17 @@
 import { useState, useCallback } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Alert } from "react-native";
-import { router } from "expo-router";
-import { useCartStore } from "@/store/cartStore";
 import { Product } from "@/shared/interfaces/product";
-import { ProductsRequest } from "@/shared/interfaces/https/get-products";
+import {
+  ProductListItem,
+  ProductsRequest,
+} from "@/shared/interfaces/https/get-products";
 import { productService } from "@/shared/services/product.service";
+import { router } from "expo-router";
 
 export const useHomeModel = () => {
   const [searchText, setSearchText] = useState("");
   const [currentSearchText, setCurrentSearchText] = useState("");
-  const { addItem } = useCartStore();
 
   const buildRequest = useCallback(
     (pageParam: number): ProductsRequest => {
@@ -24,7 +25,6 @@ export const useHomeModel = () => {
         },
       };
 
-      // Adicionar filtros apenas se houver busca
       if (currentSearchText.trim()) {
         request.filters = {
           searchText: currentSearchText.trim(),
@@ -65,7 +65,7 @@ export const useHomeModel = () => {
       return undefined;
     },
     initialPageParam: 1,
-    staleTime: 5 * 60 * 1000, // 5 minutos
+    staleTime: 5 * 60 * 1000,
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
@@ -86,28 +86,11 @@ export const useHomeModel = () => {
     setCurrentSearchText("");
   };
 
-  const handleProductPress = (product: Product) => {
-    Alert.alert(
-      "Produto Selecionado",
-      `${product.name}\n${product.description}\n\nPreço: R$ ${parseFloat(
-        product.value
-      ).toFixed(2)}\nAvaliação: ${product.averageRating}/5.0 (${
-        product.ratingCount
-      } avaliações)`
-    );
-  };
-
-  const handleAddToCart = (product: Product) => {
-    addItem({
-      id: product.id.toString(),
-      name: product.name,
-      price: parseFloat(product.value),
-      image: product.photo,
+  const handleProductPress = (product: ProductListItem) => {
+    router.push({
+      pathname: "/product/[id]",
+      params: { id: product.id },
     });
-  };
-
-  const handleCartPress = () => {
-    router.push("/(tabs)/cart");
   };
 
   const handleProfilePress = () => {
@@ -127,21 +110,25 @@ export const useHomeModel = () => {
     await refetch();
   };
 
+  const handleEndReached = () => {
+    if (hasNextPage && !isFetchingNextPage && !isLoading) {
+      handleLoadMore();
+    }
+  };
+
   return {
     products,
     isLoading,
     isLoadingMore: isFetchingNextPage,
-    hasNextPage: hasNextPage || false,
     searchText,
     onSearchTextChange: handleSearchTextChange,
     onSearch: handleSearch,
     onClearSearch: handleClearSearch,
     onProductPress: handleProductPress,
-    onAddToCart: handleAddToCart,
-    onCartPress: handleCartPress,
     onProfilePress: handleProfilePress,
     onLoadMore: handleLoadMore,
     onRefresh: handleRefresh,
     isRefreshing: isRefetching,
+    handleEndReached,
   };
 };

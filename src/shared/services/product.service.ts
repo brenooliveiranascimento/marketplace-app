@@ -2,9 +2,11 @@ import axios from "axios";
 import { User } from "../../store/userStore";
 import { marketPlaceApiClient } from "../api/market-place";
 import {
+  ProductListItem,
   ProductsRequest,
-  ProductsResponse,
 } from "../interfaces/https/get-products";
+import { Paginated } from "../interfaces/https/paginated";
+import { Product } from "../interfaces/product";
 
 export interface LoginRequest {
   email: string;
@@ -25,10 +27,18 @@ export interface AuthResponse {
 }
 
 class ProductService {
-  async getProducts(params: ProductsRequest): Promise<ProductsResponse> {
-    const { data } = await marketPlaceApiClient.post<ProductsResponse>(
-      "/products",
-      params
+  async getProducts(
+    params: ProductsRequest
+  ): Promise<Paginated<ProductListItem>> {
+    const { data } = await marketPlaceApiClient.post<
+      Paginated<ProductListItem>
+    >("/products", params);
+    return data;
+  }
+
+  async getProductById(productId: number): Promise<Product> {
+    const { data } = await marketPlaceApiClient.get<Product>(
+      `/products/${productId}`
     );
     return data;
   }

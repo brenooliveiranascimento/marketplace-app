@@ -44,10 +44,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
             />
 
             <View className="mb-8">
-              <Text
-                style={{ color: colors.grays["gray-500"] }}
-                className="text-3xl font-bold text-center mb-3"
-              >
+              <Text className="text-3xl font-bold text-center mb-3 text-gray-500">
                 Acesse sua conta
               </Text>
               <Text
@@ -71,7 +68,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
               <AppInputController
                 control={control}
                 name="password"
-                leftIcon="lock-outline"
+                leftIcon="lock-closed-outline"
                 label="SENHA"
                 placeholder="Sua senha"
               />

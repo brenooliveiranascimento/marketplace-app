@@ -15,9 +15,8 @@ export interface Product {
   category: Category;
   createdAt: string;
   updatedAt: string;
-  deletedAt?: string;
+  deletedAt: string;
 }
-
 export interface ProductSort {
   averageRating?: "ASC" | "DESC";
 }

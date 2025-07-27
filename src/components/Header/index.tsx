@@ -1,83 +1,53 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { useUserStore } from "@/store/userStore";
-import { useCartStore } from "@/store/cartStore";
-import { styles } from "@/styles/colors";
+import { colors } from "@/styles/colors";
 
 interface HeaderProps {
-  onCartPress: () => void;
   onProfilePress?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({
-  onCartPress,
-  onProfilePress,
-}) => {
+export const Header: React.FC<HeaderProps> = ({ onProfilePress }) => {
   const { user } = useUserStore();
-  const { getItemCount } = useCartStore();
-  const cartItemCount = getItemCount();
 
   return (
-    <View
-      style={{ backgroundColor: styles.white }}
-      className="flex-row items-center justify-between px-4 py-3 shadow-sm"
-    >
+    <View className="flex-row items-center justify-between px-4 py-3 shadow-sm bg-background">
       <TouchableOpacity
         onPress={onProfilePress}
-        className="flex-row items-center"
+        className="flex-row items-center gap-6"
       >
         <View className="relative">
           {user?.avatarUrl ? (
             <Image
               source={{ uri: user.avatarUrl }}
-              className="w-10 h-10 rounded-full"
+              className="w-[52px] h-[52px] rounded-[12px]"
             />
           ) : (
-            <View
-              style={{ backgroundColor: styles.shape }}
-              className="w-10 h-10 rounded-full items-center justify-center"
-            >
-              <MaterialIcons
+            <View className="w-[52px] h-[52px] rounded-[12px] items-center justify-center bg-shape">
+              <Ionicons
                 name="person"
                 size={24}
-                color={styles.grays["gray-300"]}
+                color={colors.grays["gray-300"]}
               />
             </View>
           )}
         </View>
 
-        <View className="ml-3">
-          <Text style={{ color: styles.grays["gray-300"] }} className="text-xs">
-            Olá,
-          </Text>
+        <View>
           <Text
-            style={{ color: styles.grays["gray-500"] }}
-            className="text-sm font-semibold"
+            className="text-base font-semibold text-gray-500"
             numberOfLines={1}
           >
-            {user?.name || "Usuário"}
+            Olá, {user?.name || "Usuário"}
           </Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={onCartPress} className="relative p-2">
-        <MaterialIcons
-          name="shopping-cart"
-          size={28}
-          color={styles["blue-base"]}
-        />
-
-        {cartItemCount > 0 && (
-          <View
-            style={{ backgroundColor: styles.danger }}
-            className="absolute -top-1 -right-1 w-5 h-5 rounded-full items-center justify-center"
-          >
-            <Text style={{ color: styles.white }} className="text-xs font-bold">
-              {cartItemCount > 99 ? "99+" : cartItemCount}
+          <View>
+            <Text className="color-purple-base font-bold text-sm">
+              Ver perfil
             </Text>
+            <Ionicons size={20} />
           </View>
-        )}
+        </View>
       </TouchableOpacity>
     </View>
   );

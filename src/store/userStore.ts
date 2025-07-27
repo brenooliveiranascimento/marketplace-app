@@ -1,5 +1,6 @@
 import { create } from "zustand";
-
+import { persist, createJSONStorage } from "zustand/middleware";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export interface User {
   id: number;
   name: string;
@@ -11,7 +12,7 @@ export interface User {
   deletedAt?: string;
 }
 
-interface UserStore {
+export interface UserStore {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
@@ -21,32 +22,40 @@ interface UserStore {
   updateAvatar: (avatarUrl: string) => void;
 }
 
-export const useUserStore = create<UserStore>((set) => ({
-  user: null,
-  token: null,
-  isAuthenticated: false,
-
-  setUser: (user, token) =>
-    set({
-      user,
-      token,
-      isAuthenticated: true,
-    }),
-
-  logout: () =>
-    set({
+export const useUserStore = create<UserStore>()(
+  persist(
+    (set) => ({
       user: null,
       token: null,
       isAuthenticated: false,
+
+      setUser: (user, token) =>
+        set({
+          user,
+          token,
+          isAuthenticated: true,
+        }),
+
+      logout: () =>
+        set({
+          user: null,
+          token: null,
+          isAuthenticated: false,
+        }),
+
+      updateUser: (updates) =>
+        set((state) => ({
+          user: state.user ? { ...state.user, ...updates } : null,
+        })),
+
+      updateAvatar: (avatarUrl) =>
+        set((state) => ({
+          user: state.user ? { ...state.user, avatarUrl } : null,
+        })),
     }),
-
-  updateUser: (updates) =>
-    set((state) => ({
-      user: state.user ? { ...state.user, ...updates } : null,
-    })),
-
-  updateAvatar: (avatarUrl) =>
-    set((state) => ({
-      user: state.user ? { ...state.user, avatarUrl } : null,
-    })),
-}));
+    {
+      name: "market-place-auth",
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
+);

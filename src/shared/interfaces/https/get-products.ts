@@ -1,11 +1,16 @@
-import { Product, ProductSort } from "../product";
+import { Category } from "../category";
+import { ProductSort } from "../product";
 
-export interface ProductsResponse {
-  data: Product[];
-  page: number;
-  perPage: number;
-  total: number;
-  totalPages: number;
+export interface ProductListItem {
+  id: number;
+  value: string;
+  name: string;
+  categoryId: number;
+  photo: string;
+  averageRating: number;
+  ratingCount: number;
+  category: Category;
+  createdAt: Date;
 }
 
 export interface ProductFilters {
