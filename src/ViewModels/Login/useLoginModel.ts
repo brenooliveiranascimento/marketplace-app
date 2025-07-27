@@ -1,10 +1,7 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation } from "@tanstack/react-query";
-import { Alert } from "react-native";
-import { useUserStore } from "@/store/userStore";
 import { LoginFormData, loginSchema } from "@/shared/validations/login.schema";
-import { authService } from "@/shared/services/auth.service";
+import { useLoginMutation } from "@/shared/queries";
 
 export interface LoginModel {
   control: any;
@@ -14,8 +11,6 @@ export interface LoginModel {
 }
 
 export const useLoginModel = (): LoginModel => {
-  const { setUser } = useUserStore();
-
   const {
     control,
     handleSubmit,
@@ -28,18 +23,7 @@ export const useLoginModel = (): LoginModel => {
     },
   });
 
-  const loginMutation = useMutation({
-    mutationFn: authService.login,
-    onSuccess: (response) => {
-      setUser(response.user, response.token, response.refreshToken);
-    },
-    onError: (error: any) => {
-      Alert.alert(
-        "Erro no Login",
-        error.message || "Ocorreu um erro ao fazer login"
-      );
-    },
-  });
+  const loginMutation = useLoginMutation();
 
   const onSubmit = handleSubmit(async (data: LoginFormData) => {
     await loginMutation.mutateAsync(data);

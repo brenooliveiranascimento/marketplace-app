@@ -1,4 +1,5 @@
 import { AppError } from "../helpers/AppError";
+import { isTokenRelatedError } from "../helpers/tokenErrorFilter";
 import { Toast } from "toastify-react-native";
 
 export const useErrorHandler = () => {
@@ -11,7 +12,10 @@ export const useErrorHandler = () => {
     const message = isAppError
       ? error.message
       : defaultMessage ?? "Falha na requisição";
-    Toast.error(message, isTop ? "top" : "bottom");
+
+    if (!isTokenRelatedError(message)) {
+      Toast.error(message, isTop ? "top" : "bottom");
+    }
   };
 
   return { handleError };

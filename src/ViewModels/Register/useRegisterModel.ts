@@ -1,17 +1,15 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation } from "@tanstack/react-query";
 import { Alert } from "react-native";
-import { Toast } from "toastify-react-native";
 import { useUserStore } from "@/store/userStore";
 import {
   RegisterFormData,
   registerSchema,
 } from "@/shared/validations/register.schema";
-import { authService } from "@/shared/services/auth.service";
 import { useCamera } from "@/shared/hooks/useCamera";
 import { useGallery } from "@/shared/hooks/useGallery";
+import { useRegisterMutation, useUploadAvatarMutation } from "@/shared/queries";
 
 export interface RegisterModel {
   control: any;
@@ -55,19 +53,12 @@ export const useRegisterModel = (): RegisterModel => {
     },
   });
 
-  const uploadAvatarMutation = useMutation({
-    mutationFn: authService.uploadAvatar,
-    onError: (error) => {
-      Toast.error(error?.message || "Erro ao fazer upload da imagem", "top");
-    },
+  const uploadAvatarMutation = useUploadAvatarMutation({
+    showSuccessToast: false,
   });
 
-  const registerMutation = useMutation({
-    mutationFn: authService.register,
+  const registerMutation = useRegisterMutation({
     onSuccess: async (response) => {
-      setUser(response.user, response.token, response.refreshToken);
-      Toast.success("Conta criada com sucesso!", "top");
-
       if (avatarUri) {
         const { url } = await uploadAvatarMutation.mutateAsync(avatarUri);
         const updatedUser = {
@@ -76,12 +67,6 @@ export const useRegisterModel = (): RegisterModel => {
         };
         setUser(updatedUser, response.token, response.refreshToken);
       }
-    },
-    onError: (error: any) => {
-      Toast.error(
-        error?.message || "Ocorreu um erro ao criar sua conta",
-        "top"
-      );
     },
   });
 

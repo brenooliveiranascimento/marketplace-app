@@ -87,7 +87,6 @@ class ApiClient {
               throw new Error("Refresh token não encontrado");
             }
 
-            // Fazer refresh do token
             const response = await this.instance.post("/auth/refresh", {
               refreshToken,
             });
@@ -95,7 +94,6 @@ class ApiClient {
             const { token: newToken, refreshToken: newRefreshToken } =
               response.data;
 
-            // Atualizar tokens no AsyncStorage
             const currentUserData = JSON.parse(userData);
             currentUserData.state.token = newToken;
             currentUserData.state.refreshToken = newRefreshToken;
@@ -105,11 +103,9 @@ class ApiClient {
               JSON.stringify(currentUserData)
             );
 
-            // Atualizar header e retentar requisição original
             originalRequest.headers.Authorization = `Bearer ${newToken}`;
             return this.instance(originalRequest);
           } catch (refreshError) {
-            // Se o refresh falhar, fazer logout
             this.handleUnauthorized();
             return Promise.reject(
               new AppError("Sessão expirada. Faça login novamente.")
@@ -135,7 +131,6 @@ class ApiClient {
   private async handleUnauthorized() {
     delete this.instance.defaults.headers.common["Authorization"];
     await AsyncStorage.removeItem("market-place-auth");
-    console.warn("Token expirado. Usuário deve fazer login novamente.");
   }
 
   async get<T>(

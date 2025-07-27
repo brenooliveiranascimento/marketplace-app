@@ -6,9 +6,9 @@ import { router } from "expo-router";
 import { useMutation } from "@tanstack/react-query";
 import { Toast } from "toastify-react-native";
 import { useUserStore } from "@/store/userStore";
-import { authService } from "@/shared/services/auth.service";
 import { profileService } from "@/shared/services/profile.service";
 import { UpdateProfileRequest } from "@/shared/interfaces/https/profile";
+import { useUploadAvatarMutation } from "@/shared/queries";
 import { profileSchema, ProfileFormData } from "./profile.schema";
 import { useCartStore } from "@/store/cartStore";
 import { useCamera } from "@/shared/hooks/useCamera";
@@ -72,17 +72,12 @@ export const useProfileModel = () => {
     },
   });
 
-  const uploadAvatarMutation = useMutation({
-    mutationFn: (imageUri: string) => authService.uploadAvatar(imageUri),
-    onSuccess: ({ url }) => {
+  const uploadAvatarMutation = useUploadAvatarMutation({
+    onSuccess: ({ url }: { url: string }) => {
       setAvatarUri(url);
       if (url && user) {
         updateUser({ ...user, avatarUrl: url });
       }
-      Toast.success("Foto de perfil atualizada com sucesso!", "top");
-    },
-    onError: (error) => {
-      handleError(error);
     },
   });
 

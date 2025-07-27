@@ -5,8 +5,8 @@ export const useCategoriesQuery = () => {
   const query = useQuery({
     queryKey: ["product-categories"],
     queryFn: productService.getCategories,
-    staleTime: 1000 * 60 * 15, // 15 minutos (categorias mudam pouco)
-    gcTime: 1000 * 60 * 30, // 30 minutos
+    staleTime: 1000 * 60 * 15,
+    gcTime: 1000 * 60 * 30,
     retry: 3,
     retryDelay: (attemptIndex: number) =>
       Math.min(1000 * 2 ** attemptIndex, 30000),
