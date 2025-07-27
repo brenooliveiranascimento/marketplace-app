@@ -1,17 +1,17 @@
 import { useState, useCallback } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { Alert } from "react-native";
 import {
   ProductListItem,
   ProductsRequest,
 } from "@/shared/interfaces/https/get-products";
-import { productService } from "@/shared/services/product.service";
 import { router } from "expo-router";
 import { useProductFilterStore } from "@/store/productFilterStore";
-import { Toast } from "toastify-react-native";
+import { useDebounce } from "@/shared/hooks/useDebounce";
+import { useProductsInfiniteQuery } from "@/shared/queries";
 
 export const useHomeModel = () => {
-  const [currentSearchText, setCurrentSearchText] = useState("");
+  const [searchInputText, setSearchInputText] = useState("");
+  const currentSearchText = useDebounce(searchInputText, 500);
 
   const { getProductsRequest, appliedFilterState } = useProductFilterStore();
 
@@ -32,51 +32,30 @@ export const useHomeModel = () => {
   );
 
   const {
-    data,
+    products,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    isLoading,
+    isInitialLoading,
+    isFilterLoading,
     refetch,
     isRefetching,
-  } = useInfiniteQuery({
-    queryKey: ["products", currentSearchText, appliedFilterState],
-    queryFn: async ({ pageParam = 1 }) => {
-      const request = buildRequest(pageParam);
-
-      try {
-        const response = await productService.getProducts(request);
-        return response;
-      } catch (error) {
-        Toast.error("Erro ao buscar produtos");
-        throw error;
-      }
-    },
-    getNextPageParam: (lastPage) => {
-      if (lastPage.page < lastPage.totalPages) {
-        return lastPage.page + 1;
-      }
-      return undefined;
-    },
-    initialPageParam: 1,
-    staleTime: 5 * 60 * 1000,
-    retry: 3,
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+  } = useProductsInfiniteQuery({
+    searchText: currentSearchText,
+    appliedFilterState,
+    buildRequest,
   });
 
-  const products = data?.pages.flatMap((page) => page.data) || [];
-
   const handleSearchTextChange = useCallback((text: string) => {
-    setCurrentSearchText(text);
+    setSearchInputText(text);
   }, []);
 
   const handleSearch = useCallback(() => {
-    setCurrentSearchText(currentSearchText);
     refetch();
-  }, [currentSearchText, refetch]);
+  }, [refetch]);
 
   const handleClearSearch = useCallback(() => {
-    setCurrentSearchText("");
+    setSearchInputText("");
     refetch();
   }, [refetch]);
 
@@ -95,7 +74,7 @@ export const useHomeModel = () => {
   };
 
   const handleLoadMore = () => {
-    if (hasNextPage && !isFetchingNextPage && !isLoading) {
+    if (hasNextPage && !isFetchingNextPage && !isInitialLoading) {
       fetchNextPage();
     }
   };
@@ -105,16 +84,19 @@ export const useHomeModel = () => {
   };
 
   const handleEndReached = () => {
-    if (hasNextPage && !isFetchingNextPage && !isLoading) {
+    if (hasNextPage && !isFetchingNextPage && !isInitialLoading) {
       handleLoadMore();
     }
   };
 
   return {
     products,
-    currentSearchText,
-    setCurrentSearchText,
-    isLoading,
+    currentSearchText: searchInputText, // Retorna o texto do input para a UI
+    setCurrentSearchText: handleSearchTextChange, // Retorna a função que atualiza o input
+    isLoading: isInitialLoading, // Apenas loading inicial
+    isFilterLoading, // Loading específico para filtros
+    isLoadingMore: isFetchingNextPage, // Loading para próximas páginas
+    hasNextPage, // Se há próxima página
     isRefreshing: isRefetching,
     handleEndReached,
     handleSearchTextChange,

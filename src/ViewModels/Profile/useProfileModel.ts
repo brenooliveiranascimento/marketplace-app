@@ -13,8 +13,10 @@ import { profileSchema, ProfileFormData } from "./profile.schema";
 import { useCartStore } from "@/store/cartStore";
 import { useCamera } from "@/shared/hooks/useCamera";
 import { useGallery } from "@/shared/hooks/useGallery";
+import { useErrorHandler } from "@/shared/hooks/errorHandler";
 
 export const useProfileModel = () => {
+  const { handleError } = useErrorHandler();
   const { user, updateUser, logout } = useUserStore();
   const { clearCart } = useCartStore();
   const [avatarUri, setAvatarUri] = useState<string | null>(
@@ -62,16 +64,11 @@ export const useProfileModel = () => {
     mutationFn: (data: UpdateProfileRequest) =>
       profileService.updateProfile(data),
     onSuccess: (response) => {
-      console.log(response);
       updateUser(response.user);
       Toast.success("Perfil atualizado com sucesso!", "top");
     },
-    onError: (error: any) => {
-      console.log(error.response.data);
-      const errorMessage =
-        error?.response?.data?.message ||
-        "Erro ao atualizar perfil. Tente novamente.";
-      Toast.error(errorMessage, "top");
+    onError: (error) => {
+      handleError(error);
     },
   });
 
@@ -84,11 +81,8 @@ export const useProfileModel = () => {
       }
       Toast.success("Foto de perfil atualizada com sucesso!", "top");
     },
-    onError: (error: any) => {
-      const errorMessage =
-        error?.response?.data?.message ||
-        "Erro ao atualizar foto. Tente novamente.";
-      Toast.error(errorMessage, "top");
+    onError: (error) => {
+      handleError(error);
     },
   });
 
@@ -137,7 +131,6 @@ export const useProfileModel = () => {
       updateProfileMutation.mutate(updateData);
     },
     (errors) => {
-      console.log(errors);
       const firstError = Object.values(errors)[0];
       if (firstError?.message) {
         Toast.warn(firstError.message, "top");

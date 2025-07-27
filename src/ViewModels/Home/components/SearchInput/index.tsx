@@ -19,9 +19,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   value,
   onChangeText,
   onSearch,
-  onClear,
   placeholder = "Buscar produtos...",
-  disabled = false,
 }) => {
   const handleSubmitEditing = () => {
     onSearch();
@@ -31,9 +29,9 @@ export const SearchInput: React.FC<SearchInputProps> = ({
 
   return (
     <View className="mb-3">
-      <Text className="text-xl font-bold px-4 mt-8 mb-4">Explore Produtos</Text>
+      <Text className="text-xl font-bold px-4 mt-6 mb-4">Explore Produtos</Text>
       <View className="flex-row items-center">
-        <View className="flex-1">
+        <View className="flex-1 ml-4">
           <AppInput
             placeholder={placeholder}
             leftIcon="search"
@@ -41,11 +39,12 @@ export const SearchInput: React.FC<SearchInputProps> = ({
             onChangeText={onChangeText}
             onSubmitEditing={handleSubmitEditing}
             returnKeyType="search"
+            className="text-lg"
           />
         </View>
 
         <TouchableOpacity
-          className="ml-12 items-center justify-center rounded-lg border-10 border h-[40px] w-[40px] mr-4 border-purple-base"
+          className="ml-5 items-center justify-center rounded-lg border-10 border h-[40px] w-[40px] mr-4 border-purple-base"
           onPress={() => {
             open(<Filter />);
           }}

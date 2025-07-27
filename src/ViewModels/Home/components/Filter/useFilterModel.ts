@@ -1,6 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { productService } from "@/shared/services/product.service";
 import { useProductFilterStore } from "@/store/productFilterStore";
+import { useCategoriesQuery } from "@/shared/queries";
 
 export const useFilterModel = () => {
   const {
@@ -11,12 +10,7 @@ export const useFilterModel = () => {
     applyFilters,
   } = useProductFilterStore();
 
-  const { data: categories = [], isLoading: isLoadingCategories } = useQuery({
-    queryKey: ["product-categories"],
-    queryFn: productService.getCategories,
-    staleTime: 1000 * 60 * 15,
-    gcTime: 1000 * 60 * 30,
-  });
+  const { categories, isLoading: isLoadingCategories } = useCategoriesQuery();
 
   const handleValueMinChange = (value: string) => {
     updateFilter("valueMin", value);

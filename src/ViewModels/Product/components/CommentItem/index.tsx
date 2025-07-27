@@ -1,11 +1,11 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Comment } from "@/shared/interfaces/comments";
+import { ProductComment } from "@/shared/interfaces/comments";
 import { colors } from "@/styles/colors";
 
 interface CommentItemProps {
-  comment: Comment;
+  comment: ProductComment;
   formatRating: (rating: string) => string;
   formatName: (name: string) => string;
 }
@@ -15,6 +15,7 @@ export function CommentItem({
   formatRating,
   formatName,
 }: CommentItemProps) {
+  console.log(comment);
   return (
     <View className="bg-white p-4 mb-3 rounded-lg">
       <View className="flex-row items-center justify-between mb-3">
@@ -43,7 +44,8 @@ export function CommentItem({
             color={colors["blue-base"]}
           />
           <Text className="text-sm font-bold">
-            {comment.user.rating.value} / <Text className="text-[10px]">5</Text>
+            {comment?.user?.rating?.value} /{" "}
+            <Text className="text-[10px]">5</Text>
           </Text>
         </View>
       </View>

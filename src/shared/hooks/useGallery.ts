@@ -81,7 +81,6 @@ export const useGallery = (
       });
 
       if (!result.canceled && result.assets[0]) {
-        Toast.info("Imagem selecionada com sucesso!", "top");
         return result.assets[0].uri;
       }
 

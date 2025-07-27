@@ -14,8 +14,10 @@ import { ProductListItem } from "@/shared/interfaces/https/get-products";
 export const HomeView: React.FC<ReturnType<typeof useHomeModel>> = ({
   products,
   isLoading,
+  isFilterLoading,
+  isLoadingMore,
+  hasNextPage,
   currentSearchText,
-  setCurrentSearchText,
   handleEndReached,
   handleSearchTextChange,
   handleSearch,
@@ -25,7 +27,7 @@ export const HomeView: React.FC<ReturnType<typeof useHomeModel>> = ({
   handleRefresh,
   isRefreshing,
 }) => {
-  if (isLoading && products.length === 0) {
+  if (isLoading) {
     return <Loading onProfilePress={handleProfilePress} />;
   }
 
@@ -42,7 +44,7 @@ export const HomeView: React.FC<ReturnType<typeof useHomeModel>> = ({
                 onSearch={handleSearch}
                 onClear={handleClearSearch}
                 placeholder="Pesquisar"
-                disabled={isLoading}
+                disabled={false}
               />
             </>
           }
@@ -61,13 +63,18 @@ export const HomeView: React.FC<ReturnType<typeof useHomeModel>> = ({
           }}
           onEndReached={handleEndReached}
           onEndReachedThreshold={0.3}
-          ListFooterComponent={isLoading ? <RenderFooter /> : null}
+          ListFooterComponent={
+            <RenderFooter
+              isLoadingMore={isLoadingMore}
+              hasNextPage={hasNextPage}
+            />
+          }
           ListEmptyComponent={
-            <EmptyList isLoading={isLoading} searchText={currentSearchText} />
+            <EmptyList isLoading={false} searchText={currentSearchText} />
           }
           refreshControl={
             <RefreshControl
-              refreshing={isRefreshing}
+              refreshing={isRefreshing || isFilterLoading}
               onRefresh={handleRefresh}
               colors={[colors["blue-base"]]}
               tintColor={colors["blue-base"]}

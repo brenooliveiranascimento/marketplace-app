@@ -1,8 +1,8 @@
 import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors } from "@/styles/colors";
-import { CartHeader } from "../CartHeader";
 import { FC } from "react";
+import { ExploreButton } from "@/shared/components/ExploreButton";
+import { CartHeader } from "../CartHeader";
 
 interface Props {
   onGoBack: () => void;
@@ -19,19 +19,7 @@ export const EmptyCart: FC<Props> = ({ onGoBack }) => (
       <Text className="text-base text-gray-400 text-center mb-8">
         Explore o catálogo de produtos e faça sua primeira compra!
       </Text>
-      <TouchableOpacity
-        onPress={onGoBack}
-        className="border-2 border-purple-base bg-none p-4 rounded-[10px] flex-row items-center gap-3"
-      >
-        <Ionicons
-          size={20}
-          name="storefront-outline"
-          color={colors["purple-base"]}
-        />
-        <Text className="text-purple-base text-lg font-bold">
-          Explorar Produtos
-        </Text>
-      </TouchableOpacity>
+      <ExploreButton />
     </View>
   </SafeAreaView>
 );

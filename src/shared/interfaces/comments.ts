@@ -8,7 +8,7 @@ export interface CommentUser {
   };
 }
 
-export interface Comment {
+export interface ProductComment {
   id: number;
   content: string;
   productId: number;

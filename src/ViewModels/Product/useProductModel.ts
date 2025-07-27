@@ -1,33 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
 import { Alert } from "react-native";
 import { router } from "expo-router";
 import { useCartStore } from "@/store/cartStore";
-import { productService } from "@/shared/services/product.service";
+import { useProductQuery } from "@/shared/queries";
 
 export const useProductModel = (productId: number) => {
   const { addItem } = useCartStore();
 
-  const {
-    data: product,
-    isLoading,
-    error,
-    refetch,
-    isRefetching,
-  } = useQuery({
-    queryKey: ["product", productId],
-    queryFn: async () => {
-      try {
-        const response = await productService.getProductById(productId);
-        return response;
-      } catch (error) {
-        console.error("❌ Erro ao buscar produto:", error);
-        throw error;
-      }
-    },
+  const { product, isLoading, error, refetch, isRefetching } = useProductQuery({
+    productId,
     enabled: !!productId,
-    staleTime: 5 * 60 * 1000,
-    retry: 3,
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 
   const formatPrice = (value: string): string => {

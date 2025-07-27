@@ -1,9 +1,9 @@
-import { Text, View } from "react-native";
+import React from "react";
+import { useOrdersModel } from "@/ViewModels/Orders/useOrdersModel";
+import { OrdersView } from "@/ViewModels/Orders/OrdersView";
 
 export default function Orders() {
-  return (
-    <View>
-      <Text>Orders</Text>
-    </View>
-  );
+  const model = useOrdersModel();
+
+  return <OrdersView {...model} />;
 }

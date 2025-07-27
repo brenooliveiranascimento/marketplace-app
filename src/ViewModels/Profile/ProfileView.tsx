@@ -25,7 +25,6 @@ export const ProfileView: React.FC<ReturnType<typeof useProfileModel>> = ({
   onLogout,
   onGoBack,
 }) => {
-  console.log(avatarUri);
   return (
     <SafeAreaView style={{ backgroundColor: colors.white }} className="flex-1">
       <KeyboardAvoidingView
