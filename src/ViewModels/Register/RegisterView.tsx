@@ -155,9 +155,7 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
                 className="h-[50px]"
                 onPress={() => router.push("login")}
               >
-                <Text className="text-center font-semibold text-lg text-purple-base">
-                  Criar conta
-                </Text>
+                Fazer login
               </AppButton>
             </View>
           </View>

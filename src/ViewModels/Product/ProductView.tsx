@@ -10,7 +10,6 @@ import { ProductLoadError } from "./components/Error";
 import { ListFooter } from "./components/ListFooter";
 import { LoadingProduct } from "./components/LoadingProduct";
 import { ProductFooter } from "./components/ProductFooter";
-import { ProductComment } from "@/shared/interfaces/comments";
 
 interface ProductViewProps
   extends ReturnType<typeof useProductModel>,
@@ -41,7 +40,7 @@ export const ProductView: FC<ProductViewProps> = ({
       <SafeAreaView edges={["top"]} className="flex-1 ">
         <FlatList
           data={comments}
-          renderItem={({ item }: { item: ProductComment }) => (
+          renderItem={({ item }) => (
             <CommentItem
               formatName={formatName}
               comment={item}

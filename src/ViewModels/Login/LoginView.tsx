@@ -80,12 +80,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                   onPress={onSubmit}
                   isLoading={isLoading}
                 >
-                  <Text
-                    style={{ color: colors.white }}
-                    className="text-center font-semibold text-lg"
-                  >
-                    {isLoading ? "Acessando..." : "Acessar"}
-                  </Text>
+                  {isLoading ? "Acessando..." : "Acessar"}
                 </AppButton>
               </View>
             </View>
@@ -103,9 +98,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
               className="h-[50px]"
               onPress={() => router.push("register")}
             >
-              <Text className="text-center font-semibold text-lg text-purple-base">
-                Criar conta
-              </Text>
+              Criar conta
             </AppButton>
           </View>
         </View>

@@ -4,7 +4,6 @@ import {
   Text,
   ActivityIndicator,
   TouchableOpacityProps,
-  View,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/styles/colors";
@@ -14,6 +13,8 @@ interface AppButtonProps extends TouchableOpacityProps, ButtonVariants {
   children: React.ReactNode;
   leftIcon?: keyof typeof Ionicons.glyphMap;
   rightIcon?: keyof typeof Ionicons.glyphMap;
+  leftIconClassName?: string;
+  rightIconClassName?: string;
 }
 
 export const AppButton: React.FC<AppButtonProps> = ({
@@ -26,6 +27,8 @@ export const AppButton: React.FC<AppButtonProps> = ({
   isDisabled,
   disabled,
   className,
+  leftIconClassName,
+  rightIconClassName,
   ...props
 }) => {
   const isButtonDisabled = disabled || isDisabled || isLoading;
@@ -59,6 +62,13 @@ export const AppButton: React.FC<AppButtonProps> = ({
     return variant === "filled" ? colors.white : colors["purple-base"];
   };
 
+  const renderTextContent = (content: React.ReactNode) => {
+    if (typeof content === "string") {
+      return <Text className={styles.text()}>{content}</Text>;
+    }
+    return content;
+  };
+
   const renderContent = () => {
     if (isLoading) {
       return (
@@ -72,44 +82,30 @@ export const AppButton: React.FC<AppButtonProps> = ({
     if (hasIcon) {
       return (
         <>
-          {leftIcon ? (
+          {leftIcon && (
             <Ionicons
               name={leftIcon}
               size={getIconSize()}
               color={getIconColor()}
-              className={styles.icon()}
+              className={styles.icon({ className: leftIconClassName })}
             />
-          ) : typeof children === "string" ? (
-            <Text className={styles.text()}>{children}</Text>
-          ) : (
-            children
           )}
 
-          {rightIcon ? (
+          {renderTextContent(children)}
+
+          {rightIcon && (
             <Ionicons
               name={rightIcon}
               size={getIconSize()}
               color={getIconColor()}
-              className={styles.icon()}
+              className={styles.icon({ className: rightIconClassName })}
             />
-          ) : leftIcon ? (
-            typeof children === "string" ? (
-              <Text className={styles.text()}>{children}</Text>
-            ) : (
-              children
-            )
-          ) : (
-            <View />
           )}
         </>
       );
     }
 
-    return typeof children === "string" ? (
-      <Text className={styles.text()}>{children}</Text>
-    ) : (
-      children
-    );
+    return renderTextContent(children);
   };
 
   return (

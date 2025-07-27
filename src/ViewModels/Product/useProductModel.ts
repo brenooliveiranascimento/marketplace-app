@@ -26,29 +26,21 @@ export const useProductModel = (productId: number) => {
   const handleAddToCart = () => {
     if (!product) return;
 
-    try {
-      addItem({
-        id: product.id,
-        name: product.name,
-        price: product.value,
-        image: product.photo,
-      });
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.value,
+      image: product.photo,
+    });
 
-      openModal(
-        React.createElement(AddToCartSuccessModal, {
-          productName: product.name,
-          onGoToCart: handleGoToCart,
-          onContinueShopping: handleContinueShopping,
-          onClose: closeModal,
-        })
-      );
-    } catch (error) {
-      Alert.alert(
-        "Erro",
-        "Não foi possível adicionar o produto ao carrinho. Tente novamente.",
-        [{ text: "OK" }]
-      );
-    }
+    openModal(
+      React.createElement(AddToCartSuccessModal, {
+        productName: product.name,
+        onGoToCart: handleGoToCart,
+        onContinueShopping: handleContinueShopping,
+        onClose: closeModal,
+      })
+    );
   };
 
   const handleGoToCart = () => {

@@ -3,4 +3,4 @@ export { AppInput } from "./AppInput";
 export { AppBottomSheet } from "./AppBottomSheet";
 export { AppModal } from "./AppModal";
 export { ExploreButton } from "./ExploreButton";
-export { AddToCartSuccessModal } from "./AddToCartSuccessModal";
+export { AddToCartSuccessModal } from "../../ViewModels/Product/components/ProductFooter/AddToCartSuccessModal";
