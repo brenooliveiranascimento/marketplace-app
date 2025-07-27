@@ -13,8 +13,8 @@ import { router } from "expo-router";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { colors } from "@/styles/colors";
 import { LoginFormData } from "@/shared/validations/login.schema";
-import { AppInputController } from "@/components/AppInput/InputController";
-import { AppButton } from "@/components/AppButton";
+import { AppInputController } from "@/shared/components/AppInput/InputController";
+import { AppButton } from "@/shared/components/AppButton";
 
 interface LoginViewProps {
   control: Control<LoginFormData>;

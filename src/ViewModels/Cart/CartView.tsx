@@ -1,16 +1,7 @@
 import React, { FC } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  SafeAreaView,
-  ListRenderItem,
-} from "react-native";
-import { CartItem as CartItemType } from "@/store/cartStore";
+import { View, FlatList, SafeAreaView } from "react-native";
 import { useCartModel } from "./useCartModel";
 import { CartItem } from "./Components/CartItem";
-import { colors } from "@/styles/colors";
 import { CartHeader } from "./Components/CartHeader";
 import { EmptyCart } from "./Components/EmptyList";
 import { CartListFooter } from "./Components/CartListFooter";
@@ -18,9 +9,8 @@ import { CartListFooter } from "./Components/CartListFooter";
 interface CartViewProps extends ReturnType<typeof useCartModel> {}
 
 export const CartView: FC<CartViewProps> = ({
-  items,
+  products,
   isEmpty,
-  itemCount,
   formatPrice,
   formatTotal,
   onIncreaseQuantity,
@@ -33,7 +23,7 @@ export const CartView: FC<CartViewProps> = ({
   return (
     <SafeAreaView className="flex-1 bg-background">
       <FlatList
-        data={items}
+        data={products}
         renderItem={({ item }) => (
           <CartItem
             item={item}

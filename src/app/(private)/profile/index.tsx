@@ -1,9 +1,8 @@
-import { Text, View } from "react-native";
+import { ProfileView } from "@/ViewModels/Profile/ProfileView";
+import { useProfileModel } from "@/ViewModels/Profile/useProfileModel";
 
 export default function Profile() {
-  return (
-    <View>
-      <Text>Perfil</Text>
-    </View>
-  );
+  const profileModel = useProfileModel();
+
+  return <ProfileView {...profileModel} />;
 }

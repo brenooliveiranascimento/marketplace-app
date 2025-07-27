@@ -8,7 +8,7 @@ import {
   Lato_700Bold,
 } from "@expo-google-fonts/lato";
 import ToastManager, { Toast } from "toastify-react-native";
-import { useUserStore } from "@/store/userStore";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const queryClient = new QueryClient();
 
@@ -19,15 +19,17 @@ export default function RootLayout() {
   });
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Stack screenOptions={{ headerShown: false }} initialRouteName="login">
-        <Stack.Screen name="(private)" />
-        <Stack.Screen name="login" />
-        <Stack.Screen name="register" />
-        <Stack.Screen name="loading" />
-      </Stack>
-      <ToastManager />
-      <StatusBar style="auto" />
-    </QueryClientProvider>
+    <GestureHandlerRootView className="flex-1">
+      <QueryClientProvider client={queryClient}>
+        <Stack screenOptions={{ headerShown: false }} initialRouteName="login">
+          <Stack.Screen name="(private)" />
+          <Stack.Screen name="login" />
+          <Stack.Screen name="register" />
+          <Stack.Screen name="loading" />
+        </Stack>
+        <ToastManager />
+        <StatusBar style="auto" />
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 }

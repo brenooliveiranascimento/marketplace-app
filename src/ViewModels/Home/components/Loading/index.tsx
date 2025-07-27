@@ -1,4 +1,4 @@
-import { Header } from "@/components/Header";
+import { Header } from "@/ViewModels/Home/components/Header";
 import { colors } from "@/styles/colors";
 import { FC } from "react";
 import { ActivityIndicator, SafeAreaView, Text, View } from "react-native";

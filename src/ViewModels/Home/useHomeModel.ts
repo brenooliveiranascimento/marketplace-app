@@ -1,50 +1,44 @@
 import { useState, useCallback } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Alert } from "react-native";
-import { Product } from "@/shared/interfaces/product";
 import {
   ProductListItem,
   ProductsRequest,
 } from "@/shared/interfaces/https/get-products";
 import { productService } from "@/shared/services/product.service";
 import { router } from "expo-router";
+import { useProductFilterStore } from "@/store/productFilterStore";
+import { Toast } from "toastify-react-native";
 
 export const useHomeModel = () => {
-  const [searchText, setSearchText] = useState("");
   const [currentSearchText, setCurrentSearchText] = useState("");
+
+  const { getProductsRequest } = useProductFilterStore();
 
   const buildRequest = useCallback(
     (pageParam: number): ProductsRequest => {
-      const request: ProductsRequest = {
-        pagination: {
-          page: pageParam,
-          perPage: 15,
-        },
-        sort: {
-          averageRating: "DESC",
-        },
-      };
+      const request = getProductsRequest(pageParam, 15);
 
       if (currentSearchText.trim()) {
         request.filters = {
+          ...request.filters,
           searchText: currentSearchText.trim(),
         };
       }
 
       return request;
     },
-    [currentSearchText]
+    [getProductsRequest, currentSearchText]
   );
 
   const {
     data,
-    isLoading,
-    isFetchingNextPage,
-    hasNextPage,
     fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
     refetch,
     isRefetching,
-    error,
   } = useInfiniteQuery({
     queryKey: ["products", currentSearchText],
     queryFn: async ({ pageParam = 1 }) => {
@@ -54,7 +48,7 @@ export const useHomeModel = () => {
         const response = await productService.getProducts(request);
         return response;
       } catch (error) {
-        console.error("❌ Erro na requisição:", error);
+        Toast.error("Erro ao buscar produtos");
         throw error;
       }
     },
@@ -72,19 +66,19 @@ export const useHomeModel = () => {
 
   const products = data?.pages.flatMap((page) => page.data) || [];
 
-  const handleSearchTextChange = (text: string) => {
-    setSearchText(text);
-  };
+  const handleSearchTextChange = useCallback((text: string) => {
+    setCurrentSearchText(text);
+  }, []);
 
-  const handleSearch = () => {
-    const trimmedText = searchText.trim();
-    setCurrentSearchText(trimmedText);
-  };
+  const handleSearch = useCallback(() => {
+    setCurrentSearchText(currentSearchText);
+    refetch();
+  }, [currentSearchText, refetch]);
 
-  const handleClearSearch = () => {
-    setSearchText("");
+  const handleClearSearch = useCallback(() => {
     setCurrentSearchText("");
-  };
+    refetch();
+  }, [refetch]);
 
   const handleProductPress = (product: ProductListItem) => {
     router.push({
@@ -118,17 +112,16 @@ export const useHomeModel = () => {
 
   return {
     products,
+    currentSearchText,
+    setCurrentSearchText,
     isLoading,
-    isLoadingMore: isFetchingNextPage,
-    searchText,
-    onSearchTextChange: handleSearchTextChange,
-    onSearch: handleSearch,
-    onClearSearch: handleClearSearch,
-    onProductPress: handleProductPress,
-    onProfilePress: handleProfilePress,
-    onLoadMore: handleLoadMore,
-    onRefresh: handleRefresh,
     isRefreshing: isRefetching,
     handleEndReached,
+    handleSearchTextChange,
+    handleSearch,
+    handleClearSearch,
+    handleProductPress,
+    handleProfilePress,
+    handleRefresh,
   };
 };

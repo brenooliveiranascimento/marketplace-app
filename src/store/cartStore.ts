@@ -9,7 +9,7 @@ export interface CartItem {
 }
 
 interface CartStore {
-  items: CartItem[];
+  products: CartItem[];
   total: number;
   addItem: (item: Omit<CartItem, "quantity">) => void;
   removeItem: (id: number) => void;
@@ -19,67 +19,71 @@ interface CartStore {
 }
 
 export const useCartStore = create<CartStore>((set, get) => ({
-  items: [],
+  products: [],
   total: 0,
 
   addItem: (item) =>
     set((state) => {
-      const existingItem = state.items.find((i) => i.id === item.id);
+      const existingItem = state.products.find(
+        (product) => product.id === item.id
+      );
 
       if (existingItem) {
-        const updatedItems = state.items.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+        const updatedItems = state.products.map((product) =>
+          product.id === item.id
+            ? { ...product, quantity: product.quantity + 1 }
+            : product
         );
         const newTotal = updatedItems.reduce(
-          (sum, i) => sum + Number(i.price) * i.quantity,
+          (sum, product) => sum + Number(product.price) * product.quantity,
           0
         );
-        return { items: updatedItems, total: newTotal };
+        return { products: updatedItems, total: newTotal };
       }
 
-      const newItems = [...state.items, { ...item, quantity: 1 }];
+      const newItems = [...state.products, { ...item, quantity: 1 }];
       const newTotal = newItems.reduce(
-        (sum, i) => sum + Number(i.price) * i.quantity,
+        (sum, product) => sum + Number(product.price) * product.quantity,
         0
       );
-      return { items: newItems, total: newTotal };
+      return { products: newItems, total: newTotal };
     }),
 
   removeItem: (id) =>
     set((state) => {
-      const newItems = state.items.filter((i) => i.id !== id);
+      const newItems = state.products.filter((product) => product.id !== id);
       const newTotal = newItems.reduce(
-        (sum, i) => sum + Number(i.price) * i.quantity,
+        (sum, product) => sum + Number(product.price) * product.quantity,
         0
       );
-      return { items: newItems, total: newTotal };
+      return { products: newItems, total: newTotal };
     }),
 
   updateQuantity: (id, quantity) =>
     set((state) => {
       if (quantity <= 0) {
-        const newItems = state.items.filter((i) => i.id !== id);
+        const newItems = state.products.filter((product) => product.id !== id);
         const newTotal = newItems.reduce(
-          (sum, i) => sum + Number(i.price) * i.quantity,
+          (sum, product) => sum + Number(product.price) * product.quantity,
           0
         );
-        return { items: newItems, total: newTotal };
+        return { products: newItems, total: newTotal };
       }
 
-      const newItems = state.items.map((i) =>
-        i.id === id ? { ...i, quantity } : i
+      const newItems = state.products.map((product) =>
+        product.id === id ? { ...product, quantity } : product
       );
       const newTotal = newItems.reduce(
-        (sum, i) => sum + Number(i.price) * i.quantity,
+        (sum, product) => sum + Number(product.price) * product.quantity,
         0
       );
-      return { items: newItems, total: newTotal };
+      return { products: newItems, total: newTotal };
     }),
 
-  clearCart: () => set({ items: [], total: 0 }),
+  clearCart: () => set({ products: [], total: 0 }),
 
   getItemCount: () => {
-    const { items } = get();
-    return items.reduce((count, item) => count + item.quantity, 0);
+    const { products } = get();
+    return products.reduce((count, product) => count + product.quantity, 0);
   },
 }));

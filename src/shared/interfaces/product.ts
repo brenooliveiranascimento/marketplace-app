@@ -10,6 +10,7 @@ export interface Product {
   width: string;
   weight: string;
   averageRating: number;
+  views?: number;
   ratingCount: number;
   categoryId: number;
   category: Category;

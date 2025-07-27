@@ -35,7 +35,8 @@ export const ProductHeader: FC<Props> = ({ product, onAddReview }) => (
           <Ionicons name="trending-up" size={20} color={colors.white} />
         </View>
         <Text className="text-sm text-gray-600 ml-2 flex-1 ml-5">
-          24 pessoas visualizaram este produto nos últimos 7 dias
+          <Text>{product.views ?? 0} pessoas</Text> visualizaram este produto
+          nos últimos 7 dias
         </Text>
       </View>
 

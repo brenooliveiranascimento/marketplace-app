@@ -2,6 +2,7 @@ import { UserStore } from "@/store/userStore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { Platform } from "react-native";
+import { AppError } from "../helpers/AppError";
 
 export const baseURL = Platform.select({
   ios: "http://localhost:3001",
@@ -51,6 +52,12 @@ class ApiClient {
       (error) => {
         if (error.response?.status === 401) {
           this.handleUnauthorized();
+        }
+
+        if (error.response && error.response.data) {
+          return Promise.reject(new AppError(error.response.data.message));
+        } else {
+          return Promise.reject(new AppError("Falha na requisição!"));
         }
 
         return Promise.reject(error);

@@ -8,51 +8,58 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { useRegisterModel } from "./useRegisterModel";
 import { colors } from "@/styles/colors";
 import { AppInputController } from "@/shared/components/AppInput/InputController";
 import { AppButton } from "@/shared/components/AppButton";
+import { useProfileModel } from "./useProfileModel";
 
-export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
+export const ProfileView: React.FC<ReturnType<typeof useProfileModel>> = ({
   control,
   errors,
   isLoading,
   avatarUri,
   onSubmit,
   onSelectAvatar,
+  onLogout,
+  onGoBack,
 }) => {
+  console.log(avatarUri);
   return (
     <SafeAreaView style={{ backgroundColor: colors.white }} className="flex-1">
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
       >
+        <View className="flex-row justify-between items-center px-4 py-3  border-gray-200">
+          <TouchableOpacity
+            className="flex-row items-center"
+            onPress={onGoBack}
+          >
+            <Ionicons
+              name="arrow-back"
+              size={24}
+              color={colors["purple-base"]}
+            />
+            <Text className="text-base text-purple-600 ml-1">Voltar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            className="flex-row items-center"
+            onPress={onLogout}
+          >
+            <Ionicons name="log-out-outline" size={20} color={colors.danger} />
+            <Text className="text-base text-red-500 ml-1">Sair</Text>
+          </TouchableOpacity>
+        </View>
+
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1 }}
           className="flex-1"
         >
           <View className="flex-1 px-6 py-8">
-            <View className="items-center mb-8">
-              <Image
-                source={require("@/assets/images/Logo.png")}
-                resizeMode="contain"
-                className="w-[80px] h-[60px]"
-              />
-            </View>
-
-            <View className="mb-8">
-              <Text className="text-3xl font-bold text-center mb-3 text-gray-500">
-                Criar sua conta
-              </Text>
-              <Text className="text-base text-center text-gray-200">
-                Informe seus dados pessoais e de acesso
-              </Text>
-            </View>
-
             <View className="items-center mb-8">
               <TouchableOpacity
                 onPress={onSelectAvatar}
@@ -68,7 +75,7 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
                     />
                   ) : (
                     <Ionicons
-                      name="cloud-upload-outline"
+                      name="person-outline"
                       size={32}
                       color={colors.grays["gray-300"]}
                     />
@@ -78,6 +85,10 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
             </View>
 
             <View className="w-full mb-6">
+              <Text className="text-gray-500 font-bold ml-3 text-base mt-6">
+                Dados pessoais
+              </Text>
+
               <AppInputController
                 control={control}
                 name="name"
@@ -99,10 +110,6 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
                 errors={errors}
               />
 
-              <Text className="text-gray-500 font-bold ml-3 text-base mt-6">
-                Acesso
-              </Text>
-
               <AppInputController
                 control={control}
                 name="email"
@@ -114,11 +121,15 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
                 errors={errors}
               />
 
-              <AppInputController
+              <Text className="text-gray-500 font-bold ml-3 text-base mt-6">
+                Alterar Senha (opcional)
+              </Text>
+
+              {/* <AppInputController
                 control={control}
                 name="password"
-                label="SENHA"
-                placeholder="Mínimo 6 caracteres"
+                label="SENHA ATUAL"
+                placeholder="Sua senha"
                 leftIcon="lock-closed-outline"
                 secureTextEntry
                 errors={errors}
@@ -126,38 +137,21 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
 
               <AppInputController
                 control={control}
-                name="confirmPassword"
-                label="CONFIRMAR SENHA"
-                placeholder="Digite a senha novamente"
+                name="newPassword"
+                label="NOVA SENHA"
+                placeholder="Mínimo 6 caracteres"
                 leftIcon="lock-closed-outline"
                 secureTextEntry
                 errors={errors}
-              />
+              /> */}
+
               <AppButton
                 variant="filled"
                 onPress={onSubmit}
                 isLoading={isLoading}
                 className="mt-6 mb-10"
               >
-                {isLoading ? "Criando conta..." : "Criar conta"}
-              </AppButton>
-            </View>
-
-            <View className="w-full flex-2 pb-16">
-              <Text className="text-base mb-6 text-purple text-gray-300">
-                Ainda não tem uma conta?
-              </Text>
-
-              <AppButton
-                rightIcon="arrow-forward"
-                variant="outlined"
-                isLoading={isLoading}
-                className="h-[50px]"
-                onPress={() => router.push("login")}
-              >
-                <Text className="text-center font-semibold text-lg text-purple-base">
-                  Criar conta
-                </Text>
+                {isLoading ? "Atualizando..." : "Atualizar cadastro"}
               </AppButton>
             </View>
           </View>

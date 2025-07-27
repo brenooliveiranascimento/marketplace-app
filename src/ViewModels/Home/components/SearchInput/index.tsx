@@ -2,7 +2,9 @@ import React from "react";
 import { View, TextInput, TouchableOpacity, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/styles/colors";
-import { AppInput } from "@/components/AppInput";
+import { AppInput } from "@/shared/components/AppInput";
+import { useBottomSheetStore } from "@/store/bottomsheetStore";
+import { Filter } from "../Filter";
 
 interface SearchInputProps {
   value: string;
@@ -25,6 +27,8 @@ export const SearchInput: React.FC<SearchInputProps> = ({
     onSearch();
   };
 
+  const { open } = useBottomSheetStore();
+
   return (
     <View className="mb-3">
       <Text className="text-xl font-bold px-4 mt-8 mb-4">Explore Produtos</Text>
@@ -42,9 +46,9 @@ export const SearchInput: React.FC<SearchInputProps> = ({
 
         <TouchableOpacity
           className="ml-12 items-center justify-center rounded-lg border-10 border h-[40px] w-[40px] mr-4 border-purple-base"
-          onPress={onSearch}
-          disabled={disabled || value.trim().length === 0}
-          activeOpacity={0.8}
+          onPress={() => {
+            open(<Filter />);
+          }}
         >
           <Ionicons
             name="filter-outline"

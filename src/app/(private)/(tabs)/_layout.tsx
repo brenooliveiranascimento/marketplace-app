@@ -4,7 +4,7 @@ import { colors } from "@/styles/colors";
 import { useCartStore } from "@/store/cartStore";
 
 export default function TabLayout() {
-  const { items } = useCartStore();
+  const { products } = useCartStore();
 
   return (
     <Tabs
@@ -59,9 +59,9 @@ export default function TabLayout() {
             fontSize: 16,
             marginTop: 10,
           },
-          tabBarBadge: items.length,
+          tabBarBadge: products.length,
           tabBarBadgeStyle: {
-            display: !items.length ? "none" : "flex",
+            display: !products.length ? "none" : "flex",
             backgroundColor: colors["blue-base"],
           },
         }}

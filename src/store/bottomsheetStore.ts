@@ -1,23 +1,35 @@
 import { create } from "zustand";
-import BottomSheet from "@gorhom/bottom-sheet";
-import { RefObject, useRef } from "react";
+import { ReactNode } from "react";
 
-type BottomSheetStore = {
+interface BottomSheetConfig {
+  snapPoints?: string[];
+  enablePanDownToClose?: boolean;
+}
+
+interface BottomSheetStore {
   isOpen: boolean;
-  reference: React.RefObject<BottomSheet> | RefObject<null>;
-  toggleModal: () => void;
+  content: ReactNode | null;
+  config: BottomSheetConfig;
+  open: (content: ReactNode, config?: BottomSheetConfig) => void;
+  close: () => void;
+}
+
+const defaultConfig: BottomSheetConfig = {
+  snapPoints: ["80%", "90%"],
+  enablePanDownToClose: true,
 };
 
 export const useBottomSheetStore = create<BottomSheetStore>((set, get) => ({
   isOpen: false,
-  reference: useRef(null),
+  content: null,
+  config: defaultConfig,
 
-  toggleModal: () => {
-    set((state) => ({ isOpen: !state.isOpen }));
-    if (!get().isOpen) {
-      get().reference.current?.close();
-    } else {
-      get().reference.current?.expand();
-    }
+  open: (content, config) => {
+    const mergedConfig = { ...defaultConfig, ...config };
+    set({ isOpen: true, content, config: mergedConfig });
+  },
+
+  close: () => {
+    set({ isOpen: false, content: null, config: defaultConfig });
   },
 }));

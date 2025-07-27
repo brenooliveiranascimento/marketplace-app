@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useUserStore } from "@/store/userStore";
 import { colors } from "@/styles/colors";
+import { router } from "expo-router";
 
 interface HeaderProps {
   onProfilePress?: () => void;
@@ -14,7 +15,7 @@ export const Header: React.FC<HeaderProps> = ({ onProfilePress }) => {
   return (
     <View className="flex-row items-center justify-between px-4 py-3 shadow-sm bg-background">
       <TouchableOpacity
-        onPress={onProfilePress}
+        onPress={() => router.push("profile")}
         className="flex-row items-center gap-6"
       >
         <View className="relative">

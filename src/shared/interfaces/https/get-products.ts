@@ -18,6 +18,8 @@ export interface ProductFilters {
   to?: string;
   categoryIds?: number[];
   searchText?: string;
+  minValue?: number;
+  maxValue?: number;
 }
 
 export interface ProductsRequest {
@@ -27,4 +29,9 @@ export interface ProductsRequest {
   };
   filters?: ProductFilters;
   sort?: ProductSort;
+}
+
+export interface ProductCategory {
+  id: number;
+  name: string;
 }

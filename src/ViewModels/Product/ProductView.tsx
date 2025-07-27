@@ -42,14 +42,14 @@ export const ProductView: FC<ProductViewProps> = ({
   if (error || !product) return <ProductLoadError onGoBack={onGoBack}/>
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView className="flex-1">
       <View className="px-4 py-3 pb-5">
         <TouchableOpacity 
           className="flex-row items-center"
           onPress={onGoBack}
         >
           <Ionicons 
-            name="chevron-back" 
+            name="arrow-back" 
             size={24} 
             color="#8B5CF6" 
           />

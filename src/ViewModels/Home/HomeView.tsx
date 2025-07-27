@@ -1,14 +1,7 @@
-import { Header } from "@/components/Header";
-import { Product } from "@/shared/interfaces/product";
+import { Header } from "@/ViewModels/Home/components/Header";
 import { colors } from "@/styles/colors";
 import React from "react";
-import {
-  View,
-  FlatList,
-  ActivityIndicator,
-  Text,
-  RefreshControl,
-} from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SearchInput } from "./components/SearchInput";
 import { useHomeModel } from "./useHomeModel";
@@ -21,31 +14,32 @@ import { ProductListItem } from "@/shared/interfaces/https/get-products";
 export const HomeView: React.FC<ReturnType<typeof useHomeModel>> = ({
   products,
   isLoading,
-  isLoadingMore,
-  searchText,
-  isRefreshing,
-  onSearchTextChange,
-  onSearch,
-  onClearSearch,
-  onProductPress,
-  onProfilePress,
+  currentSearchText,
+  setCurrentSearchText,
   handleEndReached,
-  onRefresh,
+  handleSearchTextChange,
+  handleSearch,
+  handleClearSearch,
+  handleProductPress,
+  handleProfilePress,
+  handleRefresh,
+  isRefreshing,
 }) => {
-  if (isLoading && products.length === 0)
-    <Loading onProfilePress={onProfilePress} />;
+  if (isLoading && products.length === 0) {
+    return <Loading onProfilePress={handleProfilePress} />;
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-background">
       <FlatList
         ListHeaderComponent={
           <>
-            <Header onProfilePress={onProfilePress} />
+            <Header onProfilePress={handleProfilePress} />
             <SearchInput
-              value={searchText}
-              onChangeText={onSearchTextChange}
-              onSearch={onSearch}
-              onClear={onClearSearch}
+              value={currentSearchText}
+              onChangeText={handleSearchTextChange}
+              onSearch={handleSearch}
+              onClear={handleClearSearch}
               placeholder="Pesquisar"
               disabled={isLoading}
             />
@@ -53,7 +47,7 @@ export const HomeView: React.FC<ReturnType<typeof useHomeModel>> = ({
         }
         data={products}
         renderItem={({ item }: { item: ProductListItem }) => (
-          <ProductCard product={item} onPress={onProductPress} />
+          <ProductCard product={item} onPress={handleProductPress} />
         )}
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}
@@ -66,14 +60,14 @@ export const HomeView: React.FC<ReturnType<typeof useHomeModel>> = ({
         }}
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.3}
-        ListFooterComponent={isLoadingMore ? <RenderFooter /> : null}
+        ListFooterComponent={isLoading ? <RenderFooter /> : null}
         ListEmptyComponent={
-          <EmptyList isLoading={isLoading} searchText={searchText} />
+          <EmptyList isLoading={isLoading} searchText={currentSearchText} />
         }
         refreshControl={
           <RefreshControl
             refreshing={isRefreshing}
-            onRefresh={onRefresh}
+            onRefresh={handleRefresh}
             colors={[colors["blue-base"]]}
             tintColor={colors["blue-base"]}
           />

@@ -3,8 +3,14 @@ import { Alert } from "react-native";
 import { router } from "expo-router";
 
 export const useCartModel = () => {
-  const { items, total, updateQuantity, removeItem, clearCart, getItemCount } =
-    useCartStore();
+  const {
+    products,
+    total,
+    updateQuantity,
+    removeItem,
+    clearCart,
+    getItemCount,
+  } = useCartStore();
 
   const formatPrice = (price: string): string => {
     const numericValue = parseFloat(price);
@@ -48,7 +54,7 @@ export const useCartModel = () => {
   };
 
   const handleClearCart = () => {
-    if (items.length === 0) return;
+    if (products.length === 0) return;
 
     Alert.alert(
       "Limpar carrinho",
@@ -61,7 +67,7 @@ export const useCartModel = () => {
   };
 
   const handleCheckout = () => {
-    if (items.length === 0) {
+    if (products.length === 0) {
       Alert.alert(
         "Carrinho vazio",
         "Adicione itens ao carrinho para continuar."
@@ -89,11 +95,11 @@ export const useCartModel = () => {
     router.back();
   };
 
-  const isEmpty = items.length === 0;
+  const isEmpty = products.length === 0;
   const itemCount = getItemCount();
 
   return {
-    items,
+    products,
     total,
     isEmpty,
     itemCount,

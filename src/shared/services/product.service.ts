@@ -4,6 +4,7 @@ import { marketPlaceApiClient } from "../api/market-place";
 import {
   ProductListItem,
   ProductsRequest,
+  ProductCategory,
 } from "../interfaces/https/get-products";
 import { Paginated } from "../interfaces/https/paginated";
 import { Product } from "../interfaces/product";
@@ -39,6 +40,13 @@ class ProductService {
   async getProductById(productId: number): Promise<Product> {
     const { data } = await marketPlaceApiClient.get<Product>(
       `/products/${productId}`
+    );
+    return data;
+  }
+
+  async getCategories(): Promise<ProductCategory[]> {
+    const { data } = await marketPlaceApiClient.get<ProductCategory[]>(
+      "/products/categories"
     );
     return data;
   }
