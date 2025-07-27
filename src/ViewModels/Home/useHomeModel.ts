@@ -13,7 +13,7 @@ import { Toast } from "toastify-react-native";
 export const useHomeModel = () => {
   const [currentSearchText, setCurrentSearchText] = useState("");
 
-  const { getProductsRequest } = useProductFilterStore();
+  const { getProductsRequest, appliedFilterState } = useProductFilterStore();
 
   const buildRequest = useCallback(
     (pageParam: number): ProductsRequest => {
@@ -40,7 +40,7 @@ export const useHomeModel = () => {
     refetch,
     isRefetching,
   } = useInfiniteQuery({
-    queryKey: ["products", currentSearchText],
+    queryKey: ["products", currentSearchText, appliedFilterState],
     queryFn: async ({ pageParam = 1 }) => {
       const request = buildRequest(pageParam);
 

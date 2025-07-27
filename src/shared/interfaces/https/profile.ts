@@ -1,4 +1,3 @@
-// shared/interfaces/https/profile.ts (atualização)
 export interface UpdateProfileRequest {
   name: string;
   email: string;

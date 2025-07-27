@@ -19,10 +19,12 @@ export const FilterView: React.FC<ReturnType<typeof useFilterModel>> = ({
   handleValueMaxChange,
   handleCategoryToggle,
   resetFilter,
+  applyFilters,
 }) => {
   const { close } = useBottomSheetStore();
 
   const handleApplyFilter = () => {
+    applyFilters();
     close();
   };
 

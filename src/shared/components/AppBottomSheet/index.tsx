@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useCallback, useState } from "react";
-import { View, TouchableWithoutFeedback, Text } from "react-native";
+import { View, TouchableWithoutFeedback } from "react-native";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { useBottomSheetStore } from "@/store/bottomsheetStore";
 import { colors } from "@/styles/colors";
@@ -7,31 +7,50 @@ import { colors } from "@/styles/colors";
 export const AppBottomSheet: React.FC = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const { isOpen, content, config, close } = useBottomSheetStore();
-  const [currentIndex, setCurrentIndex] = useState(-1);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  const snapPoints = config.snapPoints || ["70%", "90%"];
+  const snapPoints = config?.snapPoints;
 
-  useEffect(() => {
-    if (isOpen && content) {
-      setCurrentIndex(0);
+  const forceClose = useCallback(() => {
+    bottomSheetRef.current?.close();
+    setIsInitialized(false);
+  }, []);
+
+  const openBottomSheet = useCallback(() => {
+    if (!isInitialized) {
+      setIsInitialized(true);
+    }
+
+    bottomSheetRef.current?.close();
+
+    setTimeout(() => {
       requestAnimationFrame(() => {
         bottomSheetRef.current?.snapToIndex(0);
       });
+    }, 100);
+  }, [isInitialized]);
+
+  useEffect(() => {
+    if (isOpen && content) {
+      openBottomSheet();
     } else {
-      bottomSheetRef.current?.close();
-      setCurrentIndex(-1);
+      forceClose();
     }
-  }, [isOpen, content]);
+  }, [isOpen, content, openBottomSheet, forceClose]);
 
   const handleSheetChanges = useCallback(
     (index: number) => {
-      setCurrentIndex(index);
       if (index === -1) {
+        setIsInitialized(false);
         close();
       }
     },
     [close]
   );
+
+  if (!content && !isOpen) {
+    return null;
+  }
 
   return (
     <>
@@ -42,19 +61,20 @@ export const AppBottomSheet: React.FC = () => {
       )}
       <BottomSheet
         ref={bottomSheetRef}
-        enablePanDownToClose={config.enablePanDownToClose}
+        enablePanDownToClose={config?.enablePanDownToClose !== false}
         onChange={handleSheetChanges}
         backgroundStyle={{
-          backgroundColor: colors["background"],
+          backgroundColor: colors.background,
           borderTopLeftRadius: 32,
           borderTopRightRadius: 32,
           elevation: 9,
         }}
         style={{ zIndex: 2 }}
         snapPoints={snapPoints}
-        index={currentIndex}
+        index={-1}
+        animateOnMount={true}
       >
-        <BottomSheetScrollView className="flex-1 bg-background-secondary min-h-[400]">
+        <BottomSheetScrollView className="flex-1 bg-background min-h-[400]">
           {content}
         </BottomSheetScrollView>
       </BottomSheet>

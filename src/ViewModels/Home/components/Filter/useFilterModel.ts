@@ -3,8 +3,13 @@ import { productService } from "@/shared/services/product.service";
 import { useProductFilterStore } from "@/store/productFilterStore";
 
 export const useFilterModel = () => {
-  const { filterState, updateFilter, toggleCategory, resetFilter } =
-    useProductFilterStore();
+  const {
+    filterState,
+    updateFilter,
+    toggleCategory,
+    resetFilter,
+    applyFilters,
+  } = useProductFilterStore();
 
   const { data: categories = [], isLoading: isLoadingCategories } = useQuery({
     queryKey: ["product-categories"],
@@ -35,5 +40,6 @@ export const useFilterModel = () => {
     handleValueMaxChange,
     handleCategoryToggle,
     resetFilter,
+    applyFilters,
   };
 };

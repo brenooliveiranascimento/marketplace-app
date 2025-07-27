@@ -1,7 +1,7 @@
 import { Header } from "@/ViewModels/Home/components/Header";
 import { colors } from "@/styles/colors";
 import React from "react";
-import { FlatList, RefreshControl } from "react-native";
+import { FlatList, RefreshControl, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SearchInput } from "./components/SearchInput";
 import { useHomeModel } from "./useHomeModel";
@@ -30,54 +30,58 @@ export const HomeView: React.FC<ReturnType<typeof useHomeModel>> = ({
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
-      <FlatList
-        ListHeaderComponent={
-          <>
-            <Header onProfilePress={handleProfilePress} />
-            <SearchInput
-              value={currentSearchText}
-              onChangeText={handleSearchTextChange}
-              onSearch={handleSearch}
-              onClear={handleClearSearch}
-              placeholder="Pesquisar"
-              disabled={isLoading}
+    <View className="flex-1 bg-background">
+      <SafeAreaView edges={["top"]} className="flex-1">
+        <FlatList
+          ListHeaderComponent={
+            <>
+              <Header onProfilePress={handleProfilePress} />
+              <SearchInput
+                value={currentSearchText}
+                onChangeText={handleSearchTextChange}
+                onSearch={handleSearch}
+                onClear={handleClearSearch}
+                placeholder="Pesquisar"
+                disabled={isLoading}
+              />
+            </>
+          }
+          data={products}
+          renderItem={({ item }: { item: ProductListItem }) => (
+            <ProductCard product={item} onPress={handleProductPress} />
+          )}
+          keyExtractor={(item) => item.id.toString()}
+          numColumns={2}
+          contentContainerStyle={{
+            paddingHorizontal: 8,
+            paddingBottom: 120,
+          }}
+          columnWrapperStyle={{
+            justifyContent: "space-between",
+          }}
+          onEndReached={handleEndReached}
+          onEndReachedThreshold={0.3}
+          ListFooterComponent={isLoading ? <RenderFooter /> : null}
+          ListEmptyComponent={
+            <EmptyList isLoading={isLoading} searchText={currentSearchText} />
+          }
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+              colors={[colors["blue-base"]]}
+              tintColor={colors["blue-base"]}
             />
-          </>
-        }
-        data={products}
-        renderItem={({ item }: { item: ProductListItem }) => (
-          <ProductCard product={item} onPress={handleProductPress} />
-        )}
-        keyExtractor={(item) => item.id.toString()}
-        numColumns={2}
-        contentContainerStyle={{
-          paddingHorizontal: 8,
-          paddingBottom: 20,
-        }}
-        columnWrapperStyle={{
-          justifyContent: "space-between",
-        }}
-        onEndReached={handleEndReached}
-        onEndReachedThreshold={0.3}
-        ListFooterComponent={isLoading ? <RenderFooter /> : null}
-        ListEmptyComponent={
-          <EmptyList isLoading={isLoading} searchText={currentSearchText} />
-        }
-        refreshControl={
-          <RefreshControl
-            refreshing={isRefreshing}
-            onRefresh={handleRefresh}
-            colors={[colors["blue-base"]]}
-            tintColor={colors["blue-base"]}
-          />
-        }
-        showsVerticalScrollIndicator={false}
-        removeClippedSubviews={true}
-        maxToRenderPerBatch={10}
-        windowSize={10}
-        initialNumToRender={8}
-      />
-    </SafeAreaView>
+          }
+          showsVerticalScrollIndicator={false}
+          removeClippedSubviews={true}
+          maxToRenderPerBatch={10}
+          windowSize={10}
+          initialNumToRender={8}
+          automaticallyAdjustContentInsets={false}
+          contentInsetAdjustmentBehavior="never"
+        />
+      </SafeAreaView>
+    </View>
   );
 };
