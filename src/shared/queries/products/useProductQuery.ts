@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "@/shared/services/product.service";
-import { queryConfig } from "./config";
-import { useErrorHandler } from "../hooks/errorHandler";
+import { queryConfig } from "@/shared/queries/config";
+import { useErrorHandler } from "@/shared/hooks/errorHandler";
 
 interface UseProductQueryProps {
   productId: number;

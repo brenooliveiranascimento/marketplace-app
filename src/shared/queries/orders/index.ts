@@ -1,0 +1,1 @@
+export { useGetOrdersQuery } from "./useGetOrdersQuery";

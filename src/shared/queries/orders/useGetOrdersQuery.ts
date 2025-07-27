@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { queryConfig } from "./config";
-import { ordersService } from "../services/orders.service";
+import { queryConfig } from "../config";
+import { ordersService } from "../../services/orders.service";
 
-export const useOrdersQuery = () => {
+export const useGetOrdersQuery = () => {
   const query = useQuery({
     queryKey: ["orders"],
     queryFn: ordersService.getOrders,

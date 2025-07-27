@@ -58,9 +58,6 @@ export const HomeView: React.FC<ReturnType<typeof useHomeModel>> = ({
             paddingHorizontal: 8,
             paddingBottom: 120,
           }}
-          columnWrapperStyle={{
-            justifyContent: "space-between",
-          }}
           onEndReached={handleEndReached}
           onEndReachedThreshold={0.3}
           ListFooterComponent={

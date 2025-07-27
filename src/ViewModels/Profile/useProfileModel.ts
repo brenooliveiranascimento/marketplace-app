@@ -3,20 +3,19 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Alert } from "react-native";
 import { router } from "expo-router";
-import { useMutation } from "@tanstack/react-query";
 import { Toast } from "toastify-react-native";
 import { useUserStore } from "@/store/userStore";
-import { profileService } from "@/shared/services/profile.service";
 import { UpdateProfileRequest } from "@/shared/interfaces/https/profile";
-import { useUploadAvatarMutation } from "@/shared/queries";
+import {
+  useUploadAvatarMutation,
+  useUpdateProfileMutation,
+} from "@/shared/queries";
 import { profileSchema, ProfileFormData } from "./profile.schema";
 import { useCartStore } from "@/store/cartStore";
 import { useCamera } from "@/shared/hooks/useCamera";
 import { useGallery } from "@/shared/hooks/useGallery";
-import { useErrorHandler } from "@/shared/hooks/errorHandler";
 
 export const useProfileModel = () => {
-  const { handleError } = useErrorHandler();
   const { user, updateUser, logout } = useUserStore();
   const { clearCart } = useCartStore();
   const [avatarUri, setAvatarUri] = useState<string | null>(
@@ -60,17 +59,7 @@ export const useProfileModel = () => {
     }
   }, [user, setValue]);
 
-  const updateProfileMutation = useMutation({
-    mutationFn: (data: UpdateProfileRequest) =>
-      profileService.updateProfile(data),
-    onSuccess: (response) => {
-      updateUser(response.user);
-      Toast.success("Perfil atualizado com sucesso!", "top");
-    },
-    onError: (error) => {
-      handleError(error);
-    },
-  });
+  const updateProfileMutation = useUpdateProfileMutation();
 
   const uploadAvatarMutation = useUploadAvatarMutation({
     onSuccess: ({ url }: { url: string }) => {

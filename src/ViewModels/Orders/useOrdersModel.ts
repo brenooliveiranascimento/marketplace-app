@@ -1,8 +1,8 @@
-import { useOrdersQuery } from "@/shared/queries";
+import { useGetOrdersQuery } from "@/shared/queries/orders/useGetOrdersQuery";
 
 export const useOrdersModel = () => {
   const { orders, totalOrders, isLoading, error, refetch, isRefetching } =
-    useOrdersQuery();
+    useGetOrdersQuery();
 
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
