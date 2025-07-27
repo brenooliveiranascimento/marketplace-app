@@ -7,6 +7,7 @@ import {
 import {
   GetUserCommentRequest,
   GetUserCommentResponse,
+  UserComment,
 } from "../interfaces/https/get-user-comment";
 import {
   UpdateCommentRequest,

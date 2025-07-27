@@ -2,8 +2,8 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { CommentsRequest } from "@/shared/interfaces/https/get-comments";
 import { commentService } from "@/shared/services/comments.service";
 import { useErrorHandler } from "@/shared/hooks/errorHandler";
-import { infiniteQueryConfig } from "./config";
-import { ProductComment } from "../interfaces/comments";
+import { infiniteQueryConfig } from "../config";
+import { ProductComment } from "@/shared/interfaces/comments";
 
 interface UseCommentsInfiniteQueryProps {
   productId: number;

@@ -1,10 +1,14 @@
+import React from "react";
 import { Alert } from "react-native";
 import { router } from "expo-router";
 import { useCartStore } from "@/store/cartStore";
 import { useProductQuery } from "@/shared/queries";
+import { useModalStore } from "@/store/modalStore";
+import { AddToCartSuccessModal } from "@/shared/components";
 
 export const useProductModel = (productId: number) => {
   const { addItem } = useCartStore();
+  const { open: openModal, close: closeModal } = useModalStore();
 
   const { product, isLoading, error, refetch, isRefetching } = useProductQuery({
     productId,
@@ -30,9 +34,14 @@ export const useProductModel = (productId: number) => {
         image: product.photo,
       });
 
-      Alert.alert("Sucesso!", `${product.name} foi adicionado ao carrinho!`, [
-        { text: "OK" },
-      ]);
+      openModal(
+        React.createElement(AddToCartSuccessModal, {
+          productName: product.name,
+          onGoToCart: handleGoToCart,
+          onContinueShopping: handleContinueShopping,
+          onClose: closeModal,
+        })
+      );
     } catch (error) {
       Alert.alert(
         "Erro",
@@ -40,6 +49,16 @@ export const useProductModel = (productId: number) => {
         [{ text: "OK" }]
       );
     }
+  };
+
+  const handleGoToCart = () => {
+    closeModal();
+    router.push("/(private)/(tabs)/cart");
+  };
+
+  const handleContinueShopping = () => {
+    closeModal();
+    router.push("/(private)/(tabs)/");
   };
 
   const handleGoBack = () => {

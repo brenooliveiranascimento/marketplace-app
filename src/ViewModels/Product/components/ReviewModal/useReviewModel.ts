@@ -1,134 +1,116 @@
 import { useState, useEffect } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Toast } from "toastify-react-native";
 import { useBottomSheetStore } from "@/store/bottomsheetStore";
-import { commentService } from "@/shared/services/comments.service";
-import { useErrorHandler } from "@/shared/hooks/errorHandler";
+import {
+  useUserCommentQuery,
+  useCreateCommentMutation,
+  useUpdateCommentMutation,
+} from "@/shared/queries";
 
 interface UseReviewModelProps {
   productId: number;
 }
 
+interface ReviewState {
+  rating: number;
+  comment: string;
+  commentId: number | null;
+  isEditing: boolean;
+}
+
+const initialState: ReviewState = {
+  rating: 0,
+  comment: "",
+  commentId: null,
+  isEditing: false,
+};
+
 export const useReviewModel = ({ productId }: UseReviewModelProps) => {
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
-  const [commentId, setCommentId] = useState<number | null>(null);
-  const [isEditing, setIsEditing] = useState(false);
+  const [reviewState, setReviewState] = useState<ReviewState>(initialState);
   const { close } = useBottomSheetStore();
-  const queryClient = useQueryClient();
-  const { handleError } = useErrorHandler();
-  const { data: userComment, isLoading: isLoadingUserComment } = useQuery({
-    queryKey: ["user-comment", productId],
-    queryFn: () => commentService.getUserComment({ productId }),
-    staleTime: 0,
+
+  const { userComment, isLoading: isLoadingUserComment } = useUserCommentQuery({
+    productId,
+  });
+
+  const createCommentMutation = useCreateCommentMutation({
+    productId,
+    onSuccess: handleClose,
+  });
+
+  const updateCommentMutation = useUpdateCommentMutation({
+    productId,
+    onSuccess: handleClose,
   });
 
   useEffect(() => {
     if (userComment) {
       if (userComment.comment && userComment.rating) {
-        setComment(userComment.comment || "");
-        setRating(userComment.rating || 0);
-        setCommentId(userComment.commentId || null);
-        setIsEditing(true);
+        setReviewState({
+          rating: userComment.rating,
+          comment: userComment.comment.content,
+          commentId: userComment.comment.id,
+          isEditing: true,
+        });
       } else {
-        setComment("");
-        setRating(0);
-        setIsEditing(false);
+        setReviewState(initialState);
       }
     }
   }, [userComment]);
 
-  const createCommentMutation = useMutation({
-    mutationFn: () =>
-      commentService.createComment({
-        content: (comment || "").trim(),
-        productId,
-        rating,
-      }),
-    onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["comments", productId] });
-      queryClient.invalidateQueries({ queryKey: ["user-comment", productId] });
-      Toast.success(
-        response.message || "Avaliação enviada com sucesso!",
-        "top"
-      );
-      handleClose();
-    },
-    onError: (error: any) => {
-      handleError(error, "Erro ao enviar avaliação. Tente novamente.");
-      handleClose();
-    },
-  });
-
-  const updateCommentMutation = useMutation({
-    mutationFn: () => {
-      if (!commentId) throw new Error("ID do comentário não encontrado");
-      return commentService.updateComment({
-        commentId,
-        content: (comment || "").trim(),
-        rating,
-      });
-    },
-    onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["comments", productId] });
-      queryClient.invalidateQueries({ queryKey: ["user-comment", productId] });
-      Toast.success(
-        response.message || "Avaliação atualizada com sucesso!",
-        "top"
-      );
-      handleClose();
-    },
-    onError: (error: any) => {
-      handleError(error, "Erro ao atualizar avaliação. Tente novamente.");
-    },
-  });
-
   const handleRatingChange = (newRating: number) => {
-    setRating(newRating);
+    setReviewState((prev) => ({ ...prev, rating: newRating }));
   };
 
   const handleCommentChange = (text: string) => {
-    setComment(text);
+    setReviewState((prev) => ({ ...prev, comment: text }));
   };
 
   const handleSubmitReview = () => {
-    if (rating === 0) {
+    if (reviewState.rating === 0) {
       Toast.warn("Por favor, selecione uma nota.", "top");
       return;
     }
 
-    if (!comment || !comment.trim()) {
+    if (!reviewState.comment.trim()) {
       Toast.warn("Por favor, escreva um comentário.", "top");
       return;
     }
 
-    if (isEditing && commentId) {
-      updateCommentMutation.mutate();
+    if (reviewState.isEditing) {
+      updateCommentMutation.mutate({
+        commentId: reviewState.commentId!,
+        content: reviewState.comment.trim(),
+        rating: reviewState.rating,
+      });
     } else {
-      createCommentMutation.mutate();
+      createCommentMutation.mutate({
+        content: reviewState.comment.trim(),
+        productId,
+        rating: reviewState.rating,
+      });
     }
   };
 
-  const handleClose = () => {
-    setRating(0);
-    setComment("");
-    setCommentId(null);
-    setIsEditing(false);
+  function handleClose() {
+    setReviewState(initialState);
     close();
-  };
+  }
 
-  const isValid = rating > 0 && comment && comment?.trim()?.length > 0;
+  const isValid =
+    reviewState.rating > 0 && reviewState.comment.trim().length > 0;
   const isLoading =
     createCommentMutation.isPending ||
     updateCommentMutation.isPending ||
     isLoadingUserComment;
 
   return {
-    rating,
-    comment,
+    rating: reviewState.rating,
+    comment: reviewState.comment,
     isValid,
     isLoading,
-    isEditing,
+    isEditing: reviewState.isEditing,
+    isLoadingUserComment,
     handleRatingChange,
     handleCommentChange,
     handleSubmitReview,

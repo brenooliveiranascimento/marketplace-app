@@ -2,8 +2,17 @@ export interface GetUserCommentRequest {
   productId: number;
 }
 
+export interface UserComment {
+  id: number;
+  content: string;
+  createdAt: string;
+  user: {
+    id: number;
+    name: string;
+  };
+}
+
 export interface GetUserCommentResponse {
-  comment: string | null;
+  comment: UserComment | null;
   rating: number | null;
-  commentId?: number;
 }

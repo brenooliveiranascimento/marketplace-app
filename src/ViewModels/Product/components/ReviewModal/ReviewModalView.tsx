@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { AppInput } from "@/shared/components/AppInput";
 import { AppButton } from "@/shared/components/AppButton";
@@ -13,6 +13,7 @@ export const ReviewModalView: React.FC<ReturnType<typeof useReviewModel>> = ({
   isValid,
   isLoading,
   isEditing,
+  isLoadingUserComment,
   handleRatingChange,
   handleCommentChange,
   handleSubmitReview,
@@ -33,49 +34,58 @@ export const ReviewModalView: React.FC<ReturnType<typeof useReviewModel>> = ({
         </TouchableOpacity>
       </View>
 
-      <View className="p-4">
-        <Text className="font-bold text-base text-gray-500 mb-3">NOTA</Text>
-        <View className="flex-row items-center mb-6">
-          <Stars rating={rating} handleRatingChange={handleRatingChange} />
+      {isLoadingUserComment ? (
+        <View className="p-4 items-center justify-center min-h-[300px]">
+          <ActivityIndicator size="large" color={colors["purple-base"]} />
+          <Text className="text-gray-600 mt-4 text-center">
+            Verificando avaliação existente...
+          </Text>
         </View>
-
-        <AppInput
-          label="COMENTÁRIO"
-          placeholder={
-            isEditing ? "Edite sua avaliação" : "Descreva sua avaliação"
-          }
-          value={comment}
-          onChangeText={handleCommentChange}
-          multiline
-          numberOfLines={8}
-          textAlignVertical="top"
-          containerClassName="mb-6"
-          className="h-[150px]"
-        />
-
-        <View className="flex-row gap-3 mb-6">
-          <View className="flex-1">
-            <AppButton
-              variant="outlined"
-              onPress={handleClose}
-              className="flex-1"
-            >
-              Cancelar
-            </AppButton>
+      ) : (
+        <View className="p-4">
+          <Text className="font-bold text-base text-gray-500 mb-3">NOTA</Text>
+          <View className="flex-row items-center mb-6">
+            <Stars rating={rating} handleRatingChange={handleRatingChange} />
           </View>
-          <View className="flex-1">
-            <AppButton
-              variant="filled"
-              onPress={handleSubmitReview}
-              isDisabled={!isValid}
-              isLoading={isLoading}
-              className="flex-1"
-            >
-              {isEditing ? "Atualizar" : "Enviar"}
-            </AppButton>
+
+          <AppInput
+            label="COMENTÁRIO"
+            placeholder={
+              isEditing ? "Edite sua avaliação" : "Descreva sua avaliação"
+            }
+            value={comment || ""}
+            onChangeText={handleCommentChange}
+            multiline
+            numberOfLines={8}
+            textAlignVertical="top"
+            containerClassName="mb-6"
+            className="h-[150px]"
+          />
+
+          <View className="flex-row gap-3 mb-6">
+            <View className="flex-1">
+              <AppButton
+                variant="outlined"
+                onPress={handleClose}
+                className="flex-1"
+              >
+                Cancelar
+              </AppButton>
+            </View>
+            <View className="flex-1">
+              <AppButton
+                variant="filled"
+                onPress={handleSubmitReview}
+                isDisabled={!isValid}
+                isLoading={isLoading}
+                className="flex-1"
+              >
+                {isEditing ? "Atualizar" : "Enviar"}
+              </AppButton>
+            </View>
           </View>
         </View>
-      </View>
+      )}
     </View>
   );
 };
