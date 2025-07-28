@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Alert } from "react-native";
 import { router } from "expo-router";
 import { Toast } from "toastify-react-native";
 import { useUserStore } from "@/store/userStore";
@@ -14,10 +13,12 @@ import { profileSchema, ProfileFormData } from "./profile.schema";
 import { useCartStore } from "@/store/cartStore";
 import { useCamera } from "@/shared/hooks/useCamera";
 import { useGallery } from "@/shared/hooks/useGallery";
+import { useAppModals } from "@/shared/hooks/useAppModals";
 
 export const useProfileModel = () => {
   const { user, updateUser, logout } = useUserStore();
   const { clearCart } = useCartStore();
+  const modals = useAppModals();
   const [avatarUri, setAvatarUri] = useState<string | null>(
     user?.avatarUrl || null
   );
@@ -71,29 +72,36 @@ export const useProfileModel = () => {
   });
 
   const handleSelectAvatar = () => {
-    Alert.alert("Selecionar Foto", "Escolha uma opção:", [
-      { text: "Cancelar", style: "cancel" },
-      {
-        text: "Galeria",
-        onPress: async () => {
-          const uri = await gallery.openGallery();
-          if (uri) {
-            setAvatarUri(uri);
-            uploadAvatarMutation.mutate(uri);
-          }
+    modals.showSelection({
+      title: "Selecionar Foto",
+      message: "Escolha uma opção:",
+      options: [
+        {
+          text: "Galeria",
+          icon: "images",
+          variant: "secondary",
+          onPress: async () => {
+            const uri = await gallery.openGallery();
+            if (uri) {
+              setAvatarUri(uri);
+              uploadAvatarMutation.mutate(uri);
+            }
+          },
         },
-      },
-      {
-        text: "Câmera",
-        onPress: async () => {
-          const uri = await camera.openCamera();
-          if (uri) {
-            setAvatarUri(uri);
-            uploadAvatarMutation.mutate(uri);
-          }
+        {
+          text: "Câmera",
+          icon: "camera",
+          variant: "primary",
+          onPress: async () => {
+            const uri = await camera.openCamera();
+            if (uri) {
+              setAvatarUri(uri);
+              uploadAvatarMutation.mutate(uri);
+            }
+          },
         },
-      },
-    ]);
+      ],
+    });
   };
 
   const validatePasswords = (data: ProfileFormData): boolean => {
@@ -123,18 +131,18 @@ export const useProfileModel = () => {
   );
 
   const handleLogout = () => {
-    Alert.alert("Sair", "Tem certeza que deseja sair da sua conta?", [
-      { text: "Cancelar", style: "cancel" },
-      {
-        text: "Sair",
-        style: "destructive",
-        onPress: () => {
-          clearCart();
-          logout();
-          router.replace("/login");
-        },
+    modals.showConfirmation({
+      title: "Sair",
+      message: "Tem certeza que deseja sair da sua conta?",
+      confirmText: "Sair",
+      confirmVariant: "danger",
+      icon: "log-out",
+      onConfirm: () => {
+        clearCart();
+        logout();
+        router.replace("/login");
       },
-    ]);
+    });
   };
 
   const handleGoBack = () => {

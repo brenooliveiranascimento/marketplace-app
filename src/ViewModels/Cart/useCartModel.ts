@@ -1,11 +1,11 @@
 import { useCartStore } from "@/store/cartStore";
-import { Alert } from "react-native";
 import { router } from "expo-router";
 import { useState } from "react";
 import { useCreditCardsQuery } from "@/shared/queries/credit-cards";
 import { useCreateOrderMutation } from "@/shared/queries/orders";
 import { CreditCard } from "@/shared/services/credit-cards.service";
 import { useQueryClient } from "@tanstack/react-query";
+import { useAppModals } from "@/shared/hooks/useAppModals";
 
 export const useCartModel = () => {
   const {
@@ -18,6 +18,7 @@ export const useCartModel = () => {
   } = useCartStore();
 
   const queryClient = useQueryClient();
+  const modals = useAppModals();
   const [selectedCreditCard, setSelectedCreditCard] =
     useState<CreditCard | null>(null);
 
@@ -28,22 +29,23 @@ export const useCartModel = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
 
-      Alert.alert("Sucesso!", "Pedido criado com sucesso!", [
-        {
-          text: "OK",
-          onPress: () => {
-            clearCart();
-            setSelectedCreditCard(null);
-            router.push("/(private)/(tabs)/orders");
-          },
+      modals.showSuccess({
+        title: "Sucesso!",
+        message: "Pedido criado com sucesso!",
+        buttonText: "Ver Pedidos",
+        onButtonPress: () => {
+          clearCart();
+          setSelectedCreditCard(null);
+          router.push("/(private)/(tabs)/orders");
         },
-      ]);
+      });
     },
     onError: (error) => {
-      Alert.alert(
-        "Erro",
-        error.message || "Erro ao criar pedido. Tente novamente."
-      );
+      modals.showInfo({
+        title: "Erro",
+        message: error.message || "Erro ao criar pedido. Tente novamente.",
+        variant: "error",
+      });
     },
   });
 
@@ -68,37 +70,41 @@ export const useCartModel = () => {
 
   const handleDecreaseQuantity = (id: number, currentQuantity: number) => {
     if (currentQuantity === 1) {
-      Alert.alert("Remover item", "Deseja remover este item do carrinho?", [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Remover",
-          style: "destructive",
-          onPress: () => removeItem(id),
-        },
-      ]);
+      modals.showConfirmation({
+        title: "Remover item",
+        message: "Deseja remover este item do carrinho?",
+        confirmText: "Remover",
+        confirmVariant: "danger",
+        icon: "trash",
+        onConfirm: () => removeItem(id),
+      });
     } else {
       updateQuantity(id, currentQuantity - 1);
     }
   };
 
   const handleRemoveItem = (id: number, itemName: string) => {
-    Alert.alert("Remover item", `Deseja remover "${itemName}" do carrinho?`, [
-      { text: "Cancelar", style: "cancel" },
-      { text: "Remover", style: "destructive", onPress: () => removeItem(id) },
-    ]);
+    modals.showConfirmation({
+      title: "Remover item",
+      message: `Deseja remover "${itemName}" do carrinho?`,
+      confirmText: "Remover",
+      confirmVariant: "danger",
+      icon: "trash",
+      onConfirm: () => removeItem(id),
+    });
   };
 
   const handleClearCart = () => {
     if (products.length === 0) return;
 
-    Alert.alert(
-      "Limpar carrinho",
-      "Deseja remover todos os itens do carrinho?",
-      [
-        { text: "Cancelar", style: "cancel" },
-        { text: "Limpar", style: "destructive", onPress: clearCart },
-      ]
-    );
+    modals.showConfirmation({
+      title: "Limpar carrinho",
+      message: "Deseja remover todos os itens do carrinho?",
+      confirmText: "Limpar",
+      confirmVariant: "danger",
+      icon: "trash",
+      onConfirm: clearCart,
+    });
   };
 
   const handleSelectCreditCard = (creditCard: CreditCard) => {
@@ -106,49 +112,51 @@ export const useCartModel = () => {
   };
 
   const handleEditCreditCard = (creditCard: CreditCard) => {
-    Alert.alert("Em desenvolvimento", "Funcionalidade de edição em breve!");
+    modals.showInfo({
+      title: "Em desenvolvimento",
+      message: "Funcionalidade de edição em breve!",
+      variant: "warning",
+    });
   };
 
   const handleCheckout = () => {
     if (products.length === 0) {
-      Alert.alert(
-        "Carrinho vazio",
-        "Adicione itens ao carrinho para continuar."
-      );
+      modals.showInfo({
+        title: "Carrinho vazio",
+        message: "Adicione itens ao carrinho para continuar.",
+        variant: "warning",
+      });
       return;
     }
 
     if (!selectedCreditCard) {
-      Alert.alert(
-        "Cartão não selecionado",
-        "Selecione um cartão de crédito para continuar."
-      );
+      modals.showInfo({
+        title: "Cartão não selecionado",
+        message: "Selecione um cartão de crédito para continuar.",
+        variant: "warning",
+      });
       return;
     }
 
-    Alert.alert(
-      "Confirmar compra",
-      `Total: ${formatTotal()}\nCartão: **** ${selectedCreditCard.number.slice(
+    modals.showConfirmation({
+      title: "Confirmar compra",
+      message: `Total: ${formatTotal()}\nCartão: **** ${selectedCreditCard.number.slice(
         -4
       )}\n\nDeseja prosseguir com a compra?`,
-      [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Confirmar",
-          onPress: () => {
-            const orderData = {
-              creditCardId: selectedCreditCard.id,
-              items: products.map((product) => ({
-                productId: product.id,
-                quantity: product.quantity,
-              })),
-            };
+      confirmText: "Confirmar",
+      icon: "card",
+      onConfirm: () => {
+        const orderData = {
+          creditCardId: selectedCreditCard.id,
+          items: products.map((product) => ({
+            productId: product.id,
+            quantity: product.quantity,
+          })),
+        };
 
-            createOrderMutation.mutate(orderData);
-          },
-        },
-      ]
-    );
+        createOrderMutation.mutate(orderData);
+      },
+    });
   };
 
   const handleGoBack = () => {
