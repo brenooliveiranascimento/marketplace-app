@@ -19,6 +19,7 @@ export const AppInputController = <T extends FieldValues>({
   control,
   name,
   errors,
+  mask,
   ...rest
 }: AppInputControllerProps<T>) => {
   const getErrorMessage = (
@@ -50,12 +51,19 @@ export const AppInputController = <T extends FieldValues>({
       }) => (
         <AppInput
           value={value ?? ""}
-          onChangeText={onChange}
+          onChangeText={(text) => {
+            if (mask) {
+              onChange(mask(text) || "");
+            } else {
+              onChange(text);
+            }
+          }}
           onBlur={onBlur}
           error={error?.message || (errors && getErrorMessage(errors, name))}
           isError={!!error || (errors && !!getErrorMessage(errors, name))}
           isDisabled={isSubmitting || rest.isDisabled}
           editable={!isSubmitting && rest.editable !== false}
+          mask={mask}
           {...rest}
         />
       )}

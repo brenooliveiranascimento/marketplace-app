@@ -56,8 +56,7 @@ export const useHomeModel = () => {
 
   const handleClearSearch = useCallback(() => {
     setSearchInputText("");
-    refetch();
-  }, [refetch]);
+  }, []);
 
   const handleProductPress = (product: ProductListItem) => {
     router.push({
@@ -67,10 +66,7 @@ export const useHomeModel = () => {
   };
 
   const handleProfilePress = () => {
-    Alert.alert(
-      "Perfil",
-      "Funcionalidade do perfil será implementada em breve!"
-    );
+    router.push("/profile");
   };
 
   const handleLoadMore = () => {
@@ -84,19 +80,17 @@ export const useHomeModel = () => {
   };
 
   const handleEndReached = () => {
-    if (hasNextPage && !isFetchingNextPage && !isInitialLoading) {
-      handleLoadMore();
-    }
+    handleLoadMore();
   };
 
   return {
     products,
-    currentSearchText: searchInputText, // Retorna o texto do input para a UI
-    setCurrentSearchText: handleSearchTextChange, // Retorna a função que atualiza o input
-    isLoading: isInitialLoading, // Apenas loading inicial
-    isFilterLoading, // Loading específico para filtros
-    isLoadingMore: isFetchingNextPage, // Loading para próximas páginas
-    hasNextPage, // Se há próxima página
+    currentSearchText: searchInputText,
+    setCurrentSearchText: handleSearchTextChange,
+    isLoading: isInitialLoading,
+    isFilterLoading,
+    isLoadingMore: isFetchingNextPage,
+    hasNextPage,
     isRefreshing: isRefetching,
     handleEndReached,
     handleSearchTextChange,

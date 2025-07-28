@@ -19,6 +19,7 @@ export interface AppInputProps extends TextInputProps, AppInputVariants {
   onLeftIconPress?: () => void;
   onRightIconPress?: () => void;
   containerClassName?: string;
+  mask?: (value: string) => void | string;
 }
 
 export const AppInput: React.FC<AppInputProps> = ({
@@ -35,6 +36,7 @@ export const AppInput: React.FC<AppInputProps> = ({
   editable = true,
   onFocus,
   onBlur,
+  mask,
   ...textInputProps
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -98,6 +100,13 @@ export const AppInput: React.FC<AppInputProps> = ({
           editable={!isInputDisabled}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          onChangeText={(text) => {
+            if (mask) {
+              textInputProps.onChangeText?.(mask(text) || "");
+            } else {
+              textInputProps.onChangeText?.(text);
+            }
+          }}
           {...textInputProps}
         />
 

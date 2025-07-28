@@ -15,7 +15,6 @@ export function CommentItem({
   formatRating,
   formatName,
 }: CommentItemProps) {
-  console.log(comment);
   return (
     <View className="bg-white p-4 mb-3 rounded-lg">
       <View className="flex-row items-center justify-between mb-3">

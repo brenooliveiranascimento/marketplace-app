@@ -1,6 +1,10 @@
-import { useCartStore, CartItem } from "@/store/cartStore";
+import { useCartStore } from "@/store/cartStore";
 import { Alert } from "react-native";
 import { router } from "expo-router";
+import { useState } from "react";
+import { useCreditCardsQuery } from "@/shared/queries/credit-cards";
+import { useCreateOrderMutation } from "@/shared/queries/orders";
+import { CreditCard } from "@/shared/services/credit-cards.service";
 
 export const useCartModel = () => {
   const {
@@ -11,6 +15,33 @@ export const useCartModel = () => {
     clearCart,
     getItemCount,
   } = useCartStore();
+
+  const [selectedCreditCard, setSelectedCreditCard] =
+    useState<CreditCard | null>(null);
+
+  const { data: creditCards = [], isLoading: isLoadingCards } =
+    useCreditCardsQuery();
+
+  const createOrderMutation = useCreateOrderMutation({
+    onSuccess: () => {
+      Alert.alert("Sucesso!", "Pedido criado com sucesso!", [
+        {
+          text: "OK",
+          onPress: () => {
+            clearCart();
+            setSelectedCreditCard(null);
+            router.push("/(private)/(tabs)/orders");
+          },
+        },
+      ]);
+    },
+    onError: (error) => {
+      Alert.alert(
+        "Erro",
+        error.message || "Erro ao criar pedido. Tente novamente."
+      );
+    },
+  });
 
   const formatPrice = (price: string): string => {
     const numericValue = parseFloat(price);
@@ -66,6 +97,14 @@ export const useCartModel = () => {
     );
   };
 
+  const handleSelectCreditCard = (creditCard: CreditCard) => {
+    setSelectedCreditCard(creditCard);
+  };
+
+  const handleEditCreditCard = (creditCard: CreditCard) => {
+    Alert.alert("Em desenvolvimento", "Funcionalidade de edição em breve!");
+  };
+
   const handleCheckout = () => {
     if (products.length === 0) {
       Alert.alert(
@@ -75,16 +114,33 @@ export const useCartModel = () => {
       return;
     }
 
+    if (!selectedCreditCard) {
+      Alert.alert(
+        "Cartão não selecionado",
+        "Selecione um cartão de crédito para continuar."
+      );
+      return;
+    }
+
     Alert.alert(
-      "Finalizar compra",
-      `Total: ${formatTotal()}\n\nDeseja prosseguir com a compra?`,
+      "Confirmar compra",
+      `Total: ${formatTotal()}\nCartão: **** ${selectedCreditCard.number.slice(
+        -4
+      )}\n\nDeseja prosseguir com a compra?`,
       [
         { text: "Cancelar", style: "cancel" },
         {
           text: "Confirmar",
           onPress: () => {
-            Alert.alert("Sucesso!", "Compra realizada com sucesso!");
-            clearCart();
+            const orderData = {
+              creditCardId: selectedCreditCard.id,
+              items: products.map((product) => ({
+                productId: product.id,
+                quantity: product.quantity,
+              })),
+            };
+
+            createOrderMutation.mutate(orderData);
           },
         },
       ]
@@ -104,6 +160,12 @@ export const useCartModel = () => {
     isEmpty,
     itemCount,
 
+    creditCards,
+    isLoadingCards,
+    selectedCreditCard,
+
+    isCreatingOrder: createOrderMutation.isPending,
+
     formatPrice,
     formatTotal,
 
@@ -113,5 +175,8 @@ export const useCartModel = () => {
     onClearCart: handleClearCart,
     onCheckout: handleCheckout,
     onGoBack: handleGoBack,
+
+    onSelectCreditCard: handleSelectCreditCard,
+    onEditCreditCard: handleEditCreditCard,
   };
 };

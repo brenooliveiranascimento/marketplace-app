@@ -17,6 +17,12 @@ export const CartView: FC<CartViewProps> = ({
   onDecreaseQuantity,
   onCheckout,
   onGoBack,
+  creditCards,
+  isLoadingCards,
+  selectedCreditCard,
+  isCreatingOrder,
+  onSelectCreditCard,
+  onEditCreditCard,
 }) => {
   if (isEmpty) return <EmptyCart onGoBack={onGoBack} />;
 
@@ -38,7 +44,16 @@ export const CartView: FC<CartViewProps> = ({
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <View className="h-2" />}
         ListFooterComponent={
-          <CartListFooter formatTotal={formatTotal} onCheckout={onCheckout} />
+          <CartListFooter
+            formatTotal={formatTotal}
+            onCheckout={onCheckout}
+            creditCards={creditCards}
+            isLoadingCards={isLoadingCards}
+            selectedCreditCard={selectedCreditCard}
+            isCreatingOrder={isCreatingOrder}
+            onSelectCreditCard={onSelectCreditCard}
+            onEditCreditCard={onEditCreditCard}
+          />
         }
       />
     </SafeAreaView>

@@ -33,3 +33,4 @@ export const useUploadAvatarMutation = ({
 
   return mutation;
 };
+ 

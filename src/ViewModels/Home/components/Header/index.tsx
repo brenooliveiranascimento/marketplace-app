@@ -13,7 +13,7 @@ export const Header: React.FC<HeaderProps> = ({ onProfilePress }) => {
   const { user } = useUserStore();
 
   return (
-    <View className="flex-row items-center justify-between px-4 py-3 shadow-sm bg-background">
+    <View className="flex-row items-center justify-between  py-3 shadow-sm bg-background">
       <TouchableOpacity
         onPress={() => router.push("profile")}
         className="flex-row items-center gap-6"
@@ -40,9 +40,9 @@ export const Header: React.FC<HeaderProps> = ({ onProfilePress }) => {
             className="text-base font-semibold text-gray-500"
             numberOfLines={1}
           >
-            Olá, {user?.name || "Usuário"}
+            Olá, {user?.name.split(" ")[0] || "Usuário"}!
           </Text>
-          <View>
+          <View className="flex-row items-center gap-2">
             <Text className="color-purple-base font-bold text-sm">
               Ver perfil
             </Text>

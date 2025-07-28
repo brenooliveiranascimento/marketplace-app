@@ -29,9 +29,9 @@ export const SearchInput: React.FC<SearchInputProps> = ({
 
   return (
     <View className="mb-3">
-      <Text className="text-xl font-bold px-4 mt-6 mb-4">Explore Produtos</Text>
+      <Text className="text-xl font-bold  mt-6 mb-4">Explore Produtos</Text>
       <View className="flex-row items-center">
-        <View className="flex-1 ml-4">
+        <View className="flex-1 ">
           <AppInput
             placeholder={placeholder}
             leftIcon="search"
@@ -44,7 +44,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         </View>
 
         <TouchableOpacity
-          className="ml-5 items-center justify-center rounded-lg border-10 border h-[40px] w-[40px] mr-4 border-purple-base"
+          className="ml-5 items-center justify-center rounded-lg border-10 border h-[40px] w-[40px]  border-purple-base"
           onPress={() => {
             open(<Filter />);
           }}

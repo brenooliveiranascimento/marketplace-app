@@ -3,11 +3,11 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/styles/colors";
 import { useProductCardModel } from "./useProductCardModel";
+import { AppPriceText } from "@/shared/components/AppPriceText";
 
 interface ProductCardViewProps {
   product: ReturnType<typeof useProductCardModel>["product"];
   formattedRating: string;
-  cardWidth: number;
   displayName: string;
   handlePress: () => void;
 }
@@ -15,17 +15,12 @@ interface ProductCardViewProps {
 export const ProductCardView: React.FC<ProductCardViewProps> = ({
   product,
   formattedRating,
-  cardWidth,
   displayName,
   handlePress,
 }) => {
   return (
     <TouchableOpacity
-      style={{
-        backgroundColor: colors.white,
-        width: cardWidth,
-      }}
-      className="m-2 rounded-xl shadow-sm overflow-hidden h-[157px] p-[4px]"
+      className="w-[48%] my-2 rounded-xl shadow-sm overflow-hidden h-[157px] p-[4px] bg-white"
       onPress={handlePress}
       activeOpacity={0.8}
     >
@@ -48,10 +43,11 @@ export const ProductCardView: React.FC<ProductCardViewProps> = ({
         </Text>
 
         <View className="flex-row items-center justify-between">
-          <Text className="text-small font-semibold">R$</Text>
-          <Text className="text-xl font-bold flex-1" numberOfLines={1}>
-            {product.value}
-          </Text>
+          <AppPriceText
+            classNameCurrency="text-small"
+            classNameValue="text-xl font-bold flex-1"
+            value={Number(product.value)}
+          />
         </View>
       </View>
     </TouchableOpacity>
