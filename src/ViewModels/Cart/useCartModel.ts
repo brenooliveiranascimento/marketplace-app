@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useCreditCardsQuery } from "@/shared/queries/credit-cards";
 import { useCreateOrderMutation } from "@/shared/queries/orders";
 import { CreditCard } from "@/shared/services/credit-cards.service";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const useCartModel = () => {
   const {
@@ -16,6 +17,7 @@ export const useCartModel = () => {
     getItemCount,
   } = useCartStore();
 
+  const queryClient = useQueryClient();
   const [selectedCreditCard, setSelectedCreditCard] =
     useState<CreditCard | null>(null);
 
@@ -24,6 +26,8 @@ export const useCartModel = () => {
 
   const createOrderMutation = useCreateOrderMutation({
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+
       Alert.alert("Sucesso!", "Pedido criado com sucesso!", [
         {
           text: "OK",

@@ -1,4 +1,6 @@
 import { useGetOrdersQuery } from "@/shared/queries/orders/useGetOrdersQuery";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 export const useOrdersModel = () => {
   const { orders, totalOrders, isLoading, error, refetch, isRefetching } =
@@ -6,10 +8,12 @@ export const useOrdersModel = () => {
 
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const year = date.getFullYear().toString().slice(-2);
-    return `${day}/${month}/${year}`;
+    return format(date, "dd/MM/yy", { locale: ptBR });
+  };
+
+  const formatDateFull = (dateString: string): string => {
+    const date = new Date(dateString);
+    return format(date, "dd 'de' MMMM 'de' yyyy", { locale: ptBR });
   };
 
   const formatQuantity = (quantity: number): string => {
@@ -32,6 +36,7 @@ export const useOrdersModel = () => {
     error,
     isRefreshing: isRefetching,
     formatDate,
+    formatDateFull,
     formatQuantity,
     formatCreditCard,
     onRefresh: handleRefresh,
