@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Alert } from "react-native";
 import { useUserStore } from "@/store/userStore";
 import {
   RegisterFormData,
@@ -10,6 +9,7 @@ import {
 import { useCamera } from "@/shared/hooks/useCamera";
 import { useGallery } from "@/shared/hooks/useGallery";
 import { useRegisterMutation, useUploadAvatarMutation } from "@/shared/queries";
+import { useAppModals } from "@/shared/hooks/useAppModals";
 
 export interface RegisterModel {
   control: any;
@@ -23,6 +23,7 @@ export interface RegisterModel {
 export const useRegisterModel = (): RegisterModel => {
   const [avatarUri, setAvatarUri] = useState<string | null>(null);
   const { setUser } = useUserStore();
+  const modals = useAppModals();
 
   const camera = useCamera({
     aspect: [1, 1],
@@ -71,27 +72,34 @@ export const useRegisterModel = (): RegisterModel => {
   });
 
   const handleSelectAvatar = () => {
-    Alert.alert("Selecionar Foto", "Escolha uma opção:", [
-      { text: "Cancelar", style: "cancel" },
-      {
-        text: "Galeria",
-        onPress: async () => {
-          const uri = await gallery.openGallery();
-          if (uri) {
-            setAvatarUri(uri);
-          }
+    modals.showSelection({
+      title: "Selecionar Foto",
+      message: "Escolha uma opção:",
+      options: [
+        {
+          text: "Galeria",
+          icon: "images",
+          variant: "secondary",
+          onPress: async () => {
+            const uri = await gallery.openGallery();
+            if (uri) {
+              setAvatarUri(uri);
+            }
+          },
         },
-      },
-      {
-        text: "Câmera",
-        onPress: async () => {
-          const uri = await camera.openCamera();
-          if (uri) {
-            setAvatarUri(uri);
-          }
+        {
+          text: "Câmera",
+          icon: "camera",
+          variant: "primary",
+          onPress: async () => {
+            const uri = await camera.openCamera();
+            if (uri) {
+              setAvatarUri(uri);
+            }
+          },
         },
-      },
-    ]);
+      ],
+    });
   };
 
   const onSubmit = handleSubmit(async (data: RegisterFormData) => {

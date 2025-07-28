@@ -9,6 +9,7 @@ export const colors = {
   shape: "#EDE9F2",
   danger: "#DC3545",
   success: "#28A745",
+  warning: "#FFC107",
   grays: {
     "gray-100": "#ADADAD",
     "gray-200": "#949494",
