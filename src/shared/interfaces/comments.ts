@@ -2,7 +2,9 @@ export interface CommentUser {
   id: number;
   name: string;
   email: string;
-  avatarUrl: string;
+  avatar?: {
+    url: string;
+  };
   rating: {
     value: string;
   };

@@ -28,7 +28,7 @@ export const ProductCardView: React.FC<ProductCardViewProps> = ({
         <Image
           source={{ uri: product.photo }}
           className="w-full h-[96px] rounded-[6px]"
-          resizeMode="cover"
+          resizeMode="contain"
         />
 
         <View className="absolute top-0 right-0 flex-row items-center px-2 py-1 rounded-b-lg rounded-r-none bg-white">

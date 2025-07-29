@@ -10,19 +10,15 @@ interface CommentItemProps {
   formatName: (name: string) => string;
 }
 
-export function CommentItem({
-  comment,
-  formatRating,
-  formatName,
-}: CommentItemProps) {
+export function CommentItem({ comment, formatName }: CommentItemProps) {
   return (
     <View className="bg-white p-4 mb-3 rounded-lg">
       <View className="flex-row items-center justify-between mb-3">
         <View className="flex-row items-center flex-1">
           <View className="border-2 border-shape rounded-[6px] p-1 bg-shape">
-            {comment.user.avatarUrl ? (
+            {comment.user.avatar?.url ? (
               <Image
-                source={{ uri: comment.user.avatarUrl }}
+                source={{ uri: comment.user.avatar.url }}
                 className="w-6 h-6"
                 resizeMode="cover"
               />
