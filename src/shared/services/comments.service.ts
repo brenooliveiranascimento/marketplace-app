@@ -24,7 +24,6 @@ class CommentsService {
       "/products/comments",
       params
     );
-
     return data;
   }
 

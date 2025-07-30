@@ -27,7 +27,7 @@ export const ProductHeader: FC<Props> = ({
         <Image
           source={{ uri: product.photo }}
           className="w-full h-[197px] rounded-lg"
-          resizeMode="cover"
+          resizeMode="contain"
         />
       </View>
 

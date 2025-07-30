@@ -43,7 +43,6 @@ export const useCommentsInfiniteQuery = ({
 
   const comments: ProductComment[] =
     query.data?.pages.flatMap((page) => page.data) ?? [];
-
   return {
     ...query,
     comments,
