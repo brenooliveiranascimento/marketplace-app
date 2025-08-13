@@ -21,7 +21,7 @@ export const Stars = ({ rating, handleRatingChange }: StarsProps) => {
         <Ionicons
           name={isSelected ? "star" : "star-outline"}
           size={32}
-          color={isSelected ? colors["purple-base"] : colors.grays["gray-300"]}
+          color={isSelected ? colors["purple-base"] : colors.gray["300"]}
         />
       </TouchableOpacity>
     );

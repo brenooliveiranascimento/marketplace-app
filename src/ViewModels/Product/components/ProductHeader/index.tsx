@@ -20,7 +20,7 @@ export const ProductHeader: FC<Props> = ({
       <View className="px-4 py-3 pb-5 bg-background">
         <TouchableOpacity className="flex-row items-center" onPress={onGoBack}>
           <Ionicons name="arrow-back" size={24} color="#8B5CF6" />
-          <Text className="text-base text-purple-600 ml-1">Voltar</Text>
+          <Text className="text-base text-purple-base ml-1">Voltar</Text>
         </TouchableOpacity>
       </View>
       <View className="w-full rounded-lg shadow-xl shadow-gray-500/30">
@@ -86,7 +86,9 @@ export const ProductHeader: FC<Props> = ({
       <View className="flex-row justify-between items-center py-4 border-b border-gray-100">
         <Text className="text-lg font-bold text-gray-800">Avaliações</Text>
         <TouchableOpacity onPress={() => onOpenReviewModal(product.id)}>
-          <Text className="text-purple-600 text-base font-medium">Avaliar</Text>
+          <Text className="text-purple-base text-base font-medium">
+            Avaliar
+          </Text>
         </TouchableOpacity>
       </View>
     </>

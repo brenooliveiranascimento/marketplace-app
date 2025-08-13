@@ -48,7 +48,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 Acesse sua conta
               </Text>
               <Text
-                style={{ color: colors.grays["gray-200"] }}
+                style={{ color: colors.gray["200"] }}
                 className="text-base text-center"
               >
                 Informe seu e-mail e senha para entrar

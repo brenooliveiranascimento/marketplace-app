@@ -55,9 +55,7 @@ export const AppButton: React.FC<AppButtonProps> = ({
 
   const getIconColor = () => {
     if (isButtonDisabled) {
-      return variant === "filled"
-        ? colors.grays["gray-500"]
-        : colors.grays["gray-300"];
+      return variant === "filled" ? colors.gray["500"] : colors.gray["300"];
     }
     return variant === "filled" ? colors.white : colors["purple-base"];
   };

@@ -33,7 +33,7 @@ export const SelectionModalContent: React.FC<SelectionModalContentProps> = ({
       {
         "bg-red-600": variant === "danger",
         "bg-gray-200": variant === "secondary",
-        "bg-purple-600": variant === "primary",
+        "bg-purple-base": variant === "primary",
       }
     );
   };

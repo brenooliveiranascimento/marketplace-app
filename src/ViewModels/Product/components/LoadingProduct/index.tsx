@@ -5,7 +5,7 @@ export const LoadingProduct = () => {
     <SafeAreaView className="flex-1 bg-background">
       <View className="flex-1 justify-center items-center">
         <ActivityIndicator size="large" color="#8B5CF6" />
-        <Text className="mt-4 text-base text-purple-600">
+        <Text className="mt-4 text-base text-purple-base">
           Carregando produto...
         </Text>
       </View>

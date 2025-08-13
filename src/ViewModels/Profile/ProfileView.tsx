@@ -41,7 +41,7 @@ export const ProfileView: React.FC<ReturnType<typeof useProfileModel>> = ({
               size={24}
               color={colors["purple-base"]}
             />
-            <Text className="text-base text-purple-600 ml-1">Voltar</Text>
+            <Text className="text-base text-purple-base ml-1">Voltar</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -76,7 +76,7 @@ export const ProfileView: React.FC<ReturnType<typeof useProfileModel>> = ({
                     <Ionicons
                       name="person-outline"
                       size={32}
-                      color={colors.grays["gray-300"]}
+                      color={colors.gray["300"]}
                     />
                   )}
                 </View>

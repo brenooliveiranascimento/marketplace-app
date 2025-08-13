@@ -49,7 +49,7 @@ export const InfoModalContent: React.FC<InfoModalContentProps> = ({
     return clsx("w-full py-3 px-4 rounded-lg items-center", {
       "bg-yellow-600": variant === "warning",
       "bg-red-600": variant === "error",
-      "bg-purple-600": variant === "info",
+      "bg-purple-base": variant === "info",
     });
   };
 

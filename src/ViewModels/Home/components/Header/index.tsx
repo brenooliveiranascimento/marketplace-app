@@ -26,11 +26,7 @@ export const Header: React.FC<HeaderProps> = ({ onProfilePress }) => {
             />
           ) : (
             <View className="w-[52px] h-[52px] rounded-[12px] items-center justify-center bg-shape">
-              <Ionicons
-                name="person"
-                size={24}
-                color={colors.grays["gray-300"]}
-              />
+              <Ionicons name="person" size={24} color={colors.gray["300"]} />
             </View>
           )}
         </View>

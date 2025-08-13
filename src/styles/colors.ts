@@ -10,11 +10,11 @@ export const colors = {
   danger: "#DC3545",
   success: "#28A745",
   warning: "#FFC107",
-  grays: {
-    "gray-100": "#ADADAD",
-    "gray-200": "#949494",
-    "gray-300": "#666666",
-    "gray-400": "#3D3D3D",
-    "gray-500": "#1D1D1D",
+  gray: {
+    100: "#ADADAD",
+    200: "#949494",
+    300: "#666666",
+    400: "#3D3D3D",
+    500: "#1D1D1D",
   },
 };

@@ -80,7 +80,7 @@ export const CreditCardListItem: React.FC<CreditCardListItemProps> = ({
             size={16}
             color={colors["purple-base"]}
           />
-          <Text className="text-sm text-purple-600 ml-1 font-medium">
+          <Text className="text-sm text-purple-base ml-1 font-medium">
             Cartão selecionado
           </Text>
         </View>

@@ -15,7 +15,7 @@ export const ProductFooter: FC<Props> = ({ onAddToCart, product }) => {
         <AppPriceText value={Number(product.value)} />
       </View>
       <AppButton
-        className="flex-row bg-purple-600 px-6 py-3 w-[120px] h-[40px] rounded-[10px]"
+        className="flex-row bg-purple-base px-6 py-3 w-[120px] h-[40px] rounded-[10px]"
         onPress={onAddToCart}
       >
         <Ionicons name="cart" size={16} color="white" />

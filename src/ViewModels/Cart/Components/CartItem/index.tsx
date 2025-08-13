@@ -32,14 +32,14 @@ export function CartItem({
         >
           {item.name}
         </Text>
-        <Text className="text-sm font-bold text-purple-600">
+        <Text className="text-sm font-bold text-purple-base">
           {formatPrice(item.price)}
         </Text>
       </View>
 
       <View className="flex-row items-center">
         <TouchableOpacity
-          className="w-[18px] h-[18px] border-2 border-purple-600 rounded-md items-center justify-center"
+          className="w-[18px] h-[18px] border-2 border-purple-base rounded-md items-center justify-center"
           onPress={() => onDecreaseQuantity(item.id, item.quantity)}
         >
           <Ionicons name="remove" size={12} color={colors["purple-base"]} />
@@ -53,7 +53,7 @@ export function CartItem({
         </View>
 
         <TouchableOpacity
-          className="w-[18px] h-[18px] border-2 border-purple-600 rounded-md items-center justify-center"
+          className="w-[18px] h-[18px] border-2 border-purple-base rounded-md items-center justify-center"
           onPress={() => onIncreaseQuantity(item.id, item.quantity)}
         >
           <Ionicons name="add" size={12} color={colors["purple-base"]} />

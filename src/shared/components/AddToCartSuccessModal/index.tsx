@@ -57,7 +57,7 @@ export const AddToCartSuccessModal: React.FC<AddToCartSuccessModalProps> = ({
         onPress={onClose}
         className="absolute top-4 right-4 w-8 h-8 items-center justify-center"
       >
-        <Ionicons name="close" size={20} color={colors.grays["gray-500"]} />
+        <Ionicons name="close" size={20} color={colors.gray["500"]} />
       </TouchableOpacity>
     </View>
   );

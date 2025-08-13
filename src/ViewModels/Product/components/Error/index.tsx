@@ -13,7 +13,7 @@ export const ProductLoadError: FC<Props> = ({ onGoBack }) => {
           Produto não encontrado
         </Text>
         <TouchableOpacity
-          className="bg-purple-600 px-5 py-2.5 rounded-lg"
+          className="bg-purple-base px-5 py-2.5 rounded-lg"
           onPress={onGoBack}
         >
           <Text className="text-white text-base">Voltar</Text>

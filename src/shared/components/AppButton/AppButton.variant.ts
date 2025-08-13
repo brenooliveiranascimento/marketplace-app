@@ -2,21 +2,21 @@ import { tv, VariantProps } from "tailwind-variants";
 
 export const buttonVariants = tv({
   slots: {
-    base: "w-full h-[48px] rounded-lg border px-4 flex flex-row items-center active:opacity-80",
+    base: "w-full h-[48px] rounded-[10px] border px-4 flex flex-row items-center active:opacity-80",
     text: "font-semibold",
     icon: "w-5 h-5",
   },
   variants: {
     variant: {
       filled: {
-        base: "bg-purple-600 border-purple-600",
+        base: "bg-purple-base border-purple-base",
         text: "text-white",
         icon: "text-white",
       },
       outlined: {
-        base: "bg-transparent border-purple-600",
-        text: "text-purple-600",
-        icon: "text-purple-600",
+        base: "bg-transparent border-purple-base",
+        text: "text-purple-base",
+        icon: "text-purple-base",
       },
     },
     size: {

@@ -25,7 +25,7 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
   onSelectAvatar,
 }) => {
   return (
-    <SafeAreaView style={{ backgroundColor: colors.white }} className="flex-1">
+    <SafeAreaView className="flex-1 bg-white">
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
@@ -70,7 +70,7 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
                     <Ionicons
                       name="cloud-upload-outline"
                       size={32}
-                      color={colors.grays["gray-300"]}
+                      color={colors.gray["300"]}
                     />
                   )}
                 </View>
@@ -99,7 +99,7 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
                 errors={errors}
               />
 
-              <Text className="text-gray-500 font-bold ml-3 text-base mt-6">
+              <Text className="text-gray-500 font-bold text-base mt-6">
                 Acesso
               </Text>
 
@@ -139,13 +139,13 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
                 isLoading={isLoading}
                 className="mt-6 mb-10"
               >
-                {isLoading ? "Criando conta..." : "Criar conta"}
+                {isLoading ? "Criando conta..." : "Cadastrar"}
               </AppButton>
             </View>
 
             <View className="w-full flex-2 pb-16">
               <Text className="text-base mb-6 text-purple text-gray-300">
-                Ainda não tem uma conta?
+                Já tem uma conta?
               </Text>
 
               <AppButton
@@ -155,7 +155,7 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
                 className="h-[50px]"
                 onPress={() => router.push("login")}
               >
-                Fazer login
+                Acessar
               </AppButton>
             </View>
           </View>

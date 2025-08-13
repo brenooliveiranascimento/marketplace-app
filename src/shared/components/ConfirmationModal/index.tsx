@@ -29,7 +29,7 @@ export const ConfirmationModalContent: React.FC<
 }) => {
   const confirmButtonClass = clsx(
     "flex-1 py-3 px-4 rounded-lg items-center",
-    confirmVariant === "danger" ? "bg-red-600" : "bg-purple-600"
+    confirmVariant === "danger" ? "bg-red-600" : "bg-purple-base"
   );
 
   const getIconColor = () => {
