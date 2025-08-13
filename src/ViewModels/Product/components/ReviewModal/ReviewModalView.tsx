@@ -21,29 +21,31 @@ export const ReviewModalView: React.FC<ReturnType<typeof useReviewModel>> = ({
 }) => {
   return (
     <View className="bg-background rounded-t-2xl">
-      <View className="flex-row items-center justify-between p-4">
+      <View className="flex-row items-center justify-between p-6">
         <Text className="text-lg font-bold text-gray-900">
           {isEditing ? "Editar avaliação" : "Avaliar produto"}
         </Text>
 
         <TouchableOpacity
           onPress={handleClose}
-          className="w-8 h-8 items-center justify-center border border-purple-base rounded-lg"
+          className="w-8 h-8 items-center justify-center"
         >
-          <Ionicons name="close" size={20} color={colors["purple-base"]} />
+          <Ionicons name="close" size={24} color={colors.gray[400]} />
         </TouchableOpacity>
       </View>
 
       {isLoadingUserComment ? (
-        <View className="p-4 items-center justify-center min-h-[300px]">
+        <View className="p-6 items-center justify-center min-h-[300px]">
           <ActivityIndicator size="large" color={colors["purple-base"]} />
           <Text className="text-gray-600 mt-4 text-center">
             Verificando avaliação existente...
           </Text>
         </View>
       ) : (
-        <View className="p-4">
-          <Text className="font-bold text-base text-gray-500 mb-3">NOTA</Text>
+        <View className="p-6">
+          <Text className="font-semibold text-base text-gray-300 mb-3">
+            NOTA
+          </Text>
           <View className="flex-row items-center mb-6">
             <Stars rating={rating} handleRatingChange={handleRatingChange} />
           </View>
@@ -58,7 +60,7 @@ export const ReviewModalView: React.FC<ReturnType<typeof useReviewModel>> = ({
             multiline
             numberOfLines={8}
             textAlignVertical="top"
-            containerClassName="mb-6"
+            containerClassName="mb-8"
             className="h-[150px]"
           />
 

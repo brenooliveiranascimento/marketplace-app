@@ -56,7 +56,14 @@ export const CreditCardListItem: React.FC<CreditCardListItemProps> = ({
                 isSelected ? "text-purple-700" : "text-gray-900"
               }`}
             >
-              {formatCardNumber(creditCard.number)}
+              {formatCardNumber(creditCard.number)}{" "}
+              {isSelected && (
+                <Ionicons
+                  name="checkmark-circle"
+                  size={16}
+                  color={colors["purple-base"]}
+                />
+              )}
             </Text>
             <Text className="text-sm text-gray-500 mt-1">
               Vencimento: {formatExpirationDate(creditCard.expirationDate)}
@@ -72,19 +79,6 @@ export const CreditCardListItem: React.FC<CreditCardListItemProps> = ({
           <Ionicons name="pencil-outline" size={20} color="#6b7280" />
         </TouchableOpacity>
       </View>
-
-      {isSelected && (
-        <View className="mt-2 flex-row items-center">
-          <Ionicons
-            name="checkmark-circle"
-            size={16}
-            color={colors["purple-base"]}
-          />
-          <Text className="text-sm text-purple-base ml-1 font-medium">
-            Cartão selecionado
-          </Text>
-        </View>
-      )}
     </TouchableOpacity>
   );
 };

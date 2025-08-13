@@ -29,9 +29,9 @@ export const SearchInput: React.FC<SearchInputProps> = ({
 
   return (
     <View className="mb-3">
-      <Text className="text-xl font-bold  mt-6 mb-4">Explore Produtos</Text>
-      <View className="flex-row items-center">
-        <View className="flex-1 ">
+      <Text className="text-2xl font-bold mt-6 mb-4">Explore Produtos</Text>
+      <View className="flex-row items-end">
+        <View className="flex-1">
           <AppInput
             placeholder={placeholder}
             leftIcon="search"
@@ -44,14 +44,14 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         </View>
 
         <TouchableOpacity
-          className="ml-5 items-center justify-center rounded-lg border-10 border h-[40px] w-[40px]  border-purple-base"
+          className="ml-5 items-center justify-center rounded-lg border-2 border h-[48px] w-[48px] border-purple-base"
           onPress={() => {
             open(<Filter />);
           }}
         >
           <Ionicons
             name="filter-outline"
-            size={22}
+            size={24}
             color={colors["purple-base"]}
           />
         </TouchableOpacity>

@@ -3,6 +3,8 @@ import { View, Text, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ProductComment } from "@/shared/interfaces/comments";
 import { colors } from "@/styles/colors";
+import { useUserStore } from "@/store/userStore";
+import { buildImageUrl } from "@/shared/helpers/url.helper";
 
 interface CommentItemProps {
   comment: ProductComment;
@@ -11,24 +13,36 @@ interface CommentItemProps {
 }
 
 export function CommentItem({ comment, formatName }: CommentItemProps) {
+  const { user } = useUserStore();
+  const isCurrentUser = user?.id === comment.user.id;
+
   return (
-    <View className="bg-white p-4 mb-3 rounded-lg">
+    <View className="bg-white p-4 mb-3 rounded-lg shadow-sm">
       <View className="flex-row items-center justify-between mb-3">
         <View className="flex-row items-center flex-1">
-          <View className="border-2 border-shape rounded-[6px] p-1 bg-shape">
-            {comment.user.avatar?.url ? (
+          <View className="w-8 h-8 rounded-[6px] overflow-hidden bg-gray-200 mr-3">
+            {comment.user.avatar?.url && comment.user.avatar.url !== "" ? (
               <Image
-                source={{ uri: comment.user.avatar.url }}
-                className="w-6 h-6"
+                source={{ uri: buildImageUrl(comment.user.avatar.url) }}
+                className="w-full h-full"
                 resizeMode="cover"
               />
             ) : (
-              <Ionicons name="person" color={colors.white} size={24} />
+              <View className="w-full h-full items-center justify-center">
+                <Ionicons name="person" color={colors.gray[400]} size={20} />
+              </View>
             )}
           </View>
-          <Text className="text-base font-medium text-gray-800 ml-3 flex-1">
-            {formatName(comment.user.name)}
-          </Text>
+          <View className="flex-row items-center flex-1">
+            <Text className="text-base font-medium text-gray-800">
+              {formatName(comment.user.name)}
+            </Text>
+            {isCurrentUser && (
+              <View className="bg-purple-base px-2 py-1 rounded-full ml-2">
+                <Text className="text-white text-xs font-bold">Você</Text>
+              </View>
+            )}
+          </View>
         </View>
 
         <View className="flex-row items-end">
@@ -38,14 +52,14 @@ export function CommentItem({ comment, formatName }: CommentItemProps) {
             className="mr-1"
             color={colors["blue-base"]}
           />
-          <Text className="text-sm font-bold">
+          <Text className="text-sm font-bold text-gray-600">
             {comment?.user?.rating?.value} /{" "}
-            <Text className="text-[10px]">5</Text>
+            <Text className="text-[10px] text-gray-600">5</Text>
           </Text>
         </View>
       </View>
 
-      <Text className="text-gray-700 text-base leading-5 mb-2">
+      <Text className="text-gray-700 text-base leading-5">
         {comment.content}
       </Text>
     </View>

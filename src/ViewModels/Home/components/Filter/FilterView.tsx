@@ -48,7 +48,7 @@ export const FilterView: React.FC<ReturnType<typeof useFilterModel>> = ({
       </View>
 
       <View className="p-4 px-6">
-        <Text className="font-bold text-base text-gray-500 mb-2">VALOR</Text>
+        <Text className="font-semibold text-base text-gray-300">VALOR</Text>
         <View className="flex-row mb-4 w-[100%]">
           <View className="flex-1">
             <AppInput
@@ -70,7 +70,7 @@ export const FilterView: React.FC<ReturnType<typeof useFilterModel>> = ({
           </View>
         </View>
 
-        <Text className="font-bold text-base text-gray-500 mb-2 mt-4">
+        <Text className="font-semibold text-base text-gray-300 mt-4">
           CATEGORIA
         </Text>
 
@@ -79,7 +79,7 @@ export const FilterView: React.FC<ReturnType<typeof useFilterModel>> = ({
             Carregando categorias...
           </Text>
         ) : (
-          <View className="mb-6">
+          <View className="mb-6 space-y-3">
             {categories.map(({ id, name }) => (
               <TouchableOpacity
                 onPress={() => handleCategoryToggle(id)}
@@ -94,11 +94,9 @@ export const FilterView: React.FC<ReturnType<typeof useFilterModel>> = ({
                       ? colors["purple-base"]
                       : undefined
                   }
-                  className="mr-3"
+                  className="mr-3 rounded-full"
                 />
-                <Text className="text-base text-gray-900 dark:text-white">
-                  {name}
-                </Text>
+                <Text className="text-base text-gray-400">{name}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -107,7 +105,7 @@ export const FilterView: React.FC<ReturnType<typeof useFilterModel>> = ({
         <View className="flex-row gap-3 mt-4 mb-6">
           <View className="flex-1">
             <AppButton variant="outlined" onPress={handleClearFilter}>
-              Limpar filtros
+              Limpar filtro
             </AppButton>
           </View>
           <View className="flex-1">

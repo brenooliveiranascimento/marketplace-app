@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { AppButton } from "@/shared/components";
 import { AppInputController } from "@/shared/components/AppInput/InputController";
 import { useAddCardModel } from "./useAddCardModel";
 import { CreditCardVisual } from "./Card";
+import { colors } from "@/styles/colors";
+import { useBottomSheetStore } from "@/store/bottomsheetStore";
 
 interface AddCardViewProps {
   control: ReturnType<typeof useAddCardModel>["control"];
@@ -29,15 +32,24 @@ export const AddCardView: React.FC<AddCardViewProps> = ({
   maxCVVLength,
 }) => {
   const [focusedField, setFocusedField] = useState<string>("");
+  const { close } = useBottomSheetStore();
 
   const isFlipped = focusedField === "CVV";
 
   return (
     <ScrollView className="flex-1 bg-white">
-      <View className="p-6">
-        <Text className="text-2xl font-bold mb-6 text-center text-gray-900">
-          Adicionar Cartão
-        </Text>
+      <View className="p-8">
+        <View className="flex-row items-center justify-between mb-6">
+          <Text className="text-2xl font-bold text-center text-gray-900">
+            Adicionar Cartão
+          </Text>
+          <TouchableOpacity
+            onPress={close}
+            className="w-8 h-8 items-center justify-center"
+          >
+            <Ionicons name="close" size={24} color={colors.gray[400]} />
+          </TouchableOpacity>
+        </View>
 
         <CreditCardVisual
           cardNumber={cardData.number}
@@ -77,7 +89,7 @@ export const AddCardView: React.FC<AddCardViewProps> = ({
             onBlur={() => setFocusedField("")}
           />
 
-          <View className="flex-row space-x-3">
+          <View className="flex-row space-x-4">
             <View className="flex-1">
               <AppInputController
                 control={control}
@@ -108,7 +120,7 @@ export const AddCardView: React.FC<AddCardViewProps> = ({
                 placeholder="000"
                 keyboardType="numeric"
                 maxLength={maxCVVLength}
-                secureTextEntry
+                secureTextEntry={true}
                 mask={(value: string) => {
                   // Remove todos os caracteres não numéricos e limita a 3 dígitos
                   return value.replace(/\D/g, "").slice(0, 3);
@@ -143,10 +155,7 @@ export const AddCardView: React.FC<AddCardViewProps> = ({
           </View>
 
           <View className="flex-1">
-            <AppButton
-              onPress={handleSave}
-              isLoading={isLoading}
-            >
+            <AppButton onPress={handleSave} isLoading={isLoading}>
               <Text className="text-white font-semibold">
                 {isLoading ? "Salvando..." : "Salvar"}
               </Text>

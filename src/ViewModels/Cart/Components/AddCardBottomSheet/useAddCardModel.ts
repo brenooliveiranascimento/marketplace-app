@@ -28,7 +28,8 @@ const formatExpirationDateForAPI = (dateString: string): string => {
   
   const fullYear = 2000 + yearNum;
   
-  const expirationDate = new Date(fullYear, monthNum - 1 + 1, 0); 
+  // Criar uma data para o primeiro dia do próximo mês e subtrair 1 dia para obter o último dia do mês atual
+  const expirationDate = new Date(fullYear, monthNum, 0);
   
   const isoDate = expirationDate.toISOString().split('T')[0];
   

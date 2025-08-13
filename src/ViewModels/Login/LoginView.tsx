@@ -35,7 +35,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
       >
-        <View className="flex-1 px-6">
+        <View className="flex-1 px-10">
           <View className="flex-1 w-full items-center justify-center">
             <Image
               source={require("@/assets/images/Logo.png")}
@@ -47,10 +47,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
               <Text className="text-3xl font-bold text-center mb-3 text-gray-500">
                 Acesse sua conta
               </Text>
-              <Text
-                style={{ color: colors.gray["200"] }}
-                className="text-base text-center"
-              >
+              <Text className="text-base text-center text-gray-300">
                 Informe seu e-mail e senha para entrar
               </Text>
             </View>
@@ -63,6 +60,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 label="E-MAIL"
                 placeholder="mail@exemple.com.br"
                 placeholderClassName="text"
+                autoCapitalize="none"
               />
 
               <AppInputController
@@ -71,6 +69,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 leftIcon="lock-closed-outline"
                 label="SENHA"
                 placeholder="Sua senha"
+                secureTextEntry={true}
               />
 
               <View className="mt-6">

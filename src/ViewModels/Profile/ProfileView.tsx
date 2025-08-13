@@ -130,7 +130,7 @@ export const ProfileView: React.FC<ReturnType<typeof useProfileModel>> = ({
                 label="SENHA ATUAL"
                 placeholder="Sua senha"
                 leftIcon="lock-closed-outline"
-                secureTextEntry
+                secureTextEntry={true}
                 errors={errors}
               />
 
@@ -140,7 +140,7 @@ export const ProfileView: React.FC<ReturnType<typeof useProfileModel>> = ({
                 label="NOVA SENHA"
                 placeholder="Mínimo 6 caracteres"
                 leftIcon="lock-closed-outline"
-                secureTextEntry
+                secureTextEntry={true}
                 errors={errors}
               /> */}
 

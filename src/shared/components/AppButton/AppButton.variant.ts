@@ -3,7 +3,7 @@ import { tv, VariantProps } from "tailwind-variants";
 export const buttonVariants = tv({
   slots: {
     base: "w-full h-[48px] rounded-[10px] border px-4 flex flex-row items-center active:opacity-80",
-    text: "font-semibold",
+    text: "font-semibold text-base",
     icon: "w-5 h-5",
   },
   variants: {
@@ -15,6 +15,11 @@ export const buttonVariants = tv({
       },
       outlined: {
         base: "bg-transparent border-purple-base",
+        text: "text-purple-base",
+        icon: "text-purple-base",
+      },
+      borderless: {
+        base: "bg-transparent border-transparent",
         text: "text-purple-base",
         icon: "text-purple-base",
       },
@@ -70,6 +75,15 @@ export const buttonVariants = tv({
       isDisabled: true,
       class: {
         base: "border-gray-300",
+        text: "text-gray-300",
+        icon: "text-gray-300",
+      },
+    },
+    {
+      variant: "borderless",
+      isDisabled: true,
+      class: {
+        base: "border-transparent",
         text: "text-gray-300",
         icon: "text-gray-300",
       },

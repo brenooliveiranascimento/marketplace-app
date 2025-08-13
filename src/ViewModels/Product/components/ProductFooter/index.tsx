@@ -18,7 +18,7 @@ export const ProductFooter: FC<Props> = ({ onAddToCart, product }) => {
         className="flex-row bg-purple-base px-6 py-3 w-[120px] h-[40px] rounded-[10px]"
         onPress={onAddToCart}
       >
-        <Ionicons name="cart" size={16} color="white" />
+        <Ionicons name="cart" size={20} color="white" />
         <Text className="text-white text-sm font-bold ml-2">Adicionar</Text>
       </AppButton>
     </View>

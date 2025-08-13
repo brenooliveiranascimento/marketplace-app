@@ -87,6 +87,7 @@ export const HomeView: React.FC<ReturnType<typeof useHomeModel>> = ({
           initialNumToRender={8}
           automaticallyAdjustContentInsets={false}
           contentInsetAdjustmentBehavior="never"
+          ItemSeparatorComponent={() => <View className="h-1" />}
         />
       </SafeAreaView>
     </View>

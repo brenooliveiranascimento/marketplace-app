@@ -37,13 +37,18 @@ export const AppInput: React.FC<AppInputProps> = ({
   onFocus,
   onBlur,
   mask,
+  secureTextEntry = false,
   ...textInputProps
 }) => {
   const [isFocused, setIsFocused] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const inputRef = useRef<TextInput>(null);
 
   const hasError = isError || !!error;
   const isInputDisabled = isDisabled || !editable;
+  const isPasswordField = secureTextEntry;
+  const shouldShowPassword = isPasswordField && showPassword;
+  const shouldShowPasswordToggle = isPasswordField;
 
   const styles = appInputVariants({
     isFocused,
@@ -70,6 +75,10 @@ export const AppInput: React.FC<AppInputProps> = ({
 
   const handleWrapperPress = () => {
     inputRef.current?.focus();
+  };
+
+  const handlePasswordToggle = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -100,6 +109,7 @@ export const AppInput: React.FC<AppInputProps> = ({
           editable={!isInputDisabled}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          secureTextEntry={isPasswordField && !shouldShowPassword}
           onChangeText={(text) => {
             if (mask) {
               textInputProps.onChangeText?.(mask(text) || "");
@@ -110,12 +120,28 @@ export const AppInput: React.FC<AppInputProps> = ({
           {...textInputProps}
         />
 
-        {rightIcon && (
+        {shouldShowPasswordToggle && (
+          <TouchableOpacity
+            onPress={handlePasswordToggle}
+            disabled={isInputDisabled}
+            activeOpacity={0.7}
+            className="ml-auto"
+          >
+            <Ionicons
+              name={shouldShowPassword ? "eye-off-outline" : "eye-outline"}
+              size={22}
+              color={getIconColor()}
+              className={styles.icon()}
+            />
+          </TouchableOpacity>
+        )}
+
+        {rightIcon && !shouldShowPasswordToggle && (
           <TouchableOpacity
             onPress={onRightIconPress}
             disabled={!onRightIconPress || isInputDisabled}
             activeOpacity={0.7}
-            className="ml-3"
+            className="ml-auto"
           >
             <Ionicons
               name={rightIcon}

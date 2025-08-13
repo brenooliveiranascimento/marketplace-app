@@ -155,10 +155,10 @@ export const CreditCardVisual: React.FC<CreditCardProps> = ({
           end={{ x: 1, y: 1 }}
         >
           <View className="flex-row justify-between items-center mb-4">
-            <View className="w-10 h-7 bg-yellow-400 rounded-md" />
             <Text className="text-white text-xs font-bold tracking-wider">
               {getBrandIcon(cardType)}
             </Text>
+            <View className="w-10 h-7 bg-yellow-400 rounded-md" />
           </View>
 
           <View
@@ -237,7 +237,7 @@ export const CreditCardVisual: React.FC<CreditCardProps> = ({
             </View>
           </View>
 
-          <Text className="text-gray-400 text-xs text-center px-4 pb-4 leading-3">
+          <Text className="text-gray-500 text-xs text-center px-4 pb-4 leading-3">
             Este cartão é propriedade do banco emissor e deve ser devolvido
             quando solicitado.
           </Text>

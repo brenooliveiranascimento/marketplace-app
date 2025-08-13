@@ -40,11 +40,15 @@ export const CartListFooter: FC<Props> = ({
     open(<AddCardBottomSheet />);
   };
 
+  const isCheckoutDisabled = isCreatingOrder || creditCards.length === 0;
+
   return (
     <View className="bg-white p-4 rounded-lg mt-6">
       <View className="flex-row justify-between items-center mb-4">
-        <Text className="text-sm font-medium text-gray-600">VALOR TOTAL</Text>
-        <Text className="text-xl font-bold text-gray-900">{formatTotal()}</Text>
+        <Text className="text-sm font-semibold text-gray-600">VALOR TOTAL</Text>
+        <Text className="text-base font-bold text-gray-900">
+          {formatTotal()}
+        </Text>
       </View>
 
       <View className="mb-4">
@@ -60,7 +64,7 @@ export const CartListFooter: FC<Props> = ({
             <Ionicons
               name="card-outline"
               color={colors["purple-base"]}
-              size={18}
+              size={20}
             />
             <Text className="text-purple-base ml-2 text-sm font-bold">
               Adicionar cartão
@@ -95,10 +99,10 @@ export const CartListFooter: FC<Props> = ({
 
       <TouchableOpacity
         className={`py-4 rounded-lg items-center ${
-          isCreatingOrder ? "bg-gray-400" : "bg-purple-base"
+          isCheckoutDisabled ? "bg-gray-400" : "bg-purple-base"
         }`}
         onPress={onCheckout}
-        disabled={isCreatingOrder}
+        disabled={isCheckoutDisabled}
       >
         {isCreatingOrder ? (
           <View className="flex-row items-center">

@@ -40,7 +40,7 @@ export const CartView: FC<CartViewProps> = ({
         )}
         keyExtractor={(item) => item.id.toString()}
         ListHeaderComponent={CartHeader}
-        contentContainerClassName="px-4"
+        contentContainerClassName="px-6"
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <View className="h-2" />}
         ListFooterComponent={

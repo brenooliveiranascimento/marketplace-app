@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Image } from "react-native";
 import { Order } from "@/shared/interfaces/https/get-orders";
 import { formatCurrency } from "@/shared/helpers/currency-helper";
+import { buildImageUrl } from "@/shared/helpers/url.helper";
 
 interface OrderItemProps {
   order: Order;
@@ -17,9 +18,9 @@ export const OrderItem: React.FC<OrderItemProps> = ({
   formatCreditCard,
 }) => {
   return (
-    <View className="flex-row items-center bg-white p-4 mb-3 rounded-lg shadow-sm border border-gray-100 h-[89px]">
+    <View className="flex-row items-center bg-white p-1 mb-3 rounded-lg shadow-sm h-[89px]">
       <Image
-        source={{ uri: order.productPhoto }}
+        source={{ uri: buildImageUrl(order.productPhoto || "") }}
         className="w-[88px] h-[88px] rounded-lg mr-4"
         resizeMode="cover"
       />

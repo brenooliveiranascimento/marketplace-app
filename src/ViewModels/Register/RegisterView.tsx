@@ -35,7 +35,7 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
           contentContainerStyle={{ flexGrow: 1 }}
           className="flex-1"
         >
-          <View className="flex-1 px-6 py-8">
+          <View className="flex-1 px-10 py-8">
             <View className="items-center mb-8">
               <Image
                 source={require("@/assets/images/Logo.png")}
@@ -48,7 +48,7 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
               <Text className="text-3xl font-bold text-center mb-3 text-gray-500">
                 Criar sua conta
               </Text>
-              <Text className="text-base text-center text-gray-200">
+              <Text className="text-base text-center text-gray-300">
                 Informe seus dados pessoais e de acesso
               </Text>
             </View>
@@ -70,7 +70,7 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
                     <Ionicons
                       name="cloud-upload-outline"
                       size={32}
-                      color={colors.gray["300"]}
+                      color={colors["purple-base"]}
                     />
                   )}
                 </View>

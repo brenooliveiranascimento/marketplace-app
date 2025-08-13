@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { CartItem as CartItemType } from "@/store/cartStore";
 import { colors } from "@/styles/colors";
+import { buildImageUrl } from "@/shared/helpers/url.helper";
 
 interface CartItemProps {
   item: CartItemType;
@@ -18,16 +19,16 @@ export function CartItem({
   onDecreaseQuantity,
 }: CartItemProps) {
   return (
-    <View className="bg-white h-[71px] w-full flex-row items-center px-2 mb-2 rounded-lg">
+    <View className="bg-white h-[80px] w-full flex-row items-center px-2 mb-2 rounded-lg">
       <Image
-        source={{ uri: item.image }}
-        className="w-16 h-16 rounded-md mr-3"
+        source={{ uri: buildImageUrl(item.image || "") }}
+        className="w-16 h-16 rounded-md mr-4"
         resizeMode="cover"
       />
 
       <View className="flex-1 mr-3">
         <Text
-          className="text-base font-medium text-gray-800 mb-1"
+          className="text-sm font-normal text-gray-800 mb-1"
           numberOfLines={1}
         >
           {item.name}
@@ -45,11 +46,10 @@ export function CartItem({
           <Ionicons name="remove" size={12} color={colors["purple-base"]} />
         </TouchableOpacity>
 
-        <View className="mx-3 items-center">
-          <Text className="text-base font-medium text-gray-700 mb-1">
+        <View className="mx-2 items-center">
+          <Text className="text-base font-medium text-gray-700">
             {item.quantity}
           </Text>
-          <View className="w-6 h-0.5 bg-gray-300" />
         </View>
 
         <TouchableOpacity

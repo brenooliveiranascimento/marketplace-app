@@ -52,7 +52,7 @@ export const OrdersView: React.FC<ReturnType<typeof useOrdersModel>> = ({
         ListHeaderComponent={ListHeader}
         ListEmptyComponent={EmptyList}
         contentContainerStyle={{
-          paddingHorizontal: 16,
+          paddingHorizontal: 24,
           paddingBottom: 120,
         }}
         refreshControl={
