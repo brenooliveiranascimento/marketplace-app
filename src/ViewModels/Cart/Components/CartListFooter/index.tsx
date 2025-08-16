@@ -21,7 +21,6 @@ interface Props {
   selectedCreditCard: CreditCard | null;
   isCreatingOrder: boolean;
   onSelectCreditCard: (creditCard: CreditCard) => void;
-  onEditCreditCard: (creditCard: CreditCard) => void;
 }
 
 export const CartListFooter: FC<Props> = ({
@@ -32,7 +31,6 @@ export const CartListFooter: FC<Props> = ({
   selectedCreditCard,
   isCreatingOrder,
   onSelectCreditCard,
-  onEditCreditCard,
 }) => {
   const { open } = useBottomSheetStore();
 
@@ -87,7 +85,6 @@ export const CartListFooter: FC<Props> = ({
                 creditCard={item}
                 isSelected={selectedCreditCard?.id === item.id}
                 onSelect={onSelectCreditCard}
-                onEdit={onEditCreditCard}
               />
             )}
             keyExtractor={(item) => item.id.toString()}

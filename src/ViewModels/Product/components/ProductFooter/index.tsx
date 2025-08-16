@@ -10,7 +10,7 @@ interface Props {
 }
 export const ProductFooter: FC<Props> = ({ onAddToCart, product }) => {
   return (
-    <View className="fixed bottom-0 left-0 right-0 flex-row items-center p-7 border-t border-gray-200 shadow-lg bg-white h-[96px]">
+    <View className="fixed bottom-0 left-0 right-0 flex-row items-center p-7 bg-white h-[96px]">
       <View className="flex-1">
         <AppPriceText value={Number(product.value)} />
       </View>

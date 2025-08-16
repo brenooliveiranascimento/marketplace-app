@@ -23,7 +23,7 @@ export const Header: React.FC<HeaderProps> = ({ onProfilePress }) => {
           {user?.avatarUrl && user.avatarUrl.trim() !== "" ? (
             <Image
               source={{ uri: buildImageUrl(user.avatarUrl) }}
-              className="w-[56px] h-[56px] rounded-[12px] border-2 border-gray-200"
+              className="w-[56px] h-[56px] rounded-[12px] border-[1px] border-shape"
             />
           ) : (
             <View className="w-[56px] h-[56px] rounded-[12px] items-center justify-center bg-shape border-2 border-gray-200">
@@ -40,7 +40,11 @@ export const Header: React.FC<HeaderProps> = ({ onProfilePress }) => {
             <Text className="color-purple-base font-bold text-sm">
               Ver perfil
             </Text>
-            <Ionicons size={20} />
+            <Ionicons
+              size={20}
+              name="arrow-forward-outline"
+              color={colors["purple-base"]}
+            />
           </View>
         </View>
       </TouchableOpacity>

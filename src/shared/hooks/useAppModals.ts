@@ -6,11 +6,12 @@ import {
   SelectionModalContent,
   InfoModalContent,
 } from "@/shared/components";
+import { Ionicons } from "@expo/vector-icons";
 
 interface SelectionOption {
   text: string;
   onPress: () => void;
-  icon?: string;
+  icon?: keyof typeof Ionicons.glyphMap;
   variant?: "primary" | "secondary" | "danger";
 }
 

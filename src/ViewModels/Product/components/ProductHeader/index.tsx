@@ -31,10 +31,13 @@ export const ProductHeader: FC<Props> = ({
           className="w-full h-[197px] rounded-lg"
           resizeMode="cover"
         />
-        <View className="absolute top-2 right-2 flex-row items-center bg-white/90 px-2 py-1 rounded-lg">
+        <View className="absolute top-0 right-0 flex-row items-center bg-white/90 px-2 py-1 rounded-lg">
           <Ionicons name="star" size={16} color={colors["blue-base"]} />
           <Text className="text-sm font-semibold ml-1 text-gray-800">
             {product.averageRating?.toFixed(1) || "0.0"}
+          </Text>
+          <Text className="text-[10px] font-semibold ml-1 text-gray-800">
+            / 5
           </Text>
         </View>
       </View>
@@ -45,7 +48,7 @@ export const ProductHeader: FC<Props> = ({
             {product.name}
           </Text>
           <View className="flex-row items-baseline">
-            <Text className="text-sm text-gray-600">R$</Text>
+            <Text className="text-sm">R$</Text>
             <Text className="text-xl font-bold text-gray-800 ml-1">
               {product.value}
             </Text>

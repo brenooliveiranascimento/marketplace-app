@@ -35,7 +35,7 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
           contentContainerStyle={{ flexGrow: 1 }}
           className="flex-1"
         >
-          <View className="flex-1 px-10 py-8">
+          <View className="flex-1 px-[40px] py-8">
             <View className="items-center mb-8">
               <Image
                 source={require("@/assets/images/Logo.png")}
@@ -93,7 +93,7 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
                 name="phone"
                 label="TELEFONE"
                 placeholder="(00) 00000-0000"
-                leftIcon="phone-portrait"
+                leftIcon="call-outline"
                 keyboardType="numeric"
                 maxLength={11}
                 errors={errors}

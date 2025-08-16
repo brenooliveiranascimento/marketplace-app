@@ -35,7 +35,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
       >
-        <View className="flex-1 px-10">
+        <View className="flex-1 px-[40px]">
           <View className="flex-1 w-full items-center justify-center">
             <Image
               source={require("@/assets/images/Logo.png")}

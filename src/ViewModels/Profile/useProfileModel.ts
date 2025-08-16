@@ -9,11 +9,17 @@ import {
   useUploadAvatarMutation,
   useUpdateProfileMutation,
 } from "@/shared/queries";
-import { profileSchema, ProfileFormData } from "./profile.schema";
+import { ProfileFormData, profileSchema } from "./profile.schema";
 import { useCartStore } from "@/store/cartStore";
 import { useCamera } from "@/shared/hooks/useCamera";
 import { useGallery } from "@/shared/hooks/useGallery";
 import { useAppModals } from "@/shared/hooks/useAppModals";
+
+const defaultValues: ProfileFormData = {
+  name: "",
+  email: "",
+  phone: "",
+};
 
 export const useProfileModel = () => {
   const { user, updateUser, logout } = useUserStore();
@@ -42,13 +48,10 @@ export const useProfileModel = () => {
     handleSubmit,
     formState: { errors },
     setValue,
+    reset,
   } = useForm<ProfileFormData>({
-    resolver: yupResolver(profileSchema),
-    defaultValues: {
-      email: "",
-      name: "",
-      phone: "",
-    },
+    resolver: yupResolver(profileSchema) as any,
+    defaultValues,
   });
 
   useEffect(() => {
@@ -78,7 +81,7 @@ export const useProfileModel = () => {
       options: [
         {
           text: "Galeria",
-          icon: "images",
+          icon: "images-outline",
           variant: "secondary",
           onPress: async () => {
             const uri = await gallery.openGallery();
@@ -90,7 +93,7 @@ export const useProfileModel = () => {
         },
         {
           text: "Câmera",
-          icon: "camera",
+          icon: "camera-outline",
           variant: "primary",
           onPress: async () => {
             const uri = await camera.openCamera();
@@ -104,7 +107,15 @@ export const useProfileModel = () => {
     });
   };
 
-  const validatePasswords = (data: ProfileFormData): boolean => {
+  const validatePasswords = (data: any): boolean => {
+    if (data.password === data.newPassword && data.password?.length > 0) {
+      control.setError("newPassword", {
+        message: "A nova senha não pode ser igual à senha atual",
+      });
+
+      return false;
+    }
+
     return true;
   };
 
@@ -114,13 +125,8 @@ export const useProfileModel = () => {
         return;
       }
 
-      const updateData: UpdateProfileRequest = {
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-      };
-
-      updateProfileMutation.mutate(updateData);
+      updateProfileMutation.mutate(data);
+      reset();
     },
     (errors) => {
       const firstError = Object.values(errors)[0];

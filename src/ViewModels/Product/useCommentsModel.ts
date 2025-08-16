@@ -1,4 +1,5 @@
 import { useCommentsInfiniteQuery } from "@/shared/queries";
+import { useUserStore } from "@/store/userStore";
 import { Alert } from "react-native";
 
 export const useCommentsModel = (productId: number) => {
@@ -53,6 +54,8 @@ export const useCommentsModel = (productId: number) => {
     }
   };
 
+  const { user } = useUserStore();
+
   return {
     comments,
     isLoading,
@@ -70,5 +73,6 @@ export const useCommentsModel = (productId: number) => {
     handleEndReached,
     formatRating,
     formatName,
+    user,
   };
 };

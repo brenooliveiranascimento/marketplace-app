@@ -70,6 +70,7 @@ export const AppInput: React.FC<AppInputProps> = ({
     if (isInputDisabled) return colors.gray[300];
     if (hasError) return colors.danger;
     if (isFocused) return colors["purple-base"];
+    if (textInputProps.value) return colors["purple-base"];
     return colors.gray["400"];
   };
 

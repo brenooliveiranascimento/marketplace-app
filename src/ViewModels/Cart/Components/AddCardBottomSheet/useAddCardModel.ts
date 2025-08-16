@@ -14,25 +14,24 @@ import { AppError } from "@/shared/helpers/AppError";
 
 const formatExpirationDateForAPI = (dateString: string): string => {
   const [month, year] = dateString.split("/");
-  
+
   const monthNum = parseInt(month, 10);
   const yearNum = parseInt(year, 10);
-  
+
   if (isNaN(monthNum) || monthNum < 1 || monthNum > 12) {
     throw new AppError("Mês inválido");
   }
-  
+
   if (isNaN(yearNum) || yearNum < 0 || yearNum > 99) {
     throw new AppError("Ano inválido");
   }
-  
+
   const fullYear = 2000 + yearNum;
-  
-  // Criar uma data para o primeiro dia do próximo mês e subtrair 1 dia para obter o último dia do mês atual
+
   const expirationDate = new Date(fullYear, monthNum, 0);
-  
-  const isoDate = expirationDate.toISOString().split('T')[0];
-  
+
+  const isoDate = expirationDate.toISOString().split("T")[0];
+
   return isoDate;
 };
 
@@ -40,7 +39,7 @@ export const useAddCardModel = () => {
   const { close } = useBottomSheetStore();
   const queryClient = useQueryClient();
   const [cardType, setCardType] = useState<string>("");
-  const {handleError} = useErrorHandler()
+  const { handleError } = useErrorHandler();
 
   const {
     control,
@@ -58,7 +57,7 @@ export const useAddCardModel = () => {
       CVV: "",
     },
   });
-  
+
   const watchedNumber = watch("number");
   const watchedName = watch("titularName");
   const watchedExpiry = watch("expirationDate");
@@ -68,7 +67,7 @@ export const useAddCardModel = () => {
     if (watchedNumber) {
       const cleaned = watchedNumber.replace(/\s/g, "");
       const cardValidation = valid.number(cleaned);
-      
+
       if (cardValidation.card) {
         setCardType(cardValidation.card.type);
       } else {
@@ -106,17 +105,17 @@ export const useAddCardModel = () => {
       if (cleanedNumber.length !== 16) {
         throw new Error("Número do cartão deve ter exatamente 16 dígitos");
       }
-      
+
       const formattedDate = formatExpirationDateForAPI(data.expirationDate);
 
       const payload = {
-        number: cleanedNumber, 
-        CVV: parseInt(data.CVV, 10), 
-        expirationDate: formattedDate, 
+        number: cleanedNumber,
+        CVV: parseInt(data.CVV, 10),
+        expirationDate: formattedDate,
       };
       await createCardMutation.mutateAsync(payload);
     } catch (error) {
-      handleError(error, "Erro ao salvar cartão. Tente novamente2.");  
+      handleError(error, "Erro ao salvar cartão. Tente novamente2.");
     }
   });
 

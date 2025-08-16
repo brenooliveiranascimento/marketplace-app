@@ -22,7 +22,6 @@ export const CartView: FC<CartViewProps> = ({
   selectedCreditCard,
   isCreatingOrder,
   onSelectCreditCard,
-  onEditCreditCard,
 }) => {
   if (isEmpty) return <EmptyCart onGoBack={onGoBack} />;
 
@@ -52,7 +51,6 @@ export const CartView: FC<CartViewProps> = ({
             selectedCreditCard={selectedCreditCard}
             isCreatingOrder={isCreatingOrder}
             onSelectCreditCard={onSelectCreditCard}
-            onEditCreditCard={onEditCreditCard}
           />
         }
       />

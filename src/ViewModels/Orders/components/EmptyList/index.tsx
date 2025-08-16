@@ -12,7 +12,6 @@ export const EmptyList = () => (
     <Text className="text-base text-gray-400 text-center mb-8">
       Explore o catálogo de produtos e faça sua primeira compra!
     </Text>
-
     <ExploreButton />
   </View>
 );

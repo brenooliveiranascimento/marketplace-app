@@ -29,7 +29,7 @@ export const SelectionModalContent: React.FC<SelectionModalContentProps> = ({
 }) => {
   const getButtonClass = (variant: SelectionOption["variant"] = "primary") => {
     return clsx(
-      "w-full py-3 px-4 rounded-lg items-center flex-row justify-center",
+      "w-full py-3 px-4 rounded-lg items-center flex-row justify-center mb-2",
       {
         "bg-red-600": variant === "danger",
         "bg-gray-200": variant === "secondary",
@@ -58,7 +58,7 @@ export const SelectionModalContent: React.FC<SelectionModalContentProps> = ({
           </Text>
         )}
 
-        <View className="w-full space-y-3 mb-4">
+        <View className="w-full space-y-3 mb-2">
           {options.map((option, index) => (
             <TouchableOpacity
               key={index}

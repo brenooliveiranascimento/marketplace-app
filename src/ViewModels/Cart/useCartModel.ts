@@ -111,14 +111,6 @@ export const useCartModel = () => {
     setSelectedCreditCard(creditCard);
   };
 
-  const handleEditCreditCard = (creditCard: CreditCard) => {
-    modals.showInfo({
-      title: "Em desenvolvimento",
-      message: "Funcionalidade de edição em breve!",
-      variant: "warning",
-    });
-  };
-
   const handleCheckout = () => {
     if (products.length === 0) {
       modals.showInfo({
@@ -189,6 +181,5 @@ export const useCartModel = () => {
     onGoBack: handleGoBack,
 
     onSelectCreditCard: handleSelectCreditCard,
-    onEditCreditCard: handleEditCreditCard,
   };
 };

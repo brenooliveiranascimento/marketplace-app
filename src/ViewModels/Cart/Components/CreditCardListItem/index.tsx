@@ -8,14 +8,12 @@ interface CreditCardListItemProps {
   creditCard: CreditCard;
   isSelected: boolean;
   onSelect: (creditCard: CreditCard) => void;
-  onEdit: (creditCard: CreditCard) => void;
 }
 
 export const CreditCardListItem: React.FC<CreditCardListItemProps> = ({
   creditCard,
   isSelected,
   onSelect,
-  onEdit,
 }) => {
   const formatCardNumber = (number: string) => {
     const last4 = number.slice(-4);
@@ -41,7 +39,7 @@ export const CreditCardListItem: React.FC<CreditCardListItemProps> = ({
       }}
     >
       <View className="flex-row items-center justify-between">
-        <View className="flex-row items-center flex-1">
+        <View className="flex-row items-start flex-1">
           <View className="mr-3">
             <Ionicons
               name="card-outline"
@@ -70,14 +68,6 @@ export const CreditCardListItem: React.FC<CreditCardListItemProps> = ({
             </Text>
           </View>
         </View>
-
-        <TouchableOpacity
-          onPress={() => onEdit(creditCard)}
-          className="ml-2 p-2"
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        >
-          <Ionicons name="pencil-outline" size={20} color="#6b7280" />
-        </TouchableOpacity>
       </View>
     </TouchableOpacity>
   );

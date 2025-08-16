@@ -56,7 +56,7 @@ export const useCamera = (options: UseCameraOptions = {}): UseCameraReturn => {
         exif,
       });
 
-      if (!result.canceled && result.assets[0]) {
+      if (!result.canceled && result.assets && result.assets.length > 0) {
         Toast.success("Foto capturada com sucesso!", "top");
         return result.assets[0].uri;
       }

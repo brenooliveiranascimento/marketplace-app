@@ -17,19 +17,13 @@ const getBaseURL = () => {
 export const buildImageUrl = (path: string): string => {
   if (!path) return "";
 
-  // Se já é uma URL completa, retorna como está
   if (path.startsWith("http://") || path.startsWith("https://")) {
     return path;
   }
 
-  // Remove barra inicial se existir para evitar duplicação
   const cleanPath = path.startsWith("/") ? path.slice(1) : path;
 
-  // Concatena com a base URL
   const fullUrl = `${getBaseURL()}/${cleanPath}`;
-
-  // Log para debug
-  console.log("buildImageUrl:", { path, cleanPath, fullUrl });
 
   return fullUrl;
 };

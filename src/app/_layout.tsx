@@ -9,6 +9,7 @@ import {
 } from "@expo-google-fonts/lato";
 import ToastManager, { Toast } from "toastify-react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { AppModal } from "@/shared/components";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ export default function RootLayout() {
         />
         <StatusBar style="auto" />
       </QueryClientProvider>
+      <AppModal />
     </GestureHandlerRootView>
   );
 }

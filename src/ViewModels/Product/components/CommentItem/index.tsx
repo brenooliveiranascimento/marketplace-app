@@ -3,17 +3,17 @@ import { View, Text, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ProductComment } from "@/shared/interfaces/comments";
 import { colors } from "@/styles/colors";
-import { useUserStore } from "@/store/userStore";
+import { User } from "@/store/userStore";
 import { buildImageUrl } from "@/shared/helpers/url.helper";
 
 interface CommentItemProps {
   comment: ProductComment;
   formatRating: (rating: string) => string;
   formatName: (name: string) => string;
+  user: User;
 }
 
-export function CommentItem({ comment, formatName }: CommentItemProps) {
-  const { user } = useUserStore();
+export function CommentItem({ comment, formatName, user }: CommentItemProps) {
   const isCurrentUser = user?.id === comment.user.id;
 
   return (

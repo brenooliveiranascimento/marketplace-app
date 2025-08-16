@@ -62,7 +62,9 @@ export default function TabLayout() {
           tabBarBadge: products.length,
           tabBarBadgeStyle: {
             display: !products.length ? "none" : "flex",
-            backgroundColor: colors["blue-base"],
+            backgroundColor: colors["blue-dark"],
+            top: -10,
+            left: 20,
           },
         }}
       />

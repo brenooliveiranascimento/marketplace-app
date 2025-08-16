@@ -53,7 +53,7 @@ export const ConfirmationModalContent: React.FC<
           {message}
         </Text>
 
-        <View className="flex-row space-x-3 w-full">
+        <View className="flex-row space-x-3 w-full gap-2">
           <TouchableOpacity
             onPress={onCancel}
             className="flex-1 py-3 px-4 border border-gray-300 rounded-lg items-center"

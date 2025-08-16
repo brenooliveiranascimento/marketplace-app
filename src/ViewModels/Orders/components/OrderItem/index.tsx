@@ -18,12 +18,14 @@ export const OrderItem: React.FC<OrderItemProps> = ({
   formatCreditCard,
 }) => {
   return (
-    <View className="flex-row items-center bg-white p-1 mb-3 rounded-lg shadow-sm h-[89px]">
-      <Image
-        source={{ uri: buildImageUrl(order.productPhoto || "") }}
-        className="w-[88px] h-[88px] rounded-lg mr-4"
-        resizeMode="cover"
-      />
+    <View className="flex-row items-center bg-white p-3 pl-0 mb-3 rounded-lg shadow-sm h-[89px]">
+      <View className="p-1">
+        <Image
+          source={{ uri: buildImageUrl(order.productPhoto || "") }}
+          className="w-[88px] h-[80px] rounded-lg mr-4"
+          resizeMode="cover"
+        />
+      </View>
 
       <View className="flex-1 justify-between py-4">
         <View className="flex-row justify-between items-start mb-2">

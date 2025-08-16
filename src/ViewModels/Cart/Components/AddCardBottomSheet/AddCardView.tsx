@@ -89,7 +89,7 @@ export const AddCardView: React.FC<AddCardViewProps> = ({
             onBlur={() => setFocusedField("")}
           />
 
-          <View className="flex-row space-x-4">
+          <View className="flex-row space-x-4 gap-2">
             <View className="flex-1">
               <AppInputController
                 control={control}
@@ -101,10 +101,19 @@ export const AddCardView: React.FC<AddCardViewProps> = ({
                 maxLength={5}
                 mask={(value: string) => {
                   const cleaned = value.replace(/\D/g, "");
-                  if (cleaned.length >= 2) {
-                    return `${cleaned.slice(0, 2)}/${cleaned.slice(2, 4)}`;
+
+                  if (cleaned.length < 2) {
+                    return cleaned;
                   }
-                  return cleaned;
+
+                  const month = cleaned.slice(0, 2);
+                  const year = cleaned.slice(2, 4);
+
+                  if (year.length > 0) {
+                    return `${month}/${year}`;
+                  }
+
+                  return month;
                 }}
                 onFocus={() => setFocusedField("expiry")}
                 onBlur={() => setFocusedField("")}
@@ -122,7 +131,6 @@ export const AddCardView: React.FC<AddCardViewProps> = ({
                 maxLength={maxCVVLength}
                 secureTextEntry={true}
                 mask={(value: string) => {
-                  // Remove todos os caracteres não numéricos e limita a 3 dígitos
                   return value.replace(/\D/g, "").slice(0, 3);
                 }}
                 onFocus={() => setFocusedField("CVV")}
