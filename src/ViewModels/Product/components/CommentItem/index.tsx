@@ -10,7 +10,7 @@ interface CommentItemProps {
   comment: ProductComment;
   formatRating: (rating: string) => string;
   formatName: (name: string) => string;
-  user: User;
+  user: User | null;
 }
 
 export function CommentItem({ comment, formatName, user }: CommentItemProps) {

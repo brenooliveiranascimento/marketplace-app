@@ -28,18 +28,7 @@ export default function RootLayout() {
           <Stack.Screen name="register" />
           <Stack.Screen name="loading" />
         </Stack>
-        <ToastManager
-          duration={3000}
-          animationInTiming={300}
-          animationOutTiming={300}
-          swipeEnabled={true}
-          swipeDirection="up"
-          offsetTop={50}
-          offsetBottom={50}
-          hasBackdrop={false}
-          backdropOpacity={0}
-          backdropColor="transparent"
-        />
+        <ToastManager useModal={false} />
         <StatusBar style="auto" />
       </QueryClientProvider>
       <AppModal />

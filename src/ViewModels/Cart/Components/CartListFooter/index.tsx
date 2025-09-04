@@ -21,6 +21,7 @@ interface Props {
   selectedCreditCard: CreditCard | null;
   isCreatingOrder: boolean;
   onSelectCreditCard: (creditCard: CreditCard) => void;
+  isCheckoutDisabled: boolean;
 }
 
 export const CartListFooter: FC<Props> = ({
@@ -31,6 +32,7 @@ export const CartListFooter: FC<Props> = ({
   selectedCreditCard,
   isCreatingOrder,
   onSelectCreditCard,
+  isCheckoutDisabled,
 }) => {
   const { open } = useBottomSheetStore();
 
@@ -38,12 +40,12 @@ export const CartListFooter: FC<Props> = ({
     open(<AddCardBottomSheet />);
   };
 
-  const isCheckoutDisabled = isCreatingOrder || creditCards.length === 0;
-
   return (
     <View className="bg-white p-4 rounded-lg mt-6">
       <View className="flex-row justify-between items-center mb-4">
-        <Text className="text-sm font-semibold text-gray-600">VALOR TOTAL</Text>
+        <Text className="text-[10px] font-semibold text-gray-600">
+          VALOR TOTAL
+        </Text>
         <Text className="text-base font-bold text-gray-900">
           {formatTotal()}
         </Text>
@@ -51,7 +53,7 @@ export const CartListFooter: FC<Props> = ({
 
       <View className="mb-4">
         <View className="flex-row justify-between items-center mb-3">
-          <Text className="text-sm font-medium text-gray-600">
+          <Text className="text-[10px] font-medium text-gray-600">
             CARTÕES DE CRÉDITO
           </Text>
           <TouchableOpacity
@@ -96,7 +98,7 @@ export const CartListFooter: FC<Props> = ({
 
       <TouchableOpacity
         className={`py-4 rounded-lg items-center ${
-          isCheckoutDisabled ? "bg-gray-400" : "bg-purple-base"
+          isCheckoutDisabled ? "bg-disabled-purple" : "bg-purple-base"
         }`}
         onPress={onCheckout}
         disabled={isCheckoutDisabled}

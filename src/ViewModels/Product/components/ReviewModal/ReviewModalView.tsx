@@ -28,7 +28,7 @@ export const ReviewModalView: React.FC<ReturnType<typeof useReviewModel>> = ({
 
         <TouchableOpacity
           onPress={handleClose}
-          className="w-8 h-8 items-center justify-center"
+          className="w-8 h-8 items-center justify-cente rounded-full"
         >
           <Ionicons name="close" size={24} color={colors.gray[400]} />
         </TouchableOpacity>

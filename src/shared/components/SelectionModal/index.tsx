@@ -32,16 +32,9 @@ export const SelectionModalContent: React.FC<SelectionModalContentProps> = ({
       "w-full py-3 px-4 rounded-lg items-center flex-row justify-center mb-2",
       {
         "bg-red-600": variant === "danger",
-        "bg-gray-200": variant === "secondary",
+        "bg-blue-dark": variant === "secondary",
         "bg-purple-base": variant === "primary",
       }
-    );
-  };
-
-  const getTextClass = (variant: SelectionOption["variant"] = "primary") => {
-    return clsx(
-      "font-semibold",
-      variant === "secondary" ? "text-gray-800" : "text-white"
     );
   };
 
@@ -69,13 +62,11 @@ export const SelectionModalContent: React.FC<SelectionModalContentProps> = ({
                 <Ionicons
                   name={option.icon}
                   size={20}
-                  color={option.variant === "secondary" ? "#374151" : "white"}
+                  color={"white"}
                   className="mr-2"
                 />
               )}
-              <Text className={getTextClass(option.variant)}>
-                {option.text}
-              </Text>
+              <Text className={"font-semibold text-white"}>{option.text}</Text>
             </TouchableOpacity>
           ))}
         </View>

@@ -67,11 +67,11 @@ export const AppInput: React.FC<AppInputProps> = ({
   };
 
   const getIconColor = () => {
-    if (isInputDisabled) return colors.gray[300];
+    if (isInputDisabled) return colors.gray[200];
     if (hasError) return colors.danger;
     if (isFocused) return colors["purple-base"];
     if (textInputProps.value) return colors["purple-base"];
-    return colors.gray["400"];
+    return colors.gray["200"];
   };
 
   const handleWrapperPress = () => {

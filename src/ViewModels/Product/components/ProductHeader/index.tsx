@@ -3,8 +3,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { Product } from "@/shared/interfaces/product";
 import { FC } from "react";
 import { colors } from "@/styles/colors";
-import { AppButton } from "@/shared/components/AppButton";
 import { buildImageUrl } from "@/shared/helpers/url.helper";
+import { AppPriceText } from "@/shared/components";
 
 interface Props {
   product: Product;
@@ -20,10 +20,13 @@ export const ProductHeader: FC<Props> = ({
   return (
     <>
       <View className="pb-5 items-start">
-        <AppButton variant="borderless" onPress={onGoBack} className="w-auto">
+        <TouchableOpacity
+          onPress={onGoBack}
+          className="w-full justify-start flex-row items-center gap-3"
+        >
           <Ionicons name="arrow-back" size={24} color="#8B5CF6" />
           <Text className="text-base text-purple-base ml-1">Voltar</Text>
-        </AppButton>
+        </TouchableOpacity>
       </View>
       <View className="w-full rounded-lg shadow-xl shadow-gray-500/30 bg-white">
         <Image
@@ -31,7 +34,7 @@ export const ProductHeader: FC<Props> = ({
           className="w-full h-[197px] rounded-lg"
           resizeMode="cover"
         />
-        <View className="absolute top-0 right-0 flex-row items-center bg-white/90 px-2 py-1 rounded-lg">
+        <View className="absolute top-0 right-0 flex-row items-center bg-blue-light px-2 py-1 rounded-bl-lg rounded-tr-lg">
           <Ionicons name="star" size={16} color={colors["blue-base"]} />
           <Text className="text-sm font-semibold ml-1 text-gray-800">
             {product.averageRating?.toFixed(1) || "0.0"}
@@ -48,10 +51,11 @@ export const ProductHeader: FC<Props> = ({
             {product.name}
           </Text>
           <View className="flex-row items-baseline">
-            <Text className="text-sm">R$</Text>
-            <Text className="text-xl font-bold text-gray-800 ml-1">
-              {product.value}
-            </Text>
+            <AppPriceText
+              classNameValue="text-xl font-bold text-gray-800 ml-1"
+              classNameCurrency="-mr-1"
+              value={Number(product.value)}
+            />
           </View>
         </View>
 
@@ -59,7 +63,7 @@ export const ProductHeader: FC<Props> = ({
           <View className="bg-blue-base w-[36px] h-[36px] rounded-[6px] items-center justify-center">
             <Ionicons name="trending-up" size={20} color={colors.white} />
           </View>
-          <Text className="text-sm text-gray-600 ml-2 flex-1 ml-5">
+          <Text className="text-sm text-gray-600 flex-1 ml-5">
             <Text className="font-bold">{product.views ?? 0} pessoas</Text>{" "}
             visualizaram este produto nos últimos 7 dias
           </Text>

@@ -43,11 +43,13 @@ export function CartItem({
           className="w-[18px] h-[18px] border-2 border-purple-base rounded-md items-center justify-center"
           onPress={() => onDecreaseQuantity(item.id, item.quantity)}
         >
-          <Ionicons name="remove" size={12} color={colors["purple-base"]} />
+          <Text className="text-base font-medium text-purple-base text-center leading-none">
+            -
+          </Text>
         </TouchableOpacity>
 
-        <View className="mx-2 items-center">
-          <Text className="text-base font-medium text-gray-700">
+        <View className="mx-2 items-center justify-center min-w-[24px]">
+          <Text className="text-base font-medium text-gray-700 text-center leading-none">
             {item.quantity}
           </Text>
         </View>
@@ -56,7 +58,9 @@ export function CartItem({
           className="w-[18px] h-[18px] border-2 border-purple-base rounded-md items-center justify-center"
           onPress={() => onIncreaseQuantity(item.id, item.quantity)}
         >
-          <Ionicons name="add" size={12} color={colors["purple-base"]} />
+          <Text className="text-base font-medium text-purple-base text-center leading-none">
+            +
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

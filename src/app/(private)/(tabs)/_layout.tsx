@@ -11,8 +11,8 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          height: 100,
-          paddingTop: 8,
+          height: 110,
+          paddingTop: 16,
         },
       }}
       initialRouteName="index"
@@ -20,14 +20,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Produtos",
+          title: "PRODUTOS",
           tabBarActiveTintColor: colors["purple-base"],
           tabBarIcon: ({ color }) => (
-            <Ionicons color={color} name="storefront-outline" size={30} />
+            <Ionicons color={color} name="storefront-outline" size={25} />
           ),
           tabBarLabelStyle: {
-            fontSize: 16,
-            marginTop: 10,
+            fontSize: 14,
+            marginTop: 4,
           },
         }}
       />
@@ -35,14 +35,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="orders"
         options={{
-          title: "Pedidos",
+          title: "PEDIDOS",
           tabBarActiveTintColor: colors["purple-base"],
           tabBarIcon: ({ color }) => (
-            <Ionicons color={color} name="clipboard-outline" size={30} />
+            <Ionicons color={color} name="clipboard-outline" size={25} />
           ),
           tabBarLabelStyle: {
-            fontSize: 16,
-            marginTop: 10,
+            fontSize: 14,
+            marginTop: 4,
           },
         }}
       />
@@ -50,14 +50,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="cart"
         options={{
-          title: "Carrinhos",
+          title: "CARRINHOS",
           tabBarActiveTintColor: colors["purple-base"],
           tabBarIcon: ({ color }) => (
-            <Ionicons color={color} name="cart-outline" size={30} />
+            <Ionicons color={color} name="cart-outline" size={25} />
           ),
           tabBarLabelStyle: {
-            fontSize: 16,
-            marginTop: 10,
+            fontSize: 14,
+            marginTop: 4,
           },
           tabBarBadge: products.length,
           tabBarBadgeStyle: {

@@ -158,6 +158,11 @@ export const useCartModel = () => {
   const isEmpty = products.length === 0;
   const itemCount = getItemCount();
 
+  const isCheckoutDisabled =
+    createOrderMutation.isPending ||
+    creditCards.length === 0 ||
+    !selectedCreditCard;
+
   return {
     products,
     total,
@@ -169,6 +174,8 @@ export const useCartModel = () => {
     selectedCreditCard,
 
     isCreatingOrder: createOrderMutation.isPending,
+
+    isCheckoutDisabled,
 
     formatPrice,
     formatTotal,
