@@ -12,14 +12,14 @@ export const EmptyList: FC<Props> = ({ isLoading, searchText }) => {
   return (
     <View className="flex-1 items-center justify-center py-20">
       <Text
-        style={{ color: colors.grays["gray-300"] }}
+        style={{ color: colors.gray["300"] }}
         className="text-lg text-center"
       >
         {searchText ? "Nenhum produto encontrado" : "Nenhum produto disponível"}
       </Text>
       {searchText && (
         <Text
-          style={{ color: colors.grays["gray-200"] }}
+          style={{ color: colors.gray["200"] }}
           className="text-sm text-center mt-2"
         >
           Tente buscar por outro termo

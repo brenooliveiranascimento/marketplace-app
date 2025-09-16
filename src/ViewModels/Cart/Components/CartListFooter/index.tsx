@@ -21,7 +21,7 @@ interface Props {
   selectedCreditCard: CreditCard | null;
   isCreatingOrder: boolean;
   onSelectCreditCard: (creditCard: CreditCard) => void;
-  onEditCreditCard: (creditCard: CreditCard) => void;
+  isCheckoutDisabled: boolean;
 }
 
 export const CartListFooter: FC<Props> = ({
@@ -32,7 +32,7 @@ export const CartListFooter: FC<Props> = ({
   selectedCreditCard,
   isCreatingOrder,
   onSelectCreditCard,
-  onEditCreditCard,
+  isCheckoutDisabled,
 }) => {
   const { open } = useBottomSheetStore();
 
@@ -43,13 +43,17 @@ export const CartListFooter: FC<Props> = ({
   return (
     <View className="bg-white p-4 rounded-lg mt-6">
       <View className="flex-row justify-between items-center mb-4">
-        <Text className="text-sm font-medium text-gray-600">VALOR TOTAL</Text>
-        <Text className="text-xl font-bold text-gray-900">{formatTotal()}</Text>
+        <Text className="text-[10px] font-semibold text-gray-600">
+          VALOR TOTAL
+        </Text>
+        <Text className="text-base font-bold text-gray-900">
+          {formatTotal()}
+        </Text>
       </View>
 
       <View className="mb-4">
         <View className="flex-row justify-between items-center mb-3">
-          <Text className="text-sm font-medium text-gray-600">
+          <Text className="text-[10px] font-medium text-gray-600">
             CARTÕES DE CRÉDITO
           </Text>
           <TouchableOpacity
@@ -60,7 +64,7 @@ export const CartListFooter: FC<Props> = ({
             <Ionicons
               name="card-outline"
               color={colors["purple-base"]}
-              size={18}
+              size={20}
             />
             <Text className="text-purple-base ml-2 text-sm font-bold">
               Adicionar cartão
@@ -83,7 +87,6 @@ export const CartListFooter: FC<Props> = ({
                 creditCard={item}
                 isSelected={selectedCreditCard?.id === item.id}
                 onSelect={onSelectCreditCard}
-                onEdit={onEditCreditCard}
               />
             )}
             keyExtractor={(item) => item.id.toString()}
@@ -95,10 +98,10 @@ export const CartListFooter: FC<Props> = ({
 
       <TouchableOpacity
         className={`py-4 rounded-lg items-center ${
-          isCreatingOrder ? "bg-gray-400" : "bg-purple-base"
+          isCheckoutDisabled ? "bg-disabled-purple" : "bg-purple-base"
         }`}
         onPress={onCheckout}
-        disabled={isCreatingOrder}
+        disabled={isCheckoutDisabled}
       >
         {isCreatingOrder ? (
           <View className="flex-row items-center">

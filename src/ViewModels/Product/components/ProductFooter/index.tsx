@@ -10,15 +10,15 @@ interface Props {
 }
 export const ProductFooter: FC<Props> = ({ onAddToCart, product }) => {
   return (
-    <View className="fixed bottom-0 left-0 right-0 flex-row items-center p-7 border-t border-gray-200 shadow-lg bg-white h-[96px]">
+    <View className="fixed bottom-0 left-0 right-0 flex-row items-center p-7 bg-white h-[96px]">
       <View className="flex-1">
         <AppPriceText value={Number(product.value)} />
       </View>
       <AppButton
-        className="flex-row bg-purple-600 px-6 py-3 w-[120px] h-[40px] rounded-[10px]"
+        className="flex-row bg-purple-base px-6 py-3 w-[120px] h-[40px] rounded-[10px]"
         onPress={onAddToCart}
       >
-        <Ionicons name="cart" size={16} color="white" />
+        <Ionicons name="cart" size={20} color="white" />
         <Text className="text-white text-sm font-bold ml-2">Adicionar</Text>
       </AppButton>
     </View>

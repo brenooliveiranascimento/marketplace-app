@@ -25,7 +25,7 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
   onSelectAvatar,
 }) => {
   return (
-    <SafeAreaView style={{ backgroundColor: colors.white }} className="flex-1">
+    <SafeAreaView className="flex-1 bg-white">
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
@@ -35,7 +35,7 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
           contentContainerStyle={{ flexGrow: 1 }}
           className="flex-1"
         >
-          <View className="flex-1 px-6 py-8">
+          <View className="flex-1 px-[40px] py-8">
             <View className="items-center mb-8">
               <Image
                 source={require("@/assets/images/Logo.png")}
@@ -48,7 +48,7 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
               <Text className="text-3xl font-bold text-center mb-3 text-gray-500">
                 Criar sua conta
               </Text>
-              <Text className="text-base text-center text-gray-200">
+              <Text className="text-base text-center text-gray-300">
                 Informe seus dados pessoais e de acesso
               </Text>
             </View>
@@ -70,7 +70,7 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
                     <Ionicons
                       name="cloud-upload-outline"
                       size={32}
-                      color={colors.grays["gray-300"]}
+                      color={colors["purple-base"]}
                     />
                   )}
                 </View>
@@ -93,13 +93,13 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
                 name="phone"
                 label="TELEFONE"
                 placeholder="(00) 00000-0000"
-                leftIcon="phone-portrait"
+                leftIcon="call-outline"
                 keyboardType="numeric"
                 maxLength={11}
                 errors={errors}
               />
 
-              <Text className="text-gray-500 font-bold ml-3 text-base mt-6">
+              <Text className="text-gray-500 font-bold text-base mt-6">
                 Acesso
               </Text>
 
@@ -139,13 +139,13 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
                 isLoading={isLoading}
                 className="mt-6 mb-10"
               >
-                {isLoading ? "Criando conta..." : "Criar conta"}
+                {isLoading ? "Criando conta..." : "Cadastrar"}
               </AppButton>
             </View>
 
             <View className="w-full flex-2 pb-16">
               <Text className="text-base mb-6 text-purple text-gray-300">
-                Ainda não tem uma conta?
+                Já tem uma conta?
               </Text>
 
               <AppButton
@@ -155,7 +155,7 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterModel>> = ({
                 className="h-[50px]"
                 onPress={() => router.push("login")}
               >
-                Fazer login
+                Acessar
               </AppButton>
             </View>
           </View>

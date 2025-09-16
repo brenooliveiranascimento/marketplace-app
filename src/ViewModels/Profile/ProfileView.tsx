@@ -15,7 +15,11 @@ import { AppInputController } from "@/shared/components/AppInput/InputController
 import { AppButton } from "@/shared/components/AppButton";
 import { useProfileModel } from "./useProfileModel";
 
-export const ProfileView: React.FC<ReturnType<typeof useProfileModel>> = ({
+export const ProfileView: React.FC<
+  ReturnType<typeof useProfileModel> & {
+    control: any;
+  }
+> = ({
   control,
   errors,
   isLoading,
@@ -31,7 +35,7 @@ export const ProfileView: React.FC<ReturnType<typeof useProfileModel>> = ({
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
       >
-        <View className="flex-row justify-between items-center px-4 py-3  border-gray-200">
+        <View className="flex-row justify-between items-center px-4 py-3  border-shape">
           <TouchableOpacity
             className="flex-row items-center"
             onPress={onGoBack}
@@ -41,7 +45,7 @@ export const ProfileView: React.FC<ReturnType<typeof useProfileModel>> = ({
               size={24}
               color={colors["purple-base"]}
             />
-            <Text className="text-base text-purple-600 ml-1">Voltar</Text>
+            <Text className="text-base text-purple-base ml-1">Voltar</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -76,7 +80,7 @@ export const ProfileView: React.FC<ReturnType<typeof useProfileModel>> = ({
                     <Ionicons
                       name="person-outline"
                       size={32}
-                      color={colors.grays["gray-300"]}
+                      color={colors.gray["300"]}
                     />
                   )}
                 </View>
@@ -84,7 +88,7 @@ export const ProfileView: React.FC<ReturnType<typeof useProfileModel>> = ({
             </View>
 
             <View className="w-full mb-6">
-              <Text className="text-gray-500 font-bold ml-3 text-base mt-6">
+              <Text className="text-gray-500 font-bold text-base mt-6">
                 Dados pessoais
               </Text>
 
@@ -103,11 +107,15 @@ export const ProfileView: React.FC<ReturnType<typeof useProfileModel>> = ({
                 name="phone"
                 label="TELEFONE"
                 placeholder="(00) 00000-0000"
-                leftIcon="phone-portrait"
+                leftIcon="call-outline"
                 keyboardType="numeric"
                 maxLength={11}
                 errors={errors}
               />
+
+              <Text className="text-gray-500 font-bold text-base mt-6">
+                Acesso
+              </Text>
 
               <AppInputController
                 control={control}
@@ -120,17 +128,13 @@ export const ProfileView: React.FC<ReturnType<typeof useProfileModel>> = ({
                 errors={errors}
               />
 
-              <Text className="text-gray-500 font-bold ml-3 text-base mt-6">
-                Alterar Senha (opcional)
-              </Text>
-
-              {/* <AppInputController
+              <AppInputController
                 control={control}
                 name="password"
                 label="SENHA ATUAL"
                 placeholder="Sua senha"
                 leftIcon="lock-closed-outline"
-                secureTextEntry
+                secureTextEntry={true}
                 errors={errors}
               />
 
@@ -138,11 +142,11 @@ export const ProfileView: React.FC<ReturnType<typeof useProfileModel>> = ({
                 control={control}
                 name="newPassword"
                 label="NOVA SENHA"
-                placeholder="Mínimo 6 caracteres"
+                placeholder="Sua nova"
                 leftIcon="lock-closed-outline"
-                secureTextEntry
+                secureTextEntry={true}
                 errors={errors}
-              /> */}
+              />
 
               <AppButton
                 variant="filled"

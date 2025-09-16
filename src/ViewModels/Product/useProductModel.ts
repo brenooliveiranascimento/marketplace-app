@@ -1,5 +1,4 @@
 import React from "react";
-import { Alert } from "react-native";
 import { router } from "expo-router";
 import { useCartStore } from "@/store/cartStore";
 import { useProductQuery } from "@/shared/queries";
@@ -7,6 +6,7 @@ import { useModalStore } from "@/store/modalStore";
 import { AddToCartSuccessModal } from "@/shared/components";
 import { useBottomSheetStore } from "@/store/bottomsheetStore";
 import { ReviewModal } from "./components/ReviewModal";
+import { useAppPriceText } from "@/shared/components/AppPriceText/useAppPriceText";
 
 export const useProductModel = (productId: number) => {
   const { addItem } = useCartStore();
@@ -29,13 +29,7 @@ export const useProductModel = (productId: number) => {
     );
   };
 
-  const formatPrice = (value: string): string => {
-    const numericValue = parseFloat(value);
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(numericValue);
-  };
+  const { formatPrice } = useAppPriceText(Number(product?.value));
 
   const handleAddToCart = () => {
     if (!product) return;

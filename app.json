@@ -43,7 +43,14 @@
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Este app precisa acessar sua galeria de fotos para que você possa selecionar e enviar sua foto de perfil.",
+          "cameraPermission": "Este app precisa acessar sua câmera para que você possa tirar fotos para o seu perfil."
+        }
+      ]
     ]
   }
 }

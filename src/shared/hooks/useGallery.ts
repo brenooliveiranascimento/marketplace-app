@@ -30,32 +30,36 @@ export const useGallery = (
 
   const requestGalleryPermission = useCallback(async (): Promise<boolean> => {
     try {
-      if (Platform.OS !== "web") {
-        const { status } =
-          await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-        if (status !== "granted") {
-          Alert.alert(
-            "Permissão Negada",
-            "Precisamos de permissão para acessar sua galeria de fotos.",
-            [
-              { text: "Cancelar", style: "cancel" },
-              {
-                text: "Configurações",
-                onPress: () => {
-                  if (Platform.OS === "ios") {
-                    Alert.alert(
-                      "Como permitir acesso",
-                      "Vá em Configurações > Privacidade e Segurança > Fotos e permita o acesso para este app."
-                    );
-                  }
-                },
-              },
-            ]
-          );
-          return false;
-        }
+      if (!ImagePicker.requestMediaLibraryPermissionsAsync) {
+        Toast.error("ImagePicker não está disponível", "top");
+        return false;
       }
+
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+      if (status !== "granted") {
+        Alert.alert(
+          "Permissão Negada",
+          "Precisamos de permissão para acessar sua galeria de fotos.",
+          [
+            { text: "Cancelar", style: "cancel" },
+            {
+              text: "Configurações",
+              onPress: () => {
+                if (Platform.OS === "ios") {
+                  Alert.alert(
+                    "Como permitir acesso",
+                    "Vá em Configurações > Privacidade e Segurança > Fotos e permita o acesso para este app."
+                  );
+                }
+              },
+            },
+          ]
+        );
+        return false;
+      }
+
       return true;
     } catch (error) {
       Toast.error("Erro ao solicitar permissões da galeria", "top");
@@ -72,6 +76,11 @@ export const useGallery = (
         return null;
       }
 
+      if (!ImagePicker.launchImageLibraryAsync) {
+        Toast.error("Funcionalidade de galeria não está disponível", "top");
+        return null;
+      }
+
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing,
@@ -80,7 +89,8 @@ export const useGallery = (
         exif,
       });
 
-      if (!result.canceled && result.assets[0]) {
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        Toast.success("Imagem selecionada com sucesso!", "top");
         return result.assets[0].uri;
       }
 

@@ -8,7 +8,7 @@ export const ExploreButton = () => {
   return (
     <TouchableOpacity
       onPress={() => router.push("/")}
-      className="border-2 border-purple-base bg-none p-4 rounded-[10px] flex-row items-center gap-3"
+      className="border border-purple-base bg-none p-4 rounded-[10px] flex-row items-center gap-3"
     >
       <Ionicons
         size={20}

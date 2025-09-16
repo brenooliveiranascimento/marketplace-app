@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Alert } from "react-native";
 import { router } from "expo-router";
 import { Toast } from "toastify-react-native";
 import { useUserStore } from "@/store/userStore";
@@ -10,14 +9,22 @@ import {
   useUploadAvatarMutation,
   useUpdateProfileMutation,
 } from "@/shared/queries";
-import { profileSchema, ProfileFormData } from "./profile.schema";
+import { ProfileFormData, profileSchema } from "./profile.schema";
 import { useCartStore } from "@/store/cartStore";
 import { useCamera } from "@/shared/hooks/useCamera";
 import { useGallery } from "@/shared/hooks/useGallery";
+import { useAppModals } from "@/shared/hooks/useAppModals";
+
+const defaultValues: ProfileFormData = {
+  name: "",
+  email: "",
+  phone: "",
+};
 
 export const useProfileModel = () => {
   const { user, updateUser, logout } = useUserStore();
   const { clearCart } = useCartStore();
+  const modals = useAppModals();
   const [avatarUri, setAvatarUri] = useState<string | null>(
     user?.avatarUrl || null
   );
@@ -41,13 +48,10 @@ export const useProfileModel = () => {
     handleSubmit,
     formState: { errors },
     setValue,
+    reset,
   } = useForm<ProfileFormData>({
-    resolver: yupResolver(profileSchema),
-    defaultValues: {
-      email: "",
-      name: "",
-      phone: "",
-    },
+    resolver: yupResolver(profileSchema) as any,
+    defaultValues,
   });
 
   useEffect(() => {
@@ -71,32 +75,47 @@ export const useProfileModel = () => {
   });
 
   const handleSelectAvatar = () => {
-    Alert.alert("Selecionar Foto", "Escolha uma opção:", [
-      { text: "Cancelar", style: "cancel" },
-      {
-        text: "Galeria",
-        onPress: async () => {
-          const uri = await gallery.openGallery();
-          if (uri) {
-            setAvatarUri(uri);
-            uploadAvatarMutation.mutate(uri);
-          }
+    modals.showSelection({
+      title: "Selecionar Foto",
+      message: "Escolha uma opção:",
+      options: [
+        {
+          text: "Galeria",
+          icon: "images-outline",
+          variant: "secondary",
+          onPress: async () => {
+            const uri = await gallery.openGallery();
+            if (uri) {
+              setAvatarUri(uri);
+              uploadAvatarMutation.mutate(uri);
+            }
+          },
         },
-      },
-      {
-        text: "Câmera",
-        onPress: async () => {
-          const uri = await camera.openCamera();
-          if (uri) {
-            setAvatarUri(uri);
-            uploadAvatarMutation.mutate(uri);
-          }
+        {
+          text: "Câmera",
+          icon: "camera-outline",
+          variant: "primary",
+          onPress: async () => {
+            const uri = await camera.openCamera();
+            if (uri) {
+              setAvatarUri(uri);
+              uploadAvatarMutation.mutate(uri);
+            }
+          },
         },
-      },
-    ]);
+      ],
+    });
   };
 
-  const validatePasswords = (data: ProfileFormData): boolean => {
+  const validatePasswords = (data: any): boolean => {
+    if (data.password === data.newPassword && data.password?.length > 0) {
+      control.setError("newPassword", {
+        message: "A nova senha não pode ser igual à senha atual",
+      });
+
+      return false;
+    }
+
     return true;
   };
 
@@ -106,13 +125,8 @@ export const useProfileModel = () => {
         return;
       }
 
-      const updateData: UpdateProfileRequest = {
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-      };
-
-      updateProfileMutation.mutate(updateData);
+      updateProfileMutation.mutate(data);
+      reset();
     },
     (errors) => {
       const firstError = Object.values(errors)[0];
@@ -123,18 +137,18 @@ export const useProfileModel = () => {
   );
 
   const handleLogout = () => {
-    Alert.alert("Sair", "Tem certeza que deseja sair da sua conta?", [
-      { text: "Cancelar", style: "cancel" },
-      {
-        text: "Sair",
-        style: "destructive",
-        onPress: () => {
-          clearCart();
-          logout();
-          router.replace("/login");
-        },
+    modals.showConfirmation({
+      title: "Sair",
+      message: "Tem certeza que deseja sair da sua conta?",
+      confirmText: "Sair",
+      confirmVariant: "danger",
+      icon: "log-out",
+      onConfirm: () => {
+        clearCart();
+        logout();
+        router.replace("/login");
       },
-    ]);
+    });
   };
 
   const handleGoBack = () => {

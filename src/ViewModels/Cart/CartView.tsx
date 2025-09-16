@@ -22,10 +22,8 @@ export const CartView: FC<CartViewProps> = ({
   selectedCreditCard,
   isCreatingOrder,
   onSelectCreditCard,
-  onEditCreditCard,
+  isCheckoutDisabled,
 }) => {
-  if (isEmpty) return <EmptyCart onGoBack={onGoBack} />;
-
   return (
     <SafeAreaView className="flex-1 bg-background">
       <FlatList
@@ -40,20 +38,23 @@ export const CartView: FC<CartViewProps> = ({
         )}
         keyExtractor={(item) => item.id.toString()}
         ListHeaderComponent={CartHeader}
-        contentContainerClassName="px-4"
+        contentContainerClassName="px-6"
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <View className="h-2" />}
+        ListEmptyComponent={<EmptyCart onGoBack={onGoBack} />}
         ListFooterComponent={
-          <CartListFooter
-            formatTotal={formatTotal}
-            onCheckout={onCheckout}
-            creditCards={creditCards}
-            isLoadingCards={isLoadingCards}
-            selectedCreditCard={selectedCreditCard}
-            isCreatingOrder={isCreatingOrder}
-            onSelectCreditCard={onSelectCreditCard}
-            onEditCreditCard={onEditCreditCard}
-          />
+          products.length > 0 ? (
+            <CartListFooter
+              formatTotal={formatTotal}
+              onCheckout={onCheckout}
+              creditCards={creditCards}
+              isLoadingCards={isLoadingCards}
+              selectedCreditCard={selectedCreditCard}
+              isCreatingOrder={isCreatingOrder}
+              onSelectCreditCard={onSelectCreditCard}
+              isCheckoutDisabled={isCheckoutDisabled}
+            />
+          ) : null
         }
       />
     </SafeAreaView>

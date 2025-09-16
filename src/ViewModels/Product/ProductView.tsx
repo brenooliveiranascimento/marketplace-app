@@ -29,6 +29,7 @@ export const ProductView: FC<ProductViewProps> = ({
   formatRating,
   formatName,
   handleOpenReviewModal,
+  user,
 }) => {
   if (isLoadingProduct) return <LoadingProduct />;
 
@@ -44,6 +45,7 @@ export const ProductView: FC<ProductViewProps> = ({
               formatName={formatName}
               comment={item}
               formatRating={formatRating}
+              user={user}
             />
           )}
           keyExtractor={(item) => item.id.toString()}
@@ -75,9 +77,7 @@ export const ProductView: FC<ProductViewProps> = ({
         />
       </SafeAreaView>
 
-      <SafeAreaView edges={["bottom"]} className="bg-white">
-        <ProductFooter onAddToCart={onAddToCart} product={product} />
-      </SafeAreaView>
+      <ProductFooter onAddToCart={onAddToCart} product={product} />
     </View>
   );
 };
